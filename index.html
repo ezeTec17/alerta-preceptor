@@ -345,7 +345,7 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v6_final')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v7_audio')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -361,8 +361,39 @@
 
         let estadosHoy = {};
 
+        // Sintetizador de Sonido Nativo (Sin archivos externos)
+        function reproducirSonidoAlerta() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                
+                // Tono 1
+                const osc1 = ctx.createOscillator();
+                const gain1 = ctx.createGain();
+                osc1.type = 'sine';
+                osc1.frequency.value = 880; // La5
+                osc1.connect(gain1);
+                gain1.connect(ctx.destination);
+                osc1.start(ctx.currentTime);
+                osc1.stop(ctx.currentTime + 0.15);
+
+                // Tono 2
+                const osc2 = ctx.createOscillator();
+                const gain2 = ctx.createGain();
+                osc2.type = 'sine';
+                osc2.frequency.value = 1200;
+                osc2.connect(gain2);
+                gain2.connect(ctx.destination);
+                osc2.start(ctx.currentTime + 0.15);
+                osc2.stop(ctx.currentTime + 0.35);
+            } catch (e) {
+                console.log("Audio no disponible aún.");
+            }
+        }
+
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v6_final', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v7_audio', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -387,6 +418,7 @@
         }
 
         function lanzarNotificacionAndroid(titulo, cuerpo) {
+            reproducirSonidoAlerta();
             if ("Notification" in window) {
                 if (Notification.permission === "granted") {
                     new Notification(titulo, { body: cuerpo, icon: "logo.png", vibrate: [200, 100, 200] });
@@ -401,13 +433,14 @@
         }
 
         function solicitarPermisoNotificacion() {
+            reproducirSonidoAlerta();
             if (!("Notification" in window)) {
                 alert("Navegador sin soporte de notificaciones nativas.");
                 return;
             }
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
-                    lanzarNotificacionAndroid("🔔 Notificaciones Activas", "Prueba exitosa en tu dispositivo.");
+                    lanzarNotificacionAndroid("🔔 Notificaciones Activas", "Prueba de sonido y alerta exitosa.");
                 } else {
                     alert("Permití las notificaciones para escuchar las alertas.");
                 }
@@ -606,7 +639,7 @@
             const asunto = encodeURIComponent(`Notificación Académica - ${a.nombre} (3° 7° E)`);
             const cuerpo = encodeURIComponent(`Estimado Tutor/a de ${a.nombre}:\n\nEstado al día de la fecha:\n- Materias Bajas (3° Bim): ${a.materiasBajas}\n- Inasistencias acumuladas: ${a.faltasAnuales}\n- Inasistencias en el mes: ${a.faltasMes}\n- Código App Familias: ${a.codigoApp}\n\nEscuela Técnica N° 17 DE 13.`);
             
-            window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
+            window.location.href = `mailto:${email}?subject=${asunto}?body=${cuerpo}`;
         }
 
         window.onload = evaluarAlertas;
