@@ -161,7 +161,7 @@
                                 <th class="p-3 text-center">Boletín</th>
                                 <th class="p-3 text-center">Faltas Teoría</th>
                                 <th class="p-3 text-center">Faltas Taller</th>
-                                <th class="p-3 text-right">Ficha / App</th>
+                                <th class="p-3 text-right">Acción</th>
                             </tr>
                         </thead>
                         <tbody id="tablaTodosAlumnos" class="divide-y divide-slate-100 text-sm">
@@ -245,7 +245,7 @@
                     <i data-lucide="id-card" class="w-5 h-5 text-blue-400"></i>
                     <h3 class="font-bold text-base" id="tituloFichaAlumno">Ficha Completa del Alumno</h3>
                 </div>
-                <button onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition">
+                <button type="button" onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -300,8 +300,8 @@
             </div>
 
             <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end space-x-2">
-                <button onclick="cerrarModalFicha()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg transition">Cancelar</button>
-                <button onclick="guardarFichaAlumno()" class="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition flex items-center space-x-1">
+                <button type="button" onclick="cerrarModalFicha()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg transition">Cancelar</button>
+                <button type="button" onclick="guardarFichaAlumno()" class="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition flex items-center space-x-1">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     <span>Guardar Ficha</span>
                 </button>
@@ -317,7 +317,7 @@
                     <i data-lucide="calendar" class="w-5 h-5 text-blue-400"></i>
                     <h3 class="font-bold text-base" id="tituloModalAsistencia">Tomar Asistencia</h3>
                 </div>
-                <button onclick="cerrarModalAsistencia()" class="text-slate-400 hover:text-white transition">
+                <button type="button" onclick="cerrarModalAsistencia()" class="text-slate-400 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -341,8 +341,8 @@
             </div>
 
             <div class="p-4 border-t border-slate-100 bg-white flex items-center justify-end space-x-2">
-                <button onclick="cerrarModalAsistencia()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancelar</button>
-                <button onclick="guardarAsistenciaDiaria()" class="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition flex items-center space-x-1">
+                <button type="button" onclick="cerrarModalAsistencia()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancelar</button>
+                <button type="button" onclick="guardarAsistenciaDiaria()" class="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition flex items-center space-x-1">
                     <i data-lucide="save" class="w-4 h-4"></i>
                     <span>Guardar y Sincronizar</span>
                 </button>
@@ -439,7 +439,12 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0, faltasTaller: 1.0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v14_fichas_pdf')) || nominaOficial.map(item => ({
+        // Limpieza de claves obsoletas para evitar bloqueo de clicks en modal Ficha
+        localStorage.removeItem('alumnos_et17_v13_taller_previas');
+        localStorage.removeItem('alumnos_et17_v14_fichas_pdf');
+        localStorage.removeItem('alumnos_et17_v15_clean');
+
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v16_fix_ficha')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -489,7 +494,7 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v14_fichas_pdf', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v16_fix_ficha', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -548,6 +553,50 @@
             });
         }
 
+        function abrirModalFicha(id) {
+            const al = alumnos.find(a => a.id === parseInt(id));
+            if (!al) return;
+
+            document.getElementById('editAlumnoId').value = al.id;
+            document.getElementById('editNombre').value = al.nombre || '';
+            document.getElementById('editDni').value = al.dni || '';
+            document.getElementById('editCodigoApp').value = al.codigoApp || '';
+            document.getElementById('editCuil').value = al.cuil || '';
+            document.getElementById('editTelefono').value = al.telefono || '';
+            document.getElementById('editEmail').value = al.emailTutor || '';
+            document.getElementById('editMateriasPrevias').value = al.materiasPrevias || '';
+            document.getElementById('editMateriasBajas').value = al.materiasBajas || 0;
+            document.getElementById('editFaltasAnuales').value = al.faltasAnuales || 0;
+            document.getElementById('editFaltasTaller').value = al.faltasTaller || 0;
+
+            document.getElementById('modalFicha').classList.remove('hidden');
+        }
+
+        function cerrarModalFicha() {
+            document.getElementById('modalFicha').classList.add('hidden');
+        }
+
+        function guardarFichaAlumno() {
+            const id = parseInt(document.getElementById('editAlumnoId').value);
+            const al = alumnos.find(a => a.id === id);
+            if (al) {
+                al.nombre = document.getElementById('editNombre').value;
+                al.dni = document.getElementById('editDni').value;
+                al.codigoApp = document.getElementById('editCodigoApp').value;
+                al.cuil = document.getElementById('editCuil').value;
+                al.telefono = document.getElementById('editTelefono').value;
+                al.emailTutor = document.getElementById('editEmail').value;
+                al.materiasPrevias = document.getElementById('editMateriasPrevias').value;
+                al.materiasBajas = parseInt(document.getElementById('editMateriasBajas').value) || 0;
+                al.faltasAnuales = parseFloat(document.getElementById('editFaltasAnuales').value) || 0;
+                al.faltasTaller = parseFloat(document.getElementById('editFaltasTaller').value) || 0;
+                
+                guardarPersistencia();
+                evaluarAlertas();
+                cerrarModalFicha();
+            }
+        }
+
         function evaluarAlertas() {
             let criticosMaterias = 0;
             let criticosAnuales = 0;
@@ -572,23 +621,25 @@
                 if (esCriticoTaller) criticosTaller++;
                 if (tieneAlerta) totalAlertas++;
 
-                // Fila Tabla Todos Alumnos + Previas + Botón Ficha Funcional
+                const pdfRuta = encodeURI(`./${a.boletinPdf}`);
+
+                // Fila Tabla Todos Alumnos
                 const trTodos = document.createElement('tr');
                 trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
                 trTodos.innerHTML = `
                     <td class="p-3 font-semibold text-slate-400 text-xs">${a.id}</td>
-                    <td class="p-3 font-medium text-slate-900 cursor-pointer hover:text-blue-600" onclick="abrirModalFicha(${a.id})">${a.nombre}</td>
+                    <td class="p-3 font-bold text-slate-900 cursor-pointer hover:text-blue-600" onclick="abrirModalFicha(${a.id})">${a.nombre}</td>
                     <td class="p-3 text-xs text-amber-900 font-medium">${a.materiasPrevias || 'Ninguna'}</td>
                     <td class="p-3 text-center">
-                        <button onclick="verBoletin('${encodeURIComponent(a.boletinPdf)}', '${a.nombre}')" class="bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs px-2.5 py-1 rounded-md border border-blue-200 transition flex items-center justify-center space-x-1 mx-auto">
+                        <a href="${pdfRuta}" target="_blank" class="inline-flex items-center space-x-1 bg-blue-50 text-blue-700 hover:bg-blue-100 font-bold text-xs px-2.5 py-1 rounded-md border border-blue-200 transition">
                             <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
                             <span>PDF</span>
-                        </button>
+                        </a>
                     </td>
                     <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoAnuales ? 'bg-amber-100 text-amber-800' : 'text-slate-600'}">${a.faltasAnuales}</span></td>
                     <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoTaller ? 'bg-orange-100 text-orange-800' : 'text-slate-600'}">${a.faltasTaller}</span></td>
                     <td class="p-3 text-right">
-                        <button onclick="abrirModalFicha(${a.id})" class="bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 font-semibold text-xs px-2.5 py-1 rounded-md transition">
+                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-1.5 rounded-md shadow transition">
                             Ficha / App
                         </button>
                     </td>
@@ -641,59 +692,6 @@
             }
 
             lucide.createIcons();
-        }
-
-        function verBoletin(pdfUrlEncoded, alumnoNombre) {
-            if (!pdfUrlEncoded) {
-                alert(`No se encontró el boletín digital para ${alumnoNombre}.`);
-                return;
-            }
-            const pdfUrl = decodeURIComponent(pdfUrlEncoded);
-            window.open(pdfUrl, '_blank');
-        }
-
-        function abrirModalFicha(id) {
-            const al = alumnos.find(a => a.id === id);
-            if (!al) return;
-
-            document.getElementById('editAlumnoId').value = al.id;
-            document.getElementById('editNombre').value = al.nombre || '';
-            document.getElementById('editDni').value = al.dni || '';
-            document.getElementById('editCodigoApp').value = al.codigoApp || '';
-            document.getElementById('editCuil').value = al.cuil || '';
-            document.getElementById('editTelefono').value = al.telefono || '';
-            document.getElementById('editEmail').value = al.emailTutor || '';
-            document.getElementById('editMateriasPrevias').value = al.materiasPrevias || '';
-            document.getElementById('editMateriasBajas').value = al.materiasBajas || 0;
-            document.getElementById('editFaltasAnuales').value = al.faltasAnuales || 0;
-            document.getElementById('editFaltasTaller').value = al.faltasTaller || 0;
-
-            document.getElementById('modalFicha').classList.remove('hidden');
-        }
-
-        function cerrarModalFicha() {
-            document.getElementById('modalFicha').classList.add('hidden');
-        }
-
-        function guardarFichaAlumno() {
-            const id = parseInt(document.getElementById('editAlumnoId').value);
-            const al = alumnos.find(a => a.id === id);
-            if (al) {
-                al.nombre = document.getElementById('editNombre').value;
-                al.dni = document.getElementById('editDni').value;
-                al.codigoApp = document.getElementById('editCodigoApp').value;
-                al.cuil = document.getElementById('editCuil').value;
-                al.telefono = document.getElementById('editTelefono').value;
-                al.emailTutor = document.getElementById('editEmail').value;
-                al.materiasPrevias = document.getElementById('editMateriasPrevias').value;
-                al.materiasBajas = parseInt(document.getElementById('editMateriasBajas').value) || 0;
-                al.faltasAnuales = parseFloat(document.getElementById('editFaltasAnuales').value) || 0;
-                al.faltasTaller = parseFloat(document.getElementById('editFaltasTaller').value) || 0;
-                
-                guardarPersistencia();
-                evaluarAlertas();
-                cerrarModalFicha();
-            }
         }
 
         function renderizarListaAsistencia(esNoLectivo) {
@@ -861,17 +859,16 @@
                 const est = estadosHoy[a.id] || 'Presente';
                 const det = detallesAsistencia[a.id] || {};
 
-                // Reglas exactas de cómputo de faltas
                 if (!verif.esNoLectivo) {
                     if (modoAsistenciaModal === 'taller') {
-                        if (est === 'Ausente') a.faltasTaller += 0.5; // Ausente Taller = 1/2 falta
-                        else if (est === 'Tarde') a.faltasTaller += 0.25; // Tarde = 1/4 falta
+                        if (est === 'Ausente') a.faltasTaller += 0.5;
+                        else if (est === 'Tarde') a.faltasTaller += 0.25;
                     } else {
                         if (est === 'Ausente') {
-                            a.faltasAnuales += 0.5; // Ausente Teoría = 1/2 falta
+                            a.faltasAnuales += 0.5;
                             a.faltasMes += 0.5;
                         } else if (est === 'Tarde') {
-                            a.faltasAnuales += 0.25; // Tarde Teoría = 1/4 falta
+                            a.faltasAnuales += 0.25;
                             a.faltasMes += 0.25;
                         }
                     }
