@@ -277,9 +277,18 @@
                 </button>
             </div>
             
-            <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600">
-                <span>Fecha: <strong id="fechaHoyText"></strong></span>
+            <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-600">
+                <div class="flex items-center space-x-2">
+                    <span>Fecha:</span>
+                    <input type="date" id="fechaAsistenciaInput" onchange="verificarDiaLectivoUI()" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none focus:border-blue-500">
+                </div>
                 <span class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">3° 7° E</span>
+            </div>
+
+            <!-- Banner Alerta de Día No Lectivo -->
+            <div id="bannerDiaNoLectivo" class="hidden bg-amber-50 border-b border-amber-200 p-3 text-xs text-amber-800 flex items-center space-x-2">
+                <i data-lucide="calendar-off" class="w-4 h-4 text-amber-600 shrink-0"></i>
+                <span id="textoDiaNoLectivo" class="font-medium">Día No Lectivo. No se computarán faltas en esta fecha.</span>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-2 flex-1" id="listaTomarAsistencia">
@@ -301,7 +310,52 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAafGIpsRMoxRGw5eOs7L_KBfr_HlrK1VGNB42SyLKLtsLtADJ47hzX_O5SQe8A0g8/exec";
 
-        // Nómina Oficial Verificada (40 Alumnos con Emails Oficiales)
+        // Mapeo de Días No Lectivos CABA (Feriados Nacionales, Receso de Invierno y Vacaciones)
+        const feriadosYRecesos = {
+            "01-01": "Año Nuevo",
+            "03-24": "Día Nac. de la Memoria",
+            "04-02": "Día del Veterano y de los Caídos en Malvinas",
+            "05-01": "Día del Trabajador",
+            "05-25": "Día de la Revolución de Mayo",
+            "06-17": "Paso a la Inmortalidad del Gral. Güemes",
+            "06-20": "Día de la Bandera",
+            "07-09": "Día de la Independencia",
+            "08-17": "Paso a la Inmortalidad del Gral. San Martín",
+            "10-12": "Día del Respeto a la Diversidad Cultural",
+            "11-20": "Día de la Soberanía Nacional",
+            "12-08": "Día de la Inmaculada Concepción",
+            "12-25": "Navidad"
+        };
+
+        function esDiaNoLectivo(fechaObj) {
+            const diaSemana = fechaObj.getDay(); // 0: Domingo, 6: Sábado
+            if (diaSemana === 0 || diaSemana === 6) {
+                return { esNoLectivo: true, motivo: diaSemana === 0 ? "Domingo (Fin de semana)" : "Sábado (Fin de semana)" };
+            }
+
+            const mes = fechaObj.getMonth() + 1; // 1-12
+            const dia = fechaObj.getDate(); // 1-31
+            const mmdd = `${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
+
+            // Feriados Fijos
+            if (feriadosYRecesos[mmdd]) {
+                return { esNoLectivo: true, motivo: `Feriado: ${feriadosYRecesos[mmdd]}` };
+            }
+
+            // Receso de Invierno CABA (Segunda quincena de Julio)
+            if (mes === 7 && dia >= 20 && dia <= 31) {
+                return { esNoLectivo: true, motivo: "Receso Escolar de Invierno" };
+            }
+
+            // Vacaciones de Verano (Enero, Febrero hasta el 15 y última semana de Diciembre)
+            if (mes === 1 || (mes === 2 && dia <= 15) || (mes === 12 && dia >= 26)) {
+                return { esNoLectivo: true, motivo: "Receso Escolar de Verano" };
+            }
+
+            return { esNoLectivo: false, motivo: "" };
+        }
+
+        // Nómina Oficial Verificada (40 Alumnos de 3° 7° E)
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0 },
             { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1 },
@@ -345,7 +399,7 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v9_loaded_emails')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v10_dias_lectivos')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -391,7 +445,7 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v9_loaded_emails', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v10_dias_lectivos', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -560,9 +614,33 @@
             }
         }
 
+        function verificarDiaLectivoUI() {
+            const inputVal = document.getElementById('fechaAsistenciaInput').value;
+            if (!inputVal) return;
+
+            const partes = inputVal.split('-');
+            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
+            const verif = esDiaNoLectivo(fechaSel);
+
+            const banner = document.getElementById('bannerDiaNoLectivo');
+            const texto = document.getElementById('textoDiaNoLectivo');
+
+            if (verif.esNoLectivo) {
+                texto.innerText = `Atención: ${verif.motivo}. No se sumarán inasistencias en este día.`;
+                banner.classList.remove('hidden');
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
         function abrirModalAsistencia() {
-            const hoy = new Date().toLocaleDateString('es-AR');
-            document.getElementById('fechaHoyText').innerText = hoy;
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoy.getDate()).padStart(2, '0');
+            document.getElementById('fechaAsistenciaInput').value = `${yyyy}-${mm}-${dd}`;
+
+            verificarDiaLectivoUI();
             
             const contenedor = document.getElementById('listaTomarAsistencia');
             contenedor.innerHTML = '';
@@ -603,16 +681,31 @@
         }
 
         function guardarAsistenciaDiaria() {
-            const hoy = new Date().toLocaleDateString('es-AR');
+            const inputVal = document.getElementById('fechaAsistenciaInput').value;
+            if (!inputVal) return;
+
+            const partes = inputVal.split('-');
+            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
+            const verif = esDiaNoLectivo(fechaSel);
+
+            const hoyTexto = `${partes[2]}/${partes[1]}/${partes[0]}`;
             const registros = [];
 
             alumnos.forEach(a => {
                 const est = estadosHoy[a.id] || 'Presente';
-                if (est === 'Ausente') {
+                
+                // SOLO sumar falta al contador local si NO es día no lectivo
+                if (est === 'Ausente' && !verif.esNoLectivo) {
                     a.faltasAnuales += 1;
                     a.faltasMes += 1;
                 }
-                registros.push({ fecha: hoy, alumno: a.nombre, estado: est, bimestre: "3° 7° E" });
+
+                registros.push({ 
+                    fecha: hoyTexto, 
+                    alumno: a.nombre, 
+                    estado: verif.esNoLectivo ? `No Lectivo (${verif.motivo})` : est, 
+                    bimestre: "3° 7° E" 
+                });
             });
 
             guardarPersistencia();
@@ -625,7 +718,8 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ registros: registros })
             }).then(() => {
-                lanzarNotificacionAndroid("✅ Asistencia Guardada", "Datos sincronizados con Google Sheets.");
+                const msj = verif.esNoLectivo ? `Registrado como No Lectivo (${verif.motivo})` : "Sincronizado con Google Sheets.";
+                lanzarNotificacionAndroid("✅ Asistencia Guardada", msj);
             });
         }
 
