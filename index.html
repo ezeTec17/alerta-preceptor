@@ -280,7 +280,7 @@
             <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-600">
                 <div class="flex items-center space-x-2">
                     <span>Fecha:</span>
-                    <input type="date" id="fechaAsistenciaInput" onchange="verificarDiaLectivoUI()" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none focus:border-blue-500">
+                    <input type="date" id="fechaAsistenciaInput" onchange="actualizarAsistenciaSegunFecha()" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none focus:border-blue-500">
                 </div>
                 <span class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">3° 7° E</span>
             </div>
@@ -288,7 +288,7 @@
             <!-- Banner Alerta de Día No Lectivo -->
             <div id="bannerDiaNoLectivo" class="hidden bg-amber-50 border-b border-amber-200 p-3 text-xs text-amber-800 flex items-center space-x-2">
                 <i data-lucide="calendar-off" class="w-4 h-4 text-amber-600 shrink-0"></i>
-                <span id="textoDiaNoLectivo" class="font-medium">Día No Lectivo. No se computarán faltas en esta fecha.</span>
+                <span id="textoDiaNoLectivo" class="font-medium">Día No Lectivo. Estado configurado automáticamente en 'NC'.</span>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-2 flex-1" id="listaTomarAsistencia">
@@ -310,7 +310,7 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAafGIpsRMoxRGw5eOs7L_KBfr_HlrK1VGNB42SyLKLtsLtADJ47hzX_O5SQe8A0g8/exec";
 
-        // Mapeo de Días No Lectivos CABA (Feriados Nacionales, Receso de Invierno y Vacaciones)
+        // Mapeo de Días No Lectivos CABA
         const feriadosYRecesos = {
             "01-01": "Año Nuevo",
             "03-24": "Día Nac. de la Memoria",
@@ -328,26 +328,23 @@
         };
 
         function esDiaNoLectivo(fechaObj) {
-            const diaSemana = fechaObj.getDay(); // 0: Domingo, 6: Sábado
+            const diaSemana = fechaObj.getDay();
             if (diaSemana === 0 || diaSemana === 6) {
                 return { esNoLectivo: true, motivo: diaSemana === 0 ? "Domingo (Fin de semana)" : "Sábado (Fin de semana)" };
             }
 
-            const mes = fechaObj.getMonth() + 1; // 1-12
-            const dia = fechaObj.getDate(); // 1-31
+            const mes = fechaObj.getMonth() + 1;
+            const dia = fechaObj.getDate();
             const mmdd = `${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
 
-            // Feriados Fijos
             if (feriadosYRecesos[mmdd]) {
                 return { esNoLectivo: true, motivo: `Feriado: ${feriadosYRecesos[mmdd]}` };
             }
 
-            // Receso de Invierno CABA (Segunda quincena de Julio)
             if (mes === 7 && dia >= 20 && dia <= 31) {
                 return { esNoLectivo: true, motivo: "Receso Escolar de Invierno" };
             }
 
-            // Vacaciones de Verano (Enero, Febrero hasta el 15 y última semana de Diciembre)
             if (mes === 1 || (mes === 2 && dia <= 15) || (mes === 12 && dia >= 26)) {
                 return { esNoLectivo: true, motivo: "Receso Escolar de Verano" };
             }
@@ -355,7 +352,6 @@
             return { esNoLectivo: false, motivo: "" };
         }
 
-        // Nómina Oficial Verificada (40 Alumnos de 3° 7° E)
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0 },
             { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1 },
@@ -399,7 +395,7 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v10_dias_lectivos')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v12_horarios')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -414,8 +410,8 @@
         }));
 
         let estadosHoy = {};
+        let detallesAsistencia = {};
 
-        // Sintetizador de Sonido Nativo
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -445,7 +441,7 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v10_dias_lectivos', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v12_horarios', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -521,7 +517,6 @@
                 if (esCriticoBimestre) criticosBimestre++;
                 if (tieneAlerta) totalAlertas++;
 
-                // Fila Tabla Completa
                 const trTodos = document.createElement('tr');
                 trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
                 trTodos.innerHTML = `
@@ -539,7 +534,6 @@
                 `;
                 tbodyTodos.appendChild(trTodos);
 
-                // Fila Tabla Alertas
                 if (tieneAlerta) {
                     const trAlerta = document.createElement('tr');
                     trAlerta.className = "hover:bg-red-50";
@@ -614,7 +608,75 @@
             }
         }
 
-        function verificarDiaLectivoUI() {
+        function renderizarListaAsistencia(esNoLectivo, motivo) {
+            const contenedor = document.getElementById('listaTomarAsistencia');
+            contenedor.innerHTML = '';
+
+            alumnos.forEach(a => {
+                const estadoPredeterminado = esNoLectivo ? 'NC' : 'Presente';
+                estadosHoy[a.id] = estadoPredeterminado;
+                detallesAsistencia[a.id] = { horaEntrada: '', retiro: false, horaRetiro: '' };
+
+                const div = document.createElement('div');
+                div.className = "p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-2";
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium text-slate-800">${a.nombre}</span>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" class="px-2 py-1 rounded font-bold ${estadoPredeterminado === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-green-100 hover:text-green-700'} transition">P</button>
+                            <button onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" class="px-2 py-1 rounded font-bold ${estadoPredeterminado === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-red-100 hover:text-red-700'} transition">A</button>
+                            <button onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" class="px-2 py-1 rounded font-bold ${estadoPredeterminado === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600 hover:bg-amber-100 hover:text-amber-700'} transition">T</button>
+                            <button onclick="setEstado(${a.id}, 'NC')" id="btn-nc-${a.id}" class="px-2 py-1 rounded font-bold ${estadoPredeterminado === 'NC' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'} transition">NC</button>
+                        </div>
+                    </div>
+
+                    <!-- Horarios de Entrada Tardía y Retiro Anticipado -->
+                    <div class="flex items-center justify-between pt-1 border-t border-slate-200/60 text-[11px]">
+                        <div id="div-hora-llegada-${a.id}" class="hidden flex items-center space-x-1">
+                            <span class="text-amber-700 font-semibold">Hora Entrada:</span>
+                            <input type="time" id="hora-llegada-${a.id}" onchange="guardarDetalle(${a.id})" class="border border-amber-300 rounded px-1.5 py-0.5 bg-amber-50/50 font-mono text-amber-900 focus:outline-none">
+                        </div>
+
+                        <div class="flex items-center space-x-2 ml-auto">
+                            <label class="flex items-center space-x-1 cursor-pointer">
+                                <input type="checkbox" id="chk-retiro-${a.id}" onchange="toggleRetiroUI(${a.id})" class="rounded text-blue-600 focus:ring-0">
+                                <span class="text-slate-600 font-medium">Retiro Anticipado</span>
+                            </label>
+                            <input type="time" id="hora-retiro-${a.id}" onchange="guardarDetalle(${a.id})" class="hidden border border-blue-300 rounded px-1.5 py-0.5 bg-blue-50/50 font-mono text-blue-900 focus:outline-none">
+                        </div>
+                    </div>
+                `;
+                contenedor.appendChild(div);
+            });
+        }
+
+        function toggleRetiroUI(id) {
+            const chk = document.getElementById(`chk-retiro-${id}`);
+            const inputHora = document.getElementById(`hora-retiro-${id}`);
+            if (chk.checked) {
+                inputHora.classList.remove('hidden');
+                if (!inputHora.value) {
+                    const ahora = new Date();
+                    inputHora.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+                }
+            } else {
+                inputHora.classList.add('hidden');
+            }
+            guardarDetalle(id);
+        }
+
+        function guardarDetalle(id) {
+            if (!detallesAsistencia[id]) detallesAsistencia[id] = {};
+            const inputLlegada = document.getElementById(`hora-llegada-${id}`);
+            const chkRetiro = document.getElementById(`chk-retiro-${id}`);
+            const inputRetiro = document.getElementById(`hora-retiro-${id}`);
+
+            detallesAsistencia[id].horaEntrada = inputLlegada ? inputLlegada.value : '';
+            detallesAsistencia[id].retiro = chkRetiro ? chkRetiro.checked : false;
+            detallesAsistencia[id].horaRetiro = (chkRetiro && chkRetiro.checked && inputRetiro) ? inputRetiro.value : '';
+        }
+
+        function actualizarAsistenciaSegunFecha() {
             const inputVal = document.getElementById('fechaAsistenciaInput').value;
             if (!inputVal) return;
 
@@ -626,11 +688,13 @@
             const texto = document.getElementById('textoDiaNoLectivo');
 
             if (verif.esNoLectivo) {
-                texto.innerText = `Atención: ${verif.motivo}. No se sumarán inasistencias en este día.`;
+                texto.innerText = `Atención: ${verif.motivo}. Estado configurado automáticamente en 'NC'.`;
                 banner.classList.remove('hidden');
             } else {
                 banner.classList.add('hidden');
             }
+
+            renderizarListaAsistencia(verif.esNoLectivo, verif.motivo);
         }
 
         function abrirModalAsistencia() {
@@ -640,25 +704,7 @@
             const dd = String(hoy.getDate()).padStart(2, '0');
             document.getElementById('fechaAsistenciaInput').value = `${yyyy}-${mm}-${dd}`;
 
-            verificarDiaLectivoUI();
-            
-            const contenedor = document.getElementById('listaTomarAsistencia');
-            contenedor.innerHTML = '';
-
-            alumnos.forEach(a => {
-                estadosHoy[a.id] = 'Presente';
-                const div = document.createElement('div');
-                div.className = "flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs";
-                div.innerHTML = `
-                    <span class="font-medium text-slate-800">${a.nombre}</span>
-                    <div class="flex items-center space-x-1">
-                        <button onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" class="px-2.5 py-1 rounded font-bold bg-green-600 text-white transition">P</button>
-                        <button onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" class="px-2.5 py-1 rounded font-bold bg-slate-200 text-slate-600 hover:bg-red-100 hover:text-red-700 transition">A</button>
-                    </div>
-                `;
-                contenedor.appendChild(div);
-            });
-
+            actualizarAsistenciaSegunFecha();
             document.getElementById('modalAsistencia').classList.remove('hidden');
         }
 
@@ -666,14 +712,36 @@
             estadosHoy[id] = estado;
             const btnPres = document.getElementById(`btn-pres-${id}`);
             const btnAus = document.getElementById(`btn-aus-${id}`);
+            const btnTar = document.getElementById(`btn-tar-${id}`);
+            const btnNc = document.getElementById(`btn-nc-${id}`);
+            const divLlegada = document.getElementById(`div-hora-llegada-${id}`);
+            const inputLlegada = document.getElementById(`hora-llegada-${id}`);
+
+            btnPres.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            btnAus.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            btnTar.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            btnNc.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+
+            if (divLlegada) divLlegada.classList.add('hidden');
 
             if (estado === 'Presente') {
-                btnPres.className = "px-2.5 py-1 rounded font-bold bg-green-600 text-white transition";
-                btnAus.className = "px-2.5 py-1 rounded font-bold bg-slate-200 text-slate-600 hover:bg-red-100 hover:text-red-700 transition";
-            } else {
-                btnPres.className = "px-2.5 py-1 rounded font-bold bg-slate-200 text-slate-600 hover:bg-green-100 hover:text-green-700 transition";
-                btnAus.className = "px-2.5 py-1 rounded font-bold bg-red-600 text-white transition";
+                btnPres.className = "px-2 py-1 rounded font-bold bg-green-600 text-white transition";
+            } else if (estado === 'Ausente') {
+                btnAus.className = "px-2 py-1 rounded font-bold bg-red-600 text-white transition";
+            } else if (estado === 'Tarde') {
+                btnTar.className = "px-2 py-1 rounded font-bold bg-amber-500 text-white transition";
+                if (divLlegada) {
+                    divLlegada.classList.remove('hidden');
+                    if (inputLlegada && !inputLlegada.value) {
+                        const ahora = new Date();
+                        inputLlegada.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+                    }
+                }
+            } else if (estado === 'NC') {
+                btnNc.className = "px-2 py-1 rounded font-bold bg-slate-700 text-white transition";
             }
+
+            guardarDetalle(id);
         }
 
         function cerrarModalAsistencia() {
@@ -685,25 +753,31 @@
             if (!inputVal) return;
 
             const partes = inputVal.split('-');
-            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
-            const verif = esDiaNoLectivo(fechaSel);
-
             const hoyTexto = `${partes[2]}/${partes[1]}/${partes[0]}`;
             const registros = [];
 
             alumnos.forEach(a => {
                 const est = estadosHoy[a.id] || 'Presente';
-                
-                // SOLO sumar falta al contador local si NO es día no lectivo
-                if (est === 'Ausente' && !verif.esNoLectivo) {
+                const det = detallesAsistencia[a.id] || {};
+
+                if (est === 'Ausente') {
                     a.faltasAnuales += 1;
                     a.faltasMes += 1;
+                }
+
+                let observacionesStr = "";
+                if (est === 'Tarde' && det.horaEntrada) {
+                    observacionesStr += `Llegada Tardía: ${det.horaEntrada}. `;
+                }
+                if (det.retiro && det.horaRetiro) {
+                    observacionesStr += `Retiro Anticipado: ${det.horaRetiro}.`;
                 }
 
                 registros.push({ 
                     fecha: hoyTexto, 
                     alumno: a.nombre, 
-                    estado: verif.esNoLectivo ? `No Lectivo (${verif.motivo})` : est, 
+                    estado: est, 
+                    observaciones: observacionesStr.trim(),
                     bimestre: "3° 7° E" 
                 });
             });
@@ -718,8 +792,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ registros: registros })
             }).then(() => {
-                const msj = verif.esNoLectivo ? `Registrado como No Lectivo (${verif.motivo})` : "Sincronizado con Google Sheets.";
-                lanzarNotificacionAndroid("✅ Asistencia Guardada", msj);
+                lanzarNotificacionAndroid("✅ Asistencia Guardada", "Registros con horarios sincronizados con Google Sheets.");
             });
         }
 
