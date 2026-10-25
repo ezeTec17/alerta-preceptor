@@ -13,9 +13,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
@@ -34,11 +31,11 @@
                     </div>
                 </div>
                 
-                <!-- Botón para activar audio / Probar Alarma -->
+                <!-- Botón de Notificaciones Nativas de Android -->
                 <div class="flex items-center space-x-2">
-                    <button onclick="probarSonidoAlarma()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
-                        <i data-lucide="volume-2" class="w-4 h-4"></i>
-                        <span>Probar Alarma</span>
+                    <button onclick="solicitarPermisoNotificacion()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
+                        <i data-lucide="bell-ring" class="w-4 h-4"></i>
+                        <span>Probar Notificación</span>
                     </button>
                     <div id="badgeAlertas" class="bg-red-500 text-white font-bold text-xs px-2.5 py-1 rounded-full flex items-center space-x-1">
                         <i data-lucide="bell" class="w-3.5 h-3.5"></i>
@@ -99,23 +96,23 @@
             </div>
         </div>
 
-        <!-- Alerta de Estado -->
+        <!-- Banner de Alerta -->
         <div id="bannerAlerta" class="hidden mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <i data-lucide="siren" class="w-6 h-6 text-red-600 animate-pulse"></i>
                     <div>
                         <h4 class="font-bold text-red-800 text-sm">¡Atención Preceptor! Se detectaron casos críticos.</h4>
-                        <p class="text-xs text-red-700 mt-0.5">Existen alumnos que cumplen los umbrales de más de 5 materias bajas, más de 17 faltas anuales o 3+ faltas en el 4° bimestre.</p>
+                        <p class="text-xs text-red-700 mt-0.5">Se han enviado las notificaciones del sistema para los alumnos con riesgo académico o inasistencias acumuladas.</p>
                     </div>
                 </div>
-                <button onclick="reproducirAlarma()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
-                    Hacer Sonar
+                <button onclick="lanzarNotificacionAndroid('⚠️ Alertas Críticas Detectadas', 'Revisá la lista para notificar a los tutores de los alumnos en riesgo.')" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+                    Ver Notificación
                 </button>
             </div>
         </div>
 
-        <!-- Tabla de Alumnos y Notificación -->
+        <!-- Tabla de Alumnos -->
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
             <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
@@ -146,10 +143,8 @@
     </main>
 
     <script>
-        // Inicializar íconos
         lucide.createIcons();
 
-        // Datos de Alumnos con Simulación de Casos Críticos
         const alumnos = [
             { id: 1, nombre: "Álvarez, Lucas", materiasBajas: 6, faltasAnuales: 18, faltas4Bim: 4, emailTutor: "tutor1@gmail.com" },
             { id: 2, nombre: "Benítez, Sofia", materiasBajas: 2, faltasAnuales: 10, faltas4Bim: 1, emailTutor: "tutor2@gmail.com" },
@@ -159,38 +154,38 @@
             { id: 6, nombre: "Rodríguez, Camila", materiasBajas: 3, faltasAnuales: 12, faltas4Bim: 3, emailTutor: "tutor6@gmail.com" }
         ];
 
-        // Función para sintetizar tono de alarma con Web Audio API (No requiere archivos externos)
-        function reproducirAlarma() {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                
-                function emiteBeep(freq, duration, delay) {
-                    setTimeout(() => {
-                        const osc = audioCtx.createOscillator();
-                        const gain = audioCtx.createGain();
-                        osc.type = 'sawtooth';
-                        osc.frequency.value = freq;
-                        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + (duration / 1000));
-                        osc.connect(gain);
-                        gain.connect(audioCtx.destination);
-                        osc.start();
-                        osc.stop(audioCtx.currentTime + (duration / 1000));
-                    }, delay);
+        // Función para enviar Notificación Nativa de Android con sonido del teléfono
+        function lanzarNotificacionAndroid(titulo, cuerpo) {
+            if ("Notification" in window) {
+                if (Notification.permission === "granted") {
+                    new Notification(titulo, {
+                        body: cuerpo,
+                        icon: "https://cdn-icons-png.flaticon.com/512/1827/1827349.png",
+                        vibrate: [200, 100, 200]
+                    });
+                } else if (Notification.permission !== "denied") {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === "granted") {
+                            new Notification(titulo, { body: cuerpo });
+                        }
+                    });
                 }
-
-                // Patrón de sirena de alerta (3 tonos sostenidos)
-                emiteBeep(880, 250, 0);
-                emiteBeep(660, 250, 300);
-                emiteBeep(880, 400, 600);
-            } catch (e) {
-                console.log("Audio no habilitado todavía por el usuario");
             }
         }
 
-        function probarSonidoAlarma() {
-            reproducirAlarma();
-            alert("🔔 ¡Prueba de Alarma Sonora Exitosa!");
+        function solicitarPermisoNotificacion() {
+            if (!("Notification" in window)) {
+                alert("Este navegador no soporta notificaciones nativas.");
+                return;
+            }
+            
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    lanzarNotificacionAndroid("🔔 Notificaciones Activadas", "¡Prueba exitosa! Ahora las alertas llegarán con el sonido oficial de tu celular.");
+                } else {
+                    alert("Para escuchar las alertas con el sonido de tu Poco F8, debes permitir las notificaciones en el mensaje de Android.");
+                }
+            });
         }
 
         function evaluarAlertas() {
@@ -254,16 +249,19 @@
                 tbody.appendChild(tr);
             });
 
-            // Actualizar contadores
             document.getElementById('statMateriasBajas').innerText = criticosMaterias;
             document.getElementById('statFaltasAnuales').innerText = criticosAnuales;
             document.getElementById('statFaltasBimestre').innerText = criticosBimestre;
             document.getElementById('cantAlertasCriticas').innerText = totalAlertas;
 
-            // Mostrar banner y sonar si hay alertas
             if (totalAlertas > 0) {
                 document.getElementById('bannerAlerta').classList.remove('hidden');
-                reproducirAlarma();
+                setTimeout(() => {
+                    lanzarNotificacionAndroid(
+                        "⚠️ Alerta Preceptor: Casos Críticos",
+                        `Se detectaron ${totalAlertas} alumnos con más de 5 materias bajas, más de 17 faltas o 3+ ausentes en el 4° bim.`
+                    );
+                }, 1000);
             }
 
             lucide.createIcons();
@@ -276,7 +274,6 @@
             window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
         }
 
-        // Ejecutar al cargar la página
         window.onload = evaluarAlertas;
     </script>
 </body>
