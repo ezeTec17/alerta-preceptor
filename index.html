@@ -244,8 +244,8 @@
                         <input type="text" id="editTelefono" placeholder="11 1234-5678" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="font-semibold text-slate-600 block mb-1">Email Tutor</label>
-                        <input type="email" id="editEmail" placeholder="tutor@gmail.com" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
+                        <label class="font-semibold text-slate-600 block mb-1">Email</label>
+                        <input type="email" id="editEmail" placeholder="correo@ejemplo.com" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-medium text-slate-800">
                     </div>
                 </div>
                 <div>
@@ -301,58 +301,58 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAafGIpsRMoxRGw5eOs7L_KBfr_HlrK1VGNB42SyLKLtsLtADJ47hzX_O5SQe8A0g8/exec";
 
-        // Nómina Oficial Verificada (40 Alumnos de 3° 7° E)
+        // Nómina Oficial Verificada (40 Alumnos con Emails Oficiales)
         const nominaOficial = [
-            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0 },
-            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1 },
-            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", codigoApp: "16d1ded5", materiasBajas: 5, faltasAnuales: 1.5, faltasMes: 0 },
-            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", codigoApp: "cc3fabdd", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0 },
-            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", codigoApp: "957500d5", materiasBajas: 4, faltasAnuales: 5.0, faltasMes: 0 },
-            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", codigoApp: "bce4c7ab", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 1 },
-            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", codigoApp: "6f948894", materiasBajas: 4, faltasAnuales: 4.0, faltasMes: 0 },
-            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", codigoApp: "23c98d3e", materiasBajas: 3, faltasAnuales: 6.5, faltasMes: 1 },
-            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", codigoApp: "40bbddc1", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0 },
-            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", codigoApp: "6e6e6c95", materiasBajas: 3, faltasAnuales: 9.0, faltasMes: 1 },
-            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", codigoApp: "cdde759a", materiasBajas: 1, faltasAnuales: 3.0, faltasMes: 0 },
-            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", codigoApp: "d1cbbb4e", materiasBajas: 7, faltasAnuales: 28.0, faltasMes: 3 },
-            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", codigoApp: "6d5ba204", materiasBajas: 2, faltasAnuales: 2.5, faltasMes: 0 },
-            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", codigoApp: "cc73089c", materiasBajas: 6, faltasAnuales: 6.5, faltasMes: 1 },
-            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", codigoApp: "2da2032f", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0 },
-            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", codigoApp: "a3ce6b35", materiasBajas: 8, faltasAnuales: 8.0, faltasMes: 1 },
-            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", codigoApp: "a663fcf1", materiasBajas: 7, faltasAnuales: 6.0, faltasMes: 0 },
-            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", codigoApp: "820700aa", materiasBajas: 0, faltasAnuales: 5.5, faltasMes: 0 },
-            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", codigoApp: "383c68e5", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 1 },
-            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", codigoApp: "50262357", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 0 },
-            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", codigoApp: "689c60f9", materiasBajas: 1, faltasAnuales: 5.0, faltasMes: 0 },
-            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", codigoApp: "77c27499", materiasBajas: 7, faltasAnuales: 6.5, faltasMes: 1 },
-            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", codigoApp: "d5e569f4", materiasBajas: 7, faltasAnuales: 12.5, faltasMes: 1 },
-            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", codigoApp: "07e629a6", materiasBajas: 5, faltasAnuales: 6.0, faltasMes: 1 },
-            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", codigoApp: "0e5bfb7c", materiasBajas: 0, faltasAnuales: 7.0, faltasMes: 0 },
-            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", codigoApp: "ee1d37a3", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0 },
-            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", codigoApp: "8a416f2d", materiasBajas: 1, faltasAnuales: 12.0, faltasMes: 1 },
-            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", codigoApp: "d8930d0d", materiasBajas: 3, faltasAnuales: 2.0, faltasMes: 0 },
-            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", codigoApp: "e3f641bc", materiasBajas: 6, faltasAnuales: 5.0, faltasMes: 1 },
-            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", codigoApp: "780684f3", materiasBajas: 4, faltasAnuales: 0.5, faltasMes: 0 },
-            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", codigoApp: "f97cc410", materiasBajas: 2, faltasAnuales: 4.5, faltasMes: 0.5 },
-            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", codigoApp: "bfce87f2", materiasBajas: 0, faltasAnuales: 1.0, faltasMes: 0.5 },
-            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", codigoApp: "488ead9e", materiasBajas: 5, faltasAnuales: 2.0, faltasMes: 1.5 },
-            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", codigoApp: "65589c2f", materiasBajas: 6, faltasAnuales: 21.0, faltasMes: 4.5 },
-            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", codigoApp: "3a6477a6", materiasBajas: 1, faltasAnuales: 8.0, faltasMes: 2.5 },
-            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", codigoApp: "1073c3c3", materiasBajas: 5, faltasAnuales: 2.5, faltasMes: 0.5 },
-            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", codigoApp: "079671c4", materiasBajas: 6, faltasAnuales: 5.5, faltasMes: 0 },
-            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", codigoApp: "703c6ee3", materiasBajas: 5, faltasAnuales: 8.5, faltasMes: 5.0 },
-            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", codigoApp: "7aa3c2ff", materiasBajas: 4, faltasAnuales: 1.0, faltasMes: 0.5 },
-            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
+            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0 },
+            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1 },
+            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", codigoApp: "16d1ded5", emailTutor: "thiagoaruni@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 1.5, faltasMes: 0 },
+            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", codigoApp: "cc3fabdd", emailTutor: "nahuelcamargo@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0 },
+            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", codigoApp: "957500d5", emailTutor: "mateocardena@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 5.0, faltasMes: 0 },
+            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", codigoApp: "bce4c7ab", emailTutor: "sebastiancayo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 1 },
+            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", codigoApp: "6f948894", emailTutor: "alfredchuca@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 4.0, faltasMes: 0 },
+            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", codigoApp: "23c98d3e", emailTutor: "francoconde@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 6.5, faltasMes: 1 },
+            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", codigoApp: "40bbddc1", emailTutor: "briancondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0 },
+            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", codigoApp: "6e6e6c95", emailTutor: "josecondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 9.0, faltasMes: 1 },
+            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", codigoApp: "cdde759a", emailTutor: "joelcopa@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 3.0, faltasMes: 0 },
+            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", codigoApp: "d1cbbb4e", emailTutor: "valentinodehnike@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 28.0, faltasMes: 3 },
+            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", codigoApp: "6d5ba204", emailTutor: "owenespinoza@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 2.5, faltasMes: 0 },
+            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", codigoApp: "cc73089c", emailTutor: "mayrahinojosa@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 6.5, faltasMes: 1 },
+            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", codigoApp: "2da2032f", emailTutor: "juanillanes@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0 },
+            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", codigoApp: "a3ce6b35", emailTutor: "yoeljimenez@alum.tec17ba.edu.ar", materiasBajas: 8, faltasAnuales: 8.0, faltasMes: 1 },
+            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", codigoApp: "a663fcf1", emailTutor: "damianlima@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.0, faltasMes: 0 },
+            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", codigoApp: "820700aa", emailTutor: "aylenlopez@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 5.5, faltasMes: 0 },
+            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", codigoApp: "383c68e5", emailTutor: "nairamamani@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 1 },
+            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", codigoApp: "50262357", emailTutor: "thiagomartinez@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 0 },
+            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", codigoApp: "689c60f9", emailTutor: "matiasmejia@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 5.0, faltasMes: 0 },
+            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", codigoApp: "77c27499", emailTutor: "tobiasmelgar@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.5, faltasMes: 1 },
+            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", codigoApp: "d5e569f4", emailTutor: "dantemerlo@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 12.5, faltasMes: 1 },
+            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", codigoApp: "07e629a6", emailTutor: "leonelojeda@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 6.0, faltasMes: 1 },
+            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", codigoApp: "0e5bfb7c", emailTutor: "judithchoquehuanca@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 7.0, faltasMes: 0 },
+            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", codigoApp: "ee1d37a3", emailTutor: "jonathanramos@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0 },
+            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", codigoApp: "8a416f2d", emailTutor: "orlandoricaldi@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 12.0, faltasMes: 1 },
+            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", codigoApp: "d8930d0d", emailTutor: "valentinoriera@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 2.0, faltasMes: 0 },
+            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", codigoApp: "e3f641bc", emailTutor: "agustinsaravia@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.0, faltasMes: 1 },
+            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", codigoApp: "780684f3", emailTutor: "yamirsaturi@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 0.5, faltasMes: 0 },
+            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", codigoApp: "f97cc410", emailTutor: "lucascravaglieri@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 4.5, faltasMes: 0.5 },
+            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", codigoApp: "bfce87f2", emailTutor: "marcosolis@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 1.0, faltasMes: 0.5 },
+            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", codigoApp: "488ead9e", emailTutor: "axelsosa@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.0, faltasMes: 1.5 },
+            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", codigoApp: "65589c2f", emailTutor: "carlostaboada@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 21.0, faltasMes: 4.5 },
+            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", codigoApp: "3a6477a6", emailTutor: "gabrielaticona@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 8.0, faltasMes: 2.5 },
+            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", codigoApp: "1073c3c3", emailTutor: "dylantoledo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.5, faltasMes: 0.5 },
+            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", codigoApp: "079671c4", emailTutor: "javirtonane@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.5, faltasMes: 0 },
+            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", codigoApp: "703c6ee3", emailTutor: "dantetucci@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 8.5, faltasMes: 5.0 },
+            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", codigoApp: "7aa3c2ff", emailTutor: "wilfredouria@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 1.0, faltasMes: 0.5 },
+            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v7_audio')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v9_loaded_emails')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
             codigoApp: item.codigoApp || "",
             cuil: "",
             telefono: "",
-            emailTutor: "",
+            emailTutor: item.emailTutor || "",
             domicilio: "",
             materiasBajas: item.materiasBajas || 0,
             faltasAnuales: item.faltasAnuales || 0,
@@ -361,24 +361,22 @@
 
         let estadosHoy = {};
 
-        // Sintetizador de Sonido Nativo (Sin archivos externos)
+        // Sintetizador de Sonido Nativo
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
                 
-                // Tono 1
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.type = 'sine';
-                osc1.frequency.value = 880; // La5
+                osc1.frequency.value = 880;
                 osc1.connect(gain1);
                 gain1.connect(ctx.destination);
                 osc1.start(ctx.currentTime);
                 osc1.stop(ctx.currentTime + 0.15);
 
-                // Tono 2
                 const osc2 = ctx.createOscillator();
                 const gain2 = ctx.createGain();
                 osc2.type = 'sine';
@@ -393,7 +391,7 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v7_audio', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v9_loaded_emails', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -635,11 +633,16 @@
             const a = alumnos.find(item => item.id === id);
             if (!a) return;
 
-            const email = a.emailTutor || "";
+            const email = (a.emailTutor || "").trim();
+            if (!email) {
+                alert(`El alumno ${a.nombre} no tiene un correo registrado. Podés agregarlo desde su ficha.`);
+                return;
+            }
+
             const asunto = encodeURIComponent(`Notificación Académica - ${a.nombre} (3° 7° E)`);
-            const cuerpo = encodeURIComponent(`Estimado Tutor/a de ${a.nombre}:\n\nEstado al día de la fecha:\n- Materias Bajas (3° Bim): ${a.materiasBajas}\n- Inasistencias acumuladas: ${a.faltasAnuales}\n- Inasistencias en el mes: ${a.faltasMes}\n- Código App Familias: ${a.codigoApp}\n\nEscuela Técnica N° 17 DE 13.`);
+            const cuerpo = encodeURIComponent(`Estimado/a:\n\nLe informamos la situación académica al día de la fecha de ${a.nombre}:\n- Materias Bajas (3° Bim): ${a.materiasBajas}\n- Inasistencias acumuladas: ${a.faltasAnuales}\n- Inasistencias en el mes: ${a.faltasMes}\n- Código App Familias: ${a.codigoApp}\n\nEscuela Técnica N° 17 DE 13.`);
             
-            window.location.href = `mailto:${email}?subject=${asunto}?body=${cuerpo}`;
+            window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
         }
 
         window.onload = evaluarAlertas;
