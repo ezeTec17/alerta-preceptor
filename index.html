@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <!-- Navegación por Solapas / Pestanas -->
+            <!-- Navegación por Solapas -->
             <nav class="flex space-x-4 border-t border-slate-800 pt-2 pb-2 text-xs font-semibold">
                 <button onclick="cambiarSolapa('inicio')" id="tab-inicio" class="text-blue-400 border-b-2 border-blue-500 pb-1 flex items-center space-x-1">
                     <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
@@ -55,7 +55,7 @@
                 </button>
                 <button onclick="cambiarSolapa('alumnos')" id="tab-alumnos" class="text-slate-400 hover:text-white pb-1 flex items-center space-x-1">
                     <i data-lucide="users" class="w-3.5 h-3.5"></i>
-                    <span>Listado Alumnos (40)</span>
+                    <span>Nómina Alumnos (<span id="countNominaTotal">39</span>)</span>
                 </button>
                 <button onclick="cambiarSolapa('alertas')" id="tab-alertas" class="text-slate-400 hover:text-white pb-1 flex items-center space-x-1">
                     <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
@@ -73,8 +73,8 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div>
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Alumnos Cargados</p>
-                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="statTotalAlumnos">40 / 40</h3>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Alumnos Inscriptos</p>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="statTotalAlumnos">39 / 39</h3>
                         <p class="text-xs text-slate-400 mt-0.5">3° 7° E - Turno Tarde</p>
                     </div>
                     <div class="bg-blue-50 p-3 rounded-lg text-blue-600">
@@ -86,7 +86,7 @@
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Riesgo (>5 Materias)</p>
                         <h3 id="statMateriasBajas" class="text-2xl font-bold text-red-600 mt-1">0</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Materias bajas en 4° Bim</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Materias Bajas en 3° Bim</p>
                     </div>
                     <div class="bg-red-50 p-3 rounded-lg text-red-600">
                         <i data-lucide="alert-triangle" class="w-6 h-6"></i>
@@ -106,9 +106,9 @@
 
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div>
-                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Faltas 4° Bim (≥3)</p>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Faltas Mes (≥3)</p>
                         <h3 id="statFaltasBimestre" class="text-2xl font-bold text-purple-600 mt-1">0</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Ventana: 05/10 a 04/12</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Ventana: Octubre 2026</p>
                     </div>
                     <div class="bg-purple-50 p-3 rounded-lg text-purple-600">
                         <i data-lucide="clock" class="w-6 h-6"></i>
@@ -122,7 +122,7 @@
                     <div class="flex items-center space-x-3">
                         <i data-lucide="siren" class="w-6 h-6 text-red-600 animate-pulse"></i>
                         <div>
-                            <h4 class="font-bold text-red-800 text-sm">¡Atención Preceptor! Casos en riesgo detectados.</h4>
+                            <h4 class="font-bold text-red-800 text-sm">¡Atención Preceptor! Se detectaron casos críticos.</h4>
                             <p class="text-xs text-red-700 mt-0.5">Revisá la solapa de Alertas para gestionar los avisos a los tutores.</p>
                         </div>
                     </div>
@@ -133,27 +133,27 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: TABLA GENERAL DE ALUMNOS (40) -->
+        <!-- SECCIÓN 2: TABLA GENERAL DE ALUMNOS REALES -->
         <section id="sec-alumnos" class="hidden">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+                <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
                         <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
-                        <span>Nómina Completa de Alumnos (3° 7° E)</span>
+                        <span>Nómina Oficial 3° 7° E - Datos Verificados de Boletín</span>
                     </h3>
-                    <span class="text-xs text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">Total: 40 Alumnos</span>
+                    <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">39 Alumnos Inscriptos</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
-                                <th class="p-3">#</th>
+                                <th class="p-3">N°</th>
                                 <th class="p-3">Apellido y Nombre</th>
+                                <th class="p-3 text-center">DNI</th>
                                 <th class="p-3 text-center">Materias Bajas</th>
-                                <th class="p-3 text-center">Faltas Anuales</th>
-                                <th class="p-3 text-center">Faltas 4° Bim</th>
+                                <th class="p-3 text-center">Faltas Acum.</th>
                                 <th class="p-3 text-center">Estado</th>
-                                <th class="p-3 text-right">Contacto</th>
+                                <th class="p-3 text-right">Ficha / App Familias</th>
                             </tr>
                         </thead>
                         <tbody id="tablaTodosAlumnos" class="divide-y divide-slate-100 text-sm">
@@ -172,7 +172,7 @@
                         <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600"></i>
                         <span>Alumnos que Superan Umbrales Críticos</span>
                     </h3>
-                    <span class="text-xs text-red-700 font-semibold">4° Bimestre</span>
+                    <span class="text-xs text-red-700 font-semibold">E.T. N° 17 DE 13</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -180,8 +180,8 @@
                             <tr class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
                                 <th class="p-3">Alumno</th>
                                 <th class="p-3 text-center">Materias (>5)</th>
-                                <th class="p-3 text-center">Anuales (>17)</th>
-                                <th class="p-3 text-center">4° Bim (≥3)</th>
+                                <th class="p-3 text-center">Faltas Acum. (>17)</th>
+                                <th class="p-3 text-center">Faltas Mes (≥3)</th>
                                 <th class="p-3 text-right">Notificación</th>
                             </tr>
                         </thead>
@@ -194,6 +194,71 @@
         </section>
 
     </main>
+
+    <!-- Modal Editar Ficha Personal -->
+    <div id="modalFicha" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-xl border border-slate-100 flex flex-col">
+            <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="id-card" class="w-5 h-5 text-blue-400"></i>
+                    <h3 class="font-bold text-base" id="tituloFichaAlumno">Ficha del Alumno</h3>
+                </div>
+                <button onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <div class="p-4 space-y-3 text-xs">
+                <input type="hidden" id="editAlumnoId">
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">Apellido y Nombre</label>
+                    <input type="text" id="editNombre" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-medium">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">DNI</label>
+                        <input type="text" id="editDni" placeholder="Ej: 50.257.512" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Código App Familias</label>
+                        <input type="text" id="editCodigoApp" placeholder="Código de Vinculación" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Materias Bajas (3° Bim)</label>
+                        <input type="number" id="editMateriasBajas" min="0" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-bold text-red-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Faltas Acumuladas</label>
+                        <input type="number" step="0.5" id="editFaltasAnuales" min="0" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-bold text-amber-700">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Teléfono Tutor</label>
+                        <input type="text" id="editTelefono" placeholder="11 1234-5678" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Email Tutor</label>
+                        <input type="email" id="editEmail" placeholder="tutor@gmail.com" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">Domicilio</label>
+                    <input type="text" id="editDomicilio" placeholder="Ej: Av. Lacarra 1234, CABA" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end space-x-2">
+                <button onclick="cerrarModalFicha()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-lg transition">Cancelar</button>
+                <button onclick="guardarFichaAlumno()" class="px-4 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition flex items-center space-x-1">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <span>Guardar Ficha</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal para Tomar Asistencia -->
     <div id="modalAsistencia" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -210,7 +275,7 @@
             
             <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-600">
                 <span>Fecha: <strong id="fechaHoyText"></strong></span>
-                <span class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">4° Bimestre</span>
+                <span class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">3° 7° E</span>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-2 flex-1" id="listaTomarAsistencia">
@@ -232,29 +297,69 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAafGIpsRMoxRGw5eOs7L_KBfr_HlrK1VGNB42SyLKLtsLtADJ47hzX_O5SQe8A0g8/exec";
 
-        // Nómina oficial completa de 40 Alumnos de 3° 7° E
-        const nombresAlumnos = [
-            "Álvarez, Lucas", "Arias, Mateo", "Benítez, Sofía", "Blanco, Joaquín", "Cabrera, Lautaro",
-            "Cardozo, Valentín", "Castro, Camila", "Díaz, Agustín", "Dominguez, Martina", "Fernández, Thiago",
-            "Flores, Benjamín", "Franco, Nicolás", "García, Isabella", "Giménez, Bautista", "Gómez, Facundo",
-            "González, Felipe", "Gutiérrez, Emilia", "Herrera, Santino", "Ibarra, Victoria", "Juárez, Tomás",
-            "Ledesma, Franco", "López, Mia", "Mamani, Alejandro", "Martínez, Gonzalo", "Medina, Delfina",
-            "Mendoza, Bruno", "Morales, Lucía", "Moreno, Santiago", "Muñoz, Enzo", "Navarro, Pilar",
-            "Núñez, Dante", "Ortiz, Julia", "Pereyra, Ramiro", "Pérez, Juan Cruz", "Ramírez, Alma",
-            "Ríos, Ignacio", "Rodríguez, Lara", "Romero, Kevin", "Sánchez, Abril", "Torres, Maximiliano"
+        // Datos oficiales extraídos de los 39 boletines procesados
+        const nominaOficial = [
+            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0 },
+            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1 },
+            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", codigoApp: "16d1ded5", materiasBajas: 5, faltasAnuales: 1.5, faltasMes: 0 },
+            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", codigoApp: "cc3fabdd", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0 },
+            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", codigoApp: "957500d5", materiasBajas: 4, faltasAnuales: 5.0, faltasMes: 0 },
+            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", codigoApp: "bce4c7ab", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 1 },
+            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", codigoApp: "6f948894", materiasBajas: 4, faltasAnuales: 4.0, faltasMes: 0 },
+            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", codigoApp: "23c98d3e", materiasBajas: 3, faltasAnuales: 6.5, faltasMes: 1 },
+            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", codigoApp: "40bbddc1", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0 },
+            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", codigoApp: "6e6e6c95", materiasBajas: 3, faltasAnuales: 9.0, faltasMes: 1 },
+            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", codigoApp: "cdde759a", materiasBajas: 1, faltasAnuales: 3.0, faltasMes: 0 },
+            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", codigoApp: "d1cbbb4e", materiasBajas: 7, faltasAnuales: 28.0, faltasMes: 3 },
+            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", codigoApp: "6d5ba204", materiasBajas: 2, faltasAnuales: 2.5, faltasMes: 0 },
+            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", codigoApp: "cc73089c", materiasBajas: 6, faltasAnuales: 6.5, faltasMes: 1 },
+            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", codigoApp: "2da2032f", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0 },
+            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", codigoApp: "a3ce6b35", materiasBajas: 8, faltasAnuales: 8.0, faltasMes: 1 },
+            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", codigoApp: "a663fcf1", materiasBajas: 7, faltasAnuales: 6.0, faltasMes: 0 },
+            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", codigoApp: "820700aa", materiasBajas: 0, faltasAnuales: 5.5, faltasMes: 0 },
+            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", codigoApp: "383c68e5", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 1 },
+            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", codigoApp: "50262357", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 0 },
+            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", codigoApp: "689c60f9", materiasBajas: 1, faltasAnuales: 5.0, faltasMes: 0 },
+            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", codigoApp: "77c27499", materiasBajas: 7, faltasAnuales: 6.5, faltasMes: 1 },
+            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", codigoApp: "d5e569f4", materiasBajas: 7, faltasAnuales: 12.5, faltasMes: 1 },
+            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", codigoApp: "07e629a6", materiasBajas: 5, faltasAnuales: 6.0, faltasMes: 1 },
+            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", codigoApp: "0e5bfb7c", materiasBajas: 0, faltasAnuales: 7.0, faltasMes: 0 },
+            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", codigoApp: "ee1d37a3", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0 },
+            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", codigoApp: "8a416f2d", materiasBajas: 1, faltasAnuales: 12.0, faltasMes: 1 },
+            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", codigoApp: "d8930d0d", materiasBajas: 3, faltasAnuales: 2.0, faltasMes: 0 },
+            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", codigoApp: "e3f641bc", materiasBajas: 6, faltasAnuales: 5.0, faltasMes: 1 },
+            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", codigoApp: "780684f3", materiasBajas: 4, faltasAnuales: 0.5, faltasMes: 0 },
+            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", codigoApp: "f97cc410", materiasBajas: 2, faltasAnuales: 4.5, faltasMes: 0.5 },
+            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", codigoApp: "bfce87f2", materiasBajas: 0, faltasAnuales: 1.0, faltasMes: 0.5 },
+            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", codigoApp: "488ead9e", materiasBajas: 5, faltasAnuales: 2.0, faltasMes: 1.5 },
+            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", codigoApp: "65589c2f", materiasBajas: 6, faltasAnuales: 21.0, faltasMes: 4.5 },
+            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", codigoApp: "3a6477a6", materiasBajas: 1, faltasAnuales: 8.0, faltasMes: 2.5 },
+            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", codigoApp: "1073c3c3", materiasBajas: 5, faltasAnuales: 2.5, faltasMes: 0.5 },
+            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", codigoApp: "079671c4", materiasBajas: 6, faltasAnuales: 5.5, faltasMes: 0 },
+            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", codigoApp: "703c6ee3", materiasBajas: 5, faltasAnuales: 8.5, faltasMes: 5.0 },
+            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", codigoApp: "7aa3c2ff", materiasBajas: 4, faltasAnuales: 1.0, faltasMes: 0.5 },
+            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
         ];
 
-        // Se generan los 40 registros iniciales
-        const alumnos = nombresAlumnos.map((nombre, index) => ({
-            id: index + 1,
-            nombre: nombre,
-            materiasBajas: (index % 7 === 0) ? 6 : (index % 5 === 0) ? 2 : 0,
-            faltasAnuales: (index % 4 === 0) ? 18 : (index % 3 === 0) ? 12 : 4,
-            faltas4Bim: (index % 4 === 0) ? 4 : (index % 6 === 0) ? 3 : 1,
-            emailTutor: `tutor_${index + 1}@gmail.com`
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_final')) || nominaOficial.map(item => ({
+            id: item.id,
+            nombre: item.nombre,
+            dni: item.dni || "",
+            codigoApp: item.codigoApp || "",
+            cuil: "",
+            telefono: "",
+            emailTutor: "",
+            domicilio: "",
+            materiasBajas: item.materiasBajas || 0,
+            faltasAnuales: item.faltasAnuales || 0,
+            faltasMes: item.faltasMes || 0
         }));
 
         let estadosHoy = {};
+
+        function guardarPersistencia() {
+            localStorage.setItem('alumnos_et17_final', JSON.stringify(alumnos));
+        }
 
         function cambiarSolapa(solapa) {
             document.getElementById('sec-inicio').classList.add('hidden');
@@ -280,11 +385,7 @@
         function lanzarNotificacionAndroid(titulo, cuerpo) {
             if ("Notification" in window) {
                 if (Notification.permission === "granted") {
-                    new Notification(titulo, {
-                        body: cuerpo,
-                        icon: "logo.png",
-                        vibrate: [200, 100, 200]
-                    });
+                    new Notification(titulo, { body: cuerpo, icon: "logo.png", vibrate: [200, 100, 200] });
                 } else if (Notification.permission !== "denied") {
                     Notification.requestPermission().then(permission => {
                         if (permission === "granted") {
@@ -297,12 +398,12 @@
 
         function solicitarPermisoNotificacion() {
             if (!("Notification" in window)) {
-                alert("Este navegador no soporta notificaciones nativas.");
+                alert("Navegador sin soporte de notificaciones nativas.");
                 return;
             }
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
-                    lanzarNotificacionAndroid("🔔 Notificaciones Activas", "Prueba exitosa en tu Poco F8.");
+                    lanzarNotificacionAndroid("🔔 Notificaciones Activas", "Prueba exitosa en tu dispositivo.");
                 } else {
                     alert("Permití las notificaciones para escuchar las alertas.");
                 }
@@ -323,7 +424,7 @@
             alumnos.forEach(a => {
                 const esCriticoMaterias = a.materiasBajas > 5;
                 const esCriticoAnuales = a.faltasAnuales > 17;
-                const esCriticoBimestre = a.faltas4Bim >= 3;
+                const esCriticoBimestre = a.faltasMes >= 3;
                 const tieneAlerta = esCriticoMaterias || esCriticoAnuales || esCriticoBimestre;
 
                 if (esCriticoMaterias) criticosMaterias++;
@@ -331,33 +432,25 @@
                 if (esCriticoBimestre) criticosBimestre++;
                 if (tieneAlerta) totalAlertas++;
 
-                // Fila para Tabla Completa (40 Alumnos)
+                // Fila Tabla Completa
                 const trTodos = document.createElement('tr');
                 trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
                 trTodos.innerHTML = `
                     <td class="p-3 font-semibold text-slate-400 text-xs">${a.id}</td>
-                    <td class="p-3 font-medium text-slate-900">${a.nombre}</td>
-                    <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoMaterias ? 'bg-red-100 text-red-700' : 'text-slate-600'}">${a.materiasBajas}</span>
-                    </td>
-                    <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoAnuales ? 'bg-amber-100 text-amber-800' : 'text-slate-600'}">${a.faltasAnuales}</span>
-                    </td>
-                    <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoBimestre ? 'bg-purple-100 text-purple-800' : 'text-slate-600'}">${a.faltas4Bim}</span>
-                    </td>
-                    <td class="p-3 text-center">
-                        ${tieneAlerta ? `<span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Riesgo</span>` : `<span class="text-xs text-slate-400">OK</span>`}
-                    </td>
+                    <td class="p-3 font-medium text-slate-900 cursor-pointer hover:text-blue-600" onclick="abrirModalFicha(${a.id})">${a.nombre}</td>
+                    <td class="p-3 text-center text-xs text-slate-500 font-mono">${a.dni || '-'}</td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoMaterias ? 'bg-red-100 text-red-700' : 'text-slate-600'}">${a.materiasBajas}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoAnuales ? 'bg-amber-100 text-amber-800' : 'text-slate-600'}">${a.faltasAnuales}</span></td>
+                    <td class="p-3 text-center">${tieneAlerta ? `<span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Riesgo</span>` : `<span class="text-xs text-slate-400">OK</span>`}</td>
                     <td class="p-3 text-right">
-                        <button onclick="enviarEmail('${a.nombre}', '${a.emailTutor}', ${a.materiasBajas}, ${a.faltasAnuales}, ${a.faltas4Bim})" class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2.5 py-1 rounded-md transition">
-                            Mail
+                        <button onclick="abrirModalFicha(${a.id})" class="bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-blue-700 font-semibold text-xs px-2.5 py-1 rounded-md transition">
+                            Ficha / App
                         </button>
                     </td>
                 `;
                 tbodyTodos.appendChild(trTodos);
 
-                // Fila para Solapa de Alertas
+                // Fila Tabla Alertas
                 if (tieneAlerta) {
                     const trAlerta = document.createElement('tr');
                     trAlerta.className = "hover:bg-red-50";
@@ -365,9 +458,9 @@
                         <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
                         <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoMaterias ? 'bg-red-100 text-red-700' : 'text-slate-400'}">${a.materiasBajas}</span></td>
                         <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoAnuales ? 'bg-amber-100 text-amber-800' : 'text-slate-400'}">${a.faltasAnuales}</span></td>
-                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoBimestre ? 'bg-purple-100 text-purple-800' : 'text-slate-400'}">${a.faltas4Bim}</span></td>
+                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoBimestre ? 'bg-purple-100 text-purple-800' : 'text-slate-400'}">${a.faltasMes}</span></td>
                         <td class="p-3 text-right">
-                            <button onclick="enviarEmail('${a.nombre}', '${a.emailTutor}', ${a.materiasBajas}, ${a.faltasAnuales}, ${a.faltas4Bim})" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded-md font-semibold transition">
+                            <button onclick="enviarEmail(${a.id})" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded-md font-semibold transition">
                                 Notificar
                             </button>
                         </td>
@@ -383,9 +476,53 @@
 
             if (totalAlertas > 0) {
                 document.getElementById('bannerAlerta').classList.remove('hidden');
+            } else {
+                document.getElementById('bannerAlerta').classList.add('hidden');
             }
 
             lucide.createIcons();
+        }
+
+        function abrirModalFicha(id) {
+            const al = alumnos.find(a => a.id === id);
+            if (!al) return;
+
+            document.getElementById('editAlumnoId').value = al.id;
+            document.getElementById('editNombre').value = al.nombre || '';
+            document.getElementById('editDni').value = al.dni || '';
+            document.getElementById('editCodigoApp').value = al.codigoApp || '';
+            document.getElementById('editCuil').value = al.cuil || '';
+            document.getElementById('editTelefono').value = al.telefono || '';
+            document.getElementById('editEmail').value = al.emailTutor || '';
+            document.getElementById('editDomicilio').value = al.domicilio || '';
+            document.getElementById('editMateriasBajas').value = al.materiasBajas || 0;
+            document.getElementById('editFaltasAnuales').value = al.faltasAnuales || 0;
+
+            document.getElementById('modalFicha').classList.remove('hidden');
+        }
+
+        function cerrarModalFicha() {
+            document.getElementById('modalFicha').classList.add('hidden');
+        }
+
+        function guardarFichaAlumno() {
+            const id = parseInt(document.getElementById('editAlumnoId').value);
+            const al = alumnos.find(a => a.id === id);
+            if (al) {
+                al.nombre = document.getElementById('editNombre').value;
+                al.dni = document.getElementById('editDni').value;
+                al.codigoApp = document.getElementById('editCodigoApp').value;
+                al.cuil = document.getElementById('editCuil').value;
+                al.telefono = document.getElementById('editTelefono').value;
+                al.emailTutor = document.getElementById('editEmail').value;
+                al.domicilio = document.getElementById('editDomicilio').value;
+                al.materiasBajas = parseInt(document.getElementById('editMateriasBajas').value) || 0;
+                al.faltasAnuales = parseFloat(document.getElementById('editFaltasAnuales').value) || 0;
+                
+                guardarPersistencia();
+                evaluarAlertas();
+                cerrarModalFicha();
+            }
         }
 
         function abrirModalAsistencia() {
@@ -438,11 +575,12 @@
                 const est = estadosHoy[a.id] || 'Presente';
                 if (est === 'Ausente') {
                     a.faltasAnuales += 1;
-                    a.faltas4Bim += 1;
+                    a.faltasMes += 1;
                 }
-                registros.push({ fecha: hoy, alumno: a.nombre, estado: est, bimestre: "4° Bimestre" });
+                registros.push({ fecha: hoy, alumno: a.nombre, estado: est, bimestre: "3° 7° E" });
             });
 
+            guardarPersistencia();
             evaluarAlertas();
             cerrarModalAsistencia();
 
@@ -456,9 +594,14 @@
             });
         }
 
-        function enviarEmail(nombre, email, materias, faltasAnuales, faltasBim) {
-            const asunto = encodeURIComponent(`Notificación Académica - ${nombre} (3° 7° E)`);
-            const cuerpo = encodeURIComponent(`Estimado Tutor/a de ${nombre}:\n\nEstado al 4° Bimestre:\n- Materias bajas: ${materias}\n- Inasistencias anuales: ${faltasAnuales}\n- Inasistencias 4° Bimestre: ${faltasBim}\n\nEscuela Técnica N° 17 DE 13.`);
+        function enviarEmail(id) {
+            const a = alumnos.find(item => item.id === id);
+            if (!a) return;
+
+            const email = a.emailTutor || "";
+            const asunto = encodeURIComponent(`Notificación Académica - ${a.nombre} (3° 7° E)`);
+            const cuerpo = encodeURIComponent(`Estimado Tutor/a de ${a.nombre}:\n\nEstado al día de la fecha:\n- Materias Bajas (3° Bim): ${a.materiasBajas}\n- Inasistencias acumuladas: ${a.faltasAnuales}\n- Inasistencias en el mes: ${a.faltasMes}\n- Código App Familias: ${a.codigoApp}\n\nEscuela Técnica N° 17 DE 13.`);
+            
             window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
         }
 
