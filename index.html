@@ -55,7 +55,7 @@
                 </button>
                 <button onclick="cambiarSolapa('alumnos')" id="tab-alumnos" class="text-slate-400 hover:text-white pb-1 flex items-center space-x-1">
                     <i data-lucide="users" class="w-3.5 h-3.5"></i>
-                    <span>Nómina Alumnos (<span id="countNominaTotal">39</span>)</span>
+                    <span>Nómina Alumnos (40)</span>
                 </button>
                 <button onclick="cambiarSolapa('alertas')" id="tab-alertas" class="text-slate-400 hover:text-white pb-1 flex items-center space-x-1">
                     <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
@@ -74,7 +74,7 @@
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Alumnos Inscriptos</p>
-                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="statTotalAlumnos">39 / 39</h3>
+                        <h3 class="text-2xl font-bold text-slate-900 mt-1" id="statTotalAlumnos">40 / 40</h3>
                         <p class="text-xs text-slate-400 mt-0.5">3° 7° E - Turno Tarde</p>
                     </div>
                     <div class="bg-blue-50 p-3 rounded-lg text-blue-600">
@@ -141,7 +141,7 @@
                         <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
                         <span>Nómina Oficial 3° 7° E - Datos Verificados de Boletín</span>
                     </h3>
-                    <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">39 Alumnos Inscriptos</span>
+                    <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">40 Alumnos Inscriptos</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
@@ -201,14 +201,14 @@
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <i data-lucide="id-card" class="w-5 h-5 text-blue-400"></i>
-                    <h3 class="font-bold text-base" id="tituloFichaAlumno">Ficha del Alumno</h3>
+                    <h3 class="font-bold text-base" id="tituloFichaAlumno">Ficha Completa del Alumno</h3>
                 </div>
                 <button onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             
-            <div class="p-4 space-y-3 text-xs">
+            <div class="p-4 space-y-3 text-xs max-h-[75vh] overflow-y-auto">
                 <input type="hidden" id="editAlumnoId">
                 <div>
                     <label class="font-semibold text-slate-600 block mb-1">Apellido y Nombre</label>
@@ -220,9 +220,13 @@
                         <input type="text" id="editDni" placeholder="Ej: 50.257.512" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="font-semibold text-slate-600 block mb-1">Código App Familias</label>
-                        <input type="text" id="editCodigoApp" placeholder="Código de Vinculación" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono">
+                        <label class="font-semibold text-slate-600 block mb-1">CUIL</label>
+                        <input type="text" id="editCuil" placeholder="20-50257512-7" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500">
                     </div>
+                </div>
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">Código App Familias (Vinculación)</label>
+                    <input type="text" id="editCodigoApp" placeholder="Código de 8 caracteres" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 font-mono text-blue-700 bg-blue-50/50">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
@@ -297,7 +301,7 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAafGIpsRMoxRGw5eOs7L_KBfr_HlrK1VGNB42SyLKLtsLtADJ47hzX_O5SQe8A0g8/exec";
 
-        // Datos oficiales extraídos de los 39 boletines procesados
+        // Nómina Oficial Verificada (40 Alumnos de 3° 7° E)
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0 },
             { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1 },
@@ -341,7 +345,7 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0 }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_final')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v6_final')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -358,7 +362,7 @@
         let estadosHoy = {};
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_final', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v6_final', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
