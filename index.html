@@ -82,7 +82,7 @@
     </header>
 
     <!-- Main Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-6">
         
         <!-- SECCIÓN 1: INICIO Y RESUMEN -->
         <section id="sec-inicio">
@@ -149,19 +149,19 @@
             </div>
         </section>
 
-        <!-- SECCIÓN CIERRE MENSUAL DE REGISTRO (OFICIAL FÍSICO) -->
+        <!-- SECCIÓN CIERRE MENSUAL DE REGISTRO (OFICIAL FÍSICO Y RESPONSIVE MÓVIL) -->
         <section id="sec-cierre" class="hidden">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
-                <div class="p-4 border-b border-slate-100 bg-blue-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="p-3 sm:p-4 border-b border-slate-100 bg-blue-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                        <h3 class="font-bold text-base flex items-center space-x-2">
+                        <h3 class="font-bold text-sm sm:text-base flex items-center space-x-2">
                             <i data-lucide="calculator" class="w-5 h-5 text-blue-400"></i>
                             <span>Cierre Mensual - Registro Oficial de Asistencia</span>
                         </h3>
-                        <p class="text-xs text-blue-200 mt-0.5">Cálculo 100% automático del resumen mensual para transcribir al libro físico.</p>
+                        <p class="text-[11px] sm:text-xs text-blue-200 mt-0.5">Cálculo de resumen mensual para transcribir al libro físico.</p>
                     </div>
-                    <div class="flex items-center space-x-2 text-xs text-slate-800">
-                        <select id="selectMesCierre" onchange="calcularCierreMensual()" class="border border-slate-300 rounded-lg px-2.5 py-1.5 font-bold bg-white focus:outline-none">
+                    <div class="flex flex-wrap items-center gap-2 text-xs text-slate-800">
+                        <select id="selectMesCierre" onchange="calcularCierreMensual()" class="border border-slate-300 rounded-lg px-2 py-1 font-bold bg-white focus:outline-none text-xs">
                             <option value="3">Marzo 2026</option>
                             <option value="4">Abril 2026</option>
                             <option value="5">Mayo 2026</option>
@@ -174,29 +174,29 @@
                             <option value="12">Diciembre 2026</option>
                         </select>
                         <div class="flex items-center space-x-1 bg-white px-2 py-1 rounded-lg border border-slate-300">
-                            <span class="text-slate-600 font-medium">Días Hábiles:</span>
-                            <input type="number" id="inputDiasHabiles" value="20" min="1" max="31" onchange="calcularCierreMensual()" class="w-12 text-center font-bold text-blue-900 border-none focus:outline-none">
+                            <span class="text-slate-600 font-medium text-xs">Días Hábiles:</span>
+                            <input type="number" id="inputDiasHabiles" value="20" min="1" max="31" onchange="calcularCierreMensual()" class="w-10 text-center font-bold text-blue-900 border-none focus:outline-none text-xs">
                         </div>
                     </div>
                 </div>
 
-                <!-- Recuadro Azul de Resumen -->
-                <div class="p-6 bg-slate-50 flex justify-center">
-                    <div class="max-w-2xl w-full border-2 border-blue-900 bg-white rounded-lg shadow-md p-4 text-xs font-mono">
-                        <div class="text-center font-bold text-blue-950 uppercase border-b border-blue-200 pb-2 mb-3 text-sm">
+                <!-- Recuadro Azul de Resumen Adapta Perfecto a Móvil -->
+                <div class="p-2 sm:p-6 bg-slate-50 flex justify-center">
+                    <div class="w-full max-w-2xl border-2 border-blue-900 bg-white rounded-lg shadow-md p-3 sm:p-4 text-xs font-mono">
+                        <div class="text-center font-bold text-blue-950 uppercase border-b border-blue-200 pb-2 mb-3 text-xs sm:text-sm">
                             Resumen Estadístico Mensual (ET N° 17 DE 13)
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                             <!-- Columna 1: Movimiento de Matrícula -->
                             <div class="border border-blue-300 rounded overflow-hidden">
-                                <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300">
+                                <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 text-xs">
                                     Matrícula del Mes
                                 </div>
-                                <div class="p-2 space-y-2">
+                                <div class="p-2 space-y-1.5 text-xs">
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600">Alumnos Inscriptos:</span>
-                                        <span id="resInscriptos" class="font-bold text-slate-900 text-sm">40</span>
+                                        <span id="resInscriptos" class="font-bold text-slate-900">40</span>
                                     </div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600">Alumnos Entrados:</span>
@@ -208,40 +208,47 @@
                                     </div>
                                     <div class="flex justify-between items-center bg-blue-50/50 p-1 rounded font-bold text-blue-950">
                                         <span>Quedan al último día:</span>
-                                        <span id="resQuedanUltimoDia" class="text-sm">40</span>
+                                        <span id="resQuedanUltimoDia">40</span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Columna 2: Totales de Asistencia -->
                             <div class="border border-blue-300 rounded overflow-hidden">
-                                <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 flex justify-between items-center">
+                                <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 flex justify-between items-center text-xs">
                                     <span>Totales Asistencia</span>
-                                    <span class="text-[9px] font-normal text-blue-800">(Modo Automático)</span>
+                                    <span class="text-[9px] font-normal text-blue-800">(Automático)</span>
                                 </div>
-                                <div class="p-2 space-y-2">
+                                <div class="p-2 space-y-1.5 text-xs">
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
-                                        <span class="text-slate-600">Total de Asistencia:</span>
-                                        <span id="resTotalAsistencia" class="font-bold text-emerald-700 text-sm">0</span>
+                                        <span class="text-slate-600">Total Asistencia:</span>
+                                        <span id="resTotalAsistencia" class="font-bold text-emerald-700">0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600 flex items-center space-x-1">
+                                            <span>Faltas Justificadas:</span>
+                                            <span class="w-2 h-2 rounded-full bg-red-500 inline-block" title="Círculo rojo en registro"></span>
+                                        </span>
+                                        <input type="number" step="0.25" id="resFaltasJustificadasInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-blue-300 rounded font-bold text-blue-800 bg-blue-50/30">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600">Total Inasistencia:</span>
-                                        <input type="number" step="0.25" id="resTotalInasistenciaInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-16 text-center border border-slate-300 rounded font-bold text-red-700 text-sm bg-red-50/30 focus:outline-none focus:border-red-500">
+                                        <input type="number" step="0.25" id="resTotalInasistenciaInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-slate-300 rounded font-bold text-red-700 bg-red-50/30">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600">Asistencia Media:</span>
-                                        <span id="resAsistenciaMedia" class="font-bold text-blue-900 text-sm">0</span>
+                                        <span id="resAsistenciaMedia" class="font-bold text-blue-900">0</span>
                                     </div>
                                     <div class="flex justify-between items-center bg-blue-900 text-white p-1 rounded font-bold">
-                                        <span>% de Asistencia:</span>
-                                        <span id="resPorcentajeAsistencia" class="text-sm">0%</span>
+                                        <span>% Asistencia:</span>
+                                        <span id="resPorcentajeAsistencia">0%</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
-                            <span>* Podés modificar manualmente el Total de Inasistencia si requerís ajustar algún cómputo del papel[cite: 7].</span>
+                        <div class="mt-3 pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-[10px] text-slate-500 gap-1">
+                            <span>* Faltas justificadas corresponden al cómputo con círculo rojo del libro.</span>
                             <button onclick="calcularCierreMensual()" class="text-blue-700 hover:underline font-bold flex items-center space-x-1">
                                 <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
                                 <span>Recalcular Todo</span>
@@ -549,49 +556,49 @@
         }
 
         const nominaOficial = [
-            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
-            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
-            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", codigoApp: "16d1ded5", emailTutor: "thiagoaruni@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 1.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ARUNI CONDORI, THIAGO ALVARO - 95175997.pdf" },
-            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", codigoApp: "cc3fabdd", emailTutor: "nahuelcamargo@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CAMARGO HUANCA, NAHUEL JOAQUIN - 51066827.pdf" },
-            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", codigoApp: "957500d5", emailTutor: "mateocardena@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 5.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CARDENA TERRAZAS, MATEO ESTEBAN - 50805950.pdf" },
-            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", codigoApp: "bce4c7ab", emailTutor: "sebastiancayo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CAYO ORIHUELA, SEBASTIAN ALAN - 50701185.pdf" },
-            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", codigoApp: "6f948894", emailTutor: "alfredchuca@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 4.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CHUCA RODRIGUEZ, ALFRED DANIEL - 50702647.pdf" },
-            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", codigoApp: "23c98d3e", emailTutor: "francoconde@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 6.5, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDE SANTISTEBAN, FRANCO ENRIQUE - 50802362.pdf" },
-            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", codigoApp: "40bbddc1", emailTutor: "briancondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI CHOQUEHUANCA, BRIAN - 50799851.pdf" },
-            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", codigoApp: "6e6e6c95", emailTutor: "josecondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 9.0, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI TICONA, JOSE SANTOS - 95498448.pdf" },
-            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", codigoApp: "cdde759a", emailTutor: "joelcopa@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 3.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - COPA CORIA, JOEL NEHEMIAS - 50804646.pdf" },
-            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", codigoApp: "d1cbbb4e", emailTutor: "valentinodehnike@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 28.0, faltasMes: 3, faltasTaller: 3.5, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - DEHNIKE, VALENTINO AGUSTIN - 50707992.pdf" },
-            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", codigoApp: "6d5ba204", emailTutor: "owenespinoza@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 2.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ESPINOZA SUXO, OWEN EZEQUIEL - 50708253.pdf" },
-            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", codigoApp: "cc73089c", emailTutor: "mayrahinojosa@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 6.5, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - HINOJOSA SALVADOR, MAYRA BELEN - 50511132.pdf" },
-            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", codigoApp: "2da2032f", emailTutor: "juanillanes@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ILLANES QUISPIA, JUAN MANUEL - 49983250.pdf" },
-            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", codigoApp: "a3ce6b35", emailTutor: "yoeljimenez@alum.tec17ba.edu.ar", materiasBajas: 8, faltasAnuales: 8.0, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - JIMENEZ SANTALLA, YOEL BENJAMIN - 49983173.pdf" },
-            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", codigoApp: "a663fcf1", emailTutor: "damianlima@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LIMA, DAMIAN EMANUEL - 50785434.pdf" },
-            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", codigoApp: "820700aa", emailTutor: "aylenlopez@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 5.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LOPEZ, AYLEN CELINDA - 50701041.pdf" },
-            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", codigoApp: "383c68e5", emailTutor: "nairamamani@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MAMANI JUICA, NAIRA KEILA - 50706215.pdf" },
-            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", codigoApp: "50262357", emailTutor: "thiagomartinez@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Martinez , Thiago Giovanni - 50705060.pdf" },
-            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", codigoApp: "689c60f9", emailTutor: "matiasmejia@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 5.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Mejia Paniagua, Matias - 95128231.pdf" },
-            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", codigoApp: "77c27499", emailTutor: "tobiasmelgar@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.5, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MELGAR RIVERO, TOBIAS - 50908893.pdf" },
-            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", codigoApp: "d5e569f4", emailTutor: "dantemerlo@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 12.5, faltasMes: 1, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MERLO GIMENEZ RIVERO, DANTE NICOLÁS - 50156512.pdf" },
-            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", codigoApp: "07e629a6", emailTutor: "leonelojeda@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 6.0, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - OJEDA LAIME, LEONEL - 50705281.pdf" },
-            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", codigoApp: "0e5bfb7c", emailTutor: "judithchoquehuanca@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 7.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - POMA CHOQUEHUANCA, ABRIL YUDITH - 50681698.pdf" },
-            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", codigoApp: "ee1d37a3", emailTutor: "jonathanramos@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RAMOS RAMOS, JONATHAN ALEXIS - 50365960.pdf" },
-            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", codigoApp: "8a416f2d", emailTutor: "orlandoricaldi@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 12.0, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Ricaldi Gutierrez, Orlando Misael - 94739323.pdf" },
-            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", codigoApp: "d8930d0d", emailTutor: "valentinoriera@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 2.0, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RIERA GENCARELLI, VALENTINO EMANUEL - 50992165.pdf" },
-            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", codigoApp: "e3f641bc", emailTutor: "agustinsaravia@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.0, faltasMes: 1, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SARAVIA COLQUE, MAXIMO AGUSTIN - 50903805.pdf" },
-            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", codigoApp: "780684f3", emailTutor: "yamirsaturi@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 0.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SATURI CALLE, YAMIR RONALD - 50700925.pdf" },
-            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", codigoApp: "f97cc410", emailTutor: "lucascravaglieri@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 4.5, faltasMes: 0.5, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Scravaglieri , Luca Santino - 50418134.pdf" },
-            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", codigoApp: "bfce87f2", emailTutor: "marcosolis@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 1.0, faltasMes: 0.5, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOLIS, MARCO ANTONIO - 51126766.pdf" },
-            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", codigoApp: "488ead9e", emailTutor: "axelsosa@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.0, faltasMes: 1.5, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOSA, AXEL YAIR - 51043526.pdf" },
-            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", codigoApp: "65589c2f", emailTutor: "carlostaboada@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 21.0, faltasMes: 4.5, faltasTaller: 4.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Taboada , Carlos Alexander - 50709476.pdf" },
-            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", codigoApp: "3a6477a6", emailTutor: "gabrielaticona@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 8.0, faltasMes: 2.5, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TICONA ALVAREZ, GABRIELA - 50582311.pdf" },
-            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", codigoApp: "1073c3c3", emailTutor: "dylantoledo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.5, faltasMes: 0.5, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOLEDO AVILA, DYLAN LIONEL - 50415224.pdf" },
-            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", codigoApp: "079671c4", emailTutor: "javirtonane@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.5, faltasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOÑANE, JAVIER NICOLAS - 49763588.pdf" },
-            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", codigoApp: "703c6ee3", emailTutor: "dantetucci@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 8.5, faltasMes: 5.0, faltasTaller: 3.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TUCCI GIMENEZ, DANTE NICOLAS - 50800449.pdf" },
-            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", codigoApp: "7aa3c2ff", emailTutor: "wilfredouria@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 1.0, faltasMes: 0.5, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - URIA AVALOS, WILFREDO JOEL - 50319868.pdf" },
-            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
+            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
+            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
+            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", codigoApp: "16d1ded5", emailTutor: "thiagoaruni@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 1.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ARUNI CONDORI, THIAGO ALVARO - 95175997.pdf" },
+            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", codigoApp: "cc3fabdd", emailTutor: "nahuelcamargo@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CAMARGO HUANCA, NAHUEL JOAQUIN - 51066827.pdf" },
+            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", codigoApp: "957500d5", emailTutor: "mateocardena@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 5.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CARDENA TERRAZAS, MATEO ESTEBAN - 50805950.pdf" },
+            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", codigoApp: "bce4c7ab", emailTutor: "sebastiancayo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CAYO ORIHUELA, SEBASTIAN ALAN - 50701185.pdf" },
+            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", codigoApp: "6f948894", emailTutor: "alfredchuca@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 4.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CHUCA RODRIGUEZ, ALFRED DANIEL - 50702647.pdf" },
+            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", codigoApp: "23c98d3e", emailTutor: "francoconde@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 6.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDE SANTISTEBAN, FRANCO ENRIQUE - 50802362.pdf" },
+            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", codigoApp: "40bbddc1", emailTutor: "briancondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI CHOQUEHUANCA, BRIAN - 50799851.pdf" },
+            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", codigoApp: "6e6e6c95", emailTutor: "josecondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 9.0, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI TICONA, JOSE SANTOS - 95498448.pdf" },
+            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", codigoApp: "cdde759a", emailTutor: "joelcopa@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 3.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - COPA CORIA, JOEL NEHEMIAS - 50804646.pdf" },
+            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", codigoApp: "d1cbbb4e", emailTutor: "valentinodehnike@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 28.0, faltasMes: 3, faltasJustificadasMes: 0, faltasTaller: 3.5, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - DEHNIKE, VALENTINO AGUSTIN - 50707992.pdf" },
+            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", codigoApp: "6d5ba204", emailTutor: "owenespinoza@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 2.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ESPINOZA SUXO, OWEN EZEQUIEL - 50708253.pdf" },
+            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", codigoApp: "cc73089c", emailTutor: "mayrahinojosa@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 6.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - HINOJOSA SALVADOR, MAYRA BELEN - 50511132.pdf" },
+            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", codigoApp: "2da2032f", emailTutor: "juanillanes@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ILLANES QUISPIA, JUAN MANUEL - 49983250.pdf" },
+            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", codigoApp: "a3ce6b35", emailTutor: "yoeljimenez@alum.tec17ba.edu.ar", materiasBajas: 8, faltasAnuales: 8.0, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - JIMENEZ SANTALLA, YOEL BENJAMIN - 49983173.pdf" },
+            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", codigoApp: "a663fcf1", emailTutor: "damianlima@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LIMA, DAMIAN EMANUEL - 50785434.pdf" },
+            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", codigoApp: "820700aa", emailTutor: "aylenlopez@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 5.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LOPEZ, AYLEN CELINDA - 50701041.pdf" },
+            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", codigoApp: "383c68e5", emailTutor: "nairamamani@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MAMANI JUICA, NAIRA KEILA - 50706215.pdf" },
+            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", codigoApp: "50262357", emailTutor: "thiagomartinez@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Martinez , Thiago Giovanni - 50705060.pdf" },
+            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", codigoApp: "689c60f9", emailTutor: "matiasmejia@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 5.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Mejia Paniagua, Matias - 95128231.pdf" },
+            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", codigoApp: "77c27499", emailTutor: "tobiasmelgar@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MELGAR RIVERO, TOBIAS - 50908893.pdf" },
+            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", codigoApp: "d5e569f4", emailTutor: "dantemerlo@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 12.5, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MERLO GIMENEZ RIVERO, DANTE NICOLÁS - 50156512.pdf" },
+            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", codigoApp: "07e629a6", emailTutor: "leonelojeda@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 6.0, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - OJEDA LAIME, LEONEL - 50705281.pdf" },
+            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", codigoApp: "0e5bfb7c", emailTutor: "judithchoquehuanca@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 7.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - POMA CHOQUEHUANCA, ABRIL YUDITH - 50681698.pdf" },
+            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", codigoApp: "ee1d37a3", emailTutor: "jonathanramos@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RAMOS RAMOS, JONATHAN ALEXIS - 50365960.pdf" },
+            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", codigoApp: "8a416f2d", emailTutor: "orlandoricaldi@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 12.0, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Ricaldi Gutierrez, Orlando Misael - 94739323.pdf" },
+            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", codigoApp: "d8930d0d", emailTutor: "valentinoriera@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 2.0, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RIERA GENCARELLI, VALENTINO EMANUEL - 50992165.pdf" },
+            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", codigoApp: "e3f641bc", emailTutor: "agustinsaravia@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.0, faltasMes: 1, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SARAVIA COLQUE, MAXIMO AGUSTIN - 50903805.pdf" },
+            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", codigoApp: "780684f3", emailTutor: "yamirsaturi@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 0.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SATURI CALLE, YAMIR RONALD - 50700925.pdf" },
+            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", codigoApp: "f97cc410", emailTutor: "lucascravaglieri@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 4.5, faltasMes: 0.5, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Scravaglieri , Luca Santino - 50418134.pdf" },
+            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", codigoApp: "bfce87f2", emailTutor: "marcosolis@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 1.0, faltasMes: 0.5, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOLIS, MARCO ANTONIO - 51126766.pdf" },
+            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", codigoApp: "488ead9e", emailTutor: "axelsosa@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.0, faltasMes: 1.5, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOSA, AXEL YAIR - 51043526.pdf" },
+            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", codigoApp: "65589c2f", emailTutor: "carlostaboada@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 21.0, faltasMes: 4.5, faltasJustificadasMes: 0, faltasTaller: 4.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Taboada , Carlos Alexander - 50709476.pdf" },
+            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", codigoApp: "3a6477a6", emailTutor: "gabrielaticona@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 8.0, faltasMes: 2.5, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TICONA ALVAREZ, GABRIELA - 50582311.pdf" },
+            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", codigoApp: "1073c3c3", emailTutor: "dylantoledo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.5, faltasMes: 0.5, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOLEDO AVILA, DYLAN LIONEL - 50415224.pdf" },
+            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", codigoApp: "079671c4", emailTutor: "javirtonane@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.5, faltasMes: 0, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOÑANE, JAVIER NICOLAS - 49763588.pdf" },
+            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", codigoApp: "703c6ee3", emailTutor: "dantetucci@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 8.5, faltasMes: 5.0, faltasJustificadasMes: 0, faltasTaller: 3.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TUCCI GIMENEZ, DANTE NICOLAS - 50800449.pdf" },
+            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", codigoApp: "7aa3c2ff", emailTutor: "wilfredouria@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 1.0, faltasMes: 0.5, faltasJustificadasMes: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - URIA AVALOS, WILFREDO JOEL - 50319868.pdf" },
+            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0, faltasJustificadasMes: 0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v22_cierre_tardes')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v23_cierre_justificadas')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -602,6 +609,7 @@
             materiasBajas: item.materiasBajas || 0,
             faltasAnuales: item.faltasAnuales || 0,
             faltasMes: item.faltasMes || 0,
+            faltasJustificadasMes: item.faltasJustificadasMes || 0,
             faltasTaller: item.faltasTaller || 0,
             faltasEF: item.faltasEF || 0,
             materiasPrevias: item.materiasPrevias || "Ninguna",
@@ -641,7 +649,7 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v22_cierre_tardes', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v23_cierre_justificadas', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -690,12 +698,16 @@
             const quedanUltimoDia = totalInscriptos + entrados - salidos;
 
             let totalInasistenciasMes = 0;
+            let totalJustificadasMes = 0;
+
             alumnos.forEach(a => {
                 totalInasistenciasMes += (a.faltasMes || 0);
+                totalJustificadasMes += (a.faltasJustificadasMes || 0);
             });
 
             document.getElementById('resInscriptos').innerText = totalInscriptos;
             document.getElementById('resQuedanUltimoDia').innerText = quedanUltimoDia;
+            document.getElementById('resFaltasJustificadasInput').value = totalJustificadasMes;
             document.getElementById('resTotalInasistenciaInput').value = totalInasistenciasMes;
 
             recalcularFormulas(quedanUltimoDia, diasHabiles, totalInasistenciasMes);
@@ -1100,11 +1112,16 @@
                 if (!verif.esNoLectivo) {
                     if (modoAsistenciaModal === 'taller') {
                         if (est === 'Ausente') a.faltasTaller += 0.5;
+                        else if (est === 'Justificada') { a.faltasTaller += 0.5; a.faltasJustificadasMes += 0.5; }
                         else if (est === 'Tarde') a.faltasTaller += 0.25;
                     } else {
                         if (est === 'Ausente') {
                             a.faltasAnuales += 0.5;
                             a.faltasMes += 0.5;
+                        } else if (est === 'Justificada') {
+                            a.faltasAnuales += 0.5;
+                            a.faltasMes += 0.5;
+                            a.faltasJustificadasMes += 0.5;
                         } else if (est === 'Tarde') {
                             a.faltasAnuales += 0.25;
                             a.faltasMes += 0.25;
