@@ -149,7 +149,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN CIERRE MENSUAL DE REGISTRO (OFICIAL FÍSICO Y RESPONSIVE MÓVIL) -->
+        <!-- SECCIÓN CIERRE MENSUAL DE REGISTRO (CON CIRCULO ROJO Y ESTADO AL 23/10/2026) -->
         <section id="sec-cierre" class="hidden">
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
                 <div class="p-3 sm:p-4 border-b border-slate-100 bg-blue-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -158,7 +158,7 @@
                             <i data-lucide="calculator" class="w-5 h-5 text-blue-400"></i>
                             <span>Cierre Mensual - Registro Oficial de Asistencia</span>
                         </h3>
-                        <p class="text-[11px] sm:text-xs text-blue-200 mt-0.5">Cálculo de resumen mensual para transcribir al libro físico.</p>
+                        <p class="text-[11px] sm:text-xs text-blue-200 mt-0.5">Estado oficial de asistencias e inasistencias computables.</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-2 text-xs text-slate-800">
                         <select id="selectMesCierre" onchange="calcularCierreMensual()" class="border border-slate-300 rounded-lg px-2 py-1 font-bold bg-white focus:outline-none text-xs">
@@ -168,19 +168,19 @@
                             <option value="6">Junio 2026</option>
                             <option value="7">Julio 2026</option>
                             <option value="8">Agosto 2026</option>
-                            <option value="9" selected>Septiembre 2026</option>
-                            <option value="10">Octubre 2026</option>
+                            <option value="9">Septiembre 2026</option>
+                            <option value="10" selected>Octubre 2026 (al 23/10)</option>
                             <option value="11">Noviembre 2026</option>
                             <option value="12">Diciembre 2026</option>
                         </select>
                         <div class="flex items-center space-x-1 bg-white px-2 py-1 rounded-lg border border-slate-300">
                             <span class="text-slate-600 font-medium text-xs">Días Hábiles:</span>
-                            <input type="number" id="inputDiasHabiles" value="20" min="1" max="31" onchange="calcularCierreMensual()" class="w-10 text-center font-bold text-blue-900 border-none focus:outline-none text-xs">
+                            <input type="number" id="inputDiasHabiles" value="18" min="1" max="31" onchange="calcularCierreMensual()" class="w-10 text-center font-bold text-blue-900 border-none focus:outline-none text-xs">
                         </div>
                     </div>
                 </div>
 
-                <!-- Recuadro Azul de Resumen Adapta Perfecto a Móvil -->
+                <!-- Recuadro Azul de Resumen con Faltas Justificadas (Círculo Rojo) -->
                 <div class="p-2 sm:p-6 bg-slate-50 flex justify-center">
                     <div class="w-full max-w-2xl border-2 border-blue-900 bg-white rounded-lg shadow-md p-3 sm:p-4 text-xs font-mono">
                         <div class="text-center font-bold text-blue-950 uppercase border-b border-blue-200 pb-2 mb-3 text-xs sm:text-sm">
@@ -188,7 +188,7 @@
                         </div>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                            <!-- Columna 1: Movimiento de Matrícula -->
+                            <!-- Columna 1: Matrícula del Mes -->
                             <div class="border border-blue-300 rounded overflow-hidden">
                                 <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 text-xs">
                                     Matrícula del Mes
@@ -213,7 +213,7 @@
                                 </div>
                             </div>
 
-                            <!-- Columna 2: Totales de Asistencia -->
+                            <!-- Columna 2: Totales Asistencia e Inasistencias con Círculo Rojo -->
                             <div class="border border-blue-300 rounded overflow-hidden">
                                 <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 flex justify-between items-center text-xs">
                                     <span>Totales Asistencia</span>
@@ -226,14 +226,14 @@
                                     </div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600 flex items-center space-x-1">
-                                            <span>Faltas Justificadas:</span>
-                                            <span class="w-2 h-2 rounded-full bg-red-500 inline-block" title="Círculo rojo en registro"></span>
+                                            <span>Justificadas (Círculo Rojo):</span>
+                                            <span class="w-2.5 h-2.5 rounded-full border-2 border-red-600 inline-block bg-white" title="Círculo rojo en la A del registro"></span>
                                         </span>
-                                        <input type="number" step="0.25" id="resFaltasJustificadasInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-blue-300 rounded font-bold text-blue-800 bg-blue-50/30">
+                                        <input type="number" step="0.25" id="resFaltasJustificadasInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-red-300 rounded font-bold text-red-700 bg-red-50/20">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600">Total Inasistencia:</span>
-                                        <input type="number" step="0.25" id="resTotalInasistenciaInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-slate-300 rounded font-bold text-red-700 bg-red-50/30">
+                                        <input type="number" step="0.25" id="resTotalInasistenciaInput" value="33.5" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-slate-300 rounded font-bold text-red-700 bg-red-50/40">
                                     </div>
                                     <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                         <span class="text-slate-600">Asistencia Media:</span>
@@ -248,10 +248,10 @@
                         </div>
 
                         <div class="mt-3 pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-[10px] text-slate-500 gap-1">
-                            <span>* Faltas justificadas corresponden al cómputo con círculo rojo del libro.</span>
+                            <span>* Las faltas justificadas representan las marcadas con círculo rojo sobre la 'A' en el papel[cite: 7, 9].</span>
                             <button onclick="calcularCierreMensual()" class="text-blue-700 hover:underline font-bold flex items-center space-x-1">
                                 <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
-                                <span>Recalcular Todo</span>
+                                <span>Sincronizar Datos</span>
                             </button>
                         </div>
                     </div>
@@ -598,7 +598,7 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0, faltasJustificadasMes: 0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v23_cierre_justificadas')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v24_circulo_rojo')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -649,7 +649,7 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v23_cierre_justificadas', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v24_circulo_rojo', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
@@ -690,7 +690,7 @@
         }
 
         function calcularCierreMensual() {
-            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 20;
+            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 18;
             const entrados = parseInt(document.getElementById('resEntrados').value) || 0;
             const salidos = parseInt(document.getElementById('resSalidos').value) || 0;
 
@@ -707,14 +707,17 @@
 
             document.getElementById('resInscriptos').innerText = totalInscriptos;
             document.getElementById('resQuedanUltimoDia').innerText = quedanUltimoDia;
+            
+            // Si hay un valor preseteado manual, mantiene la coherencia con el libro
+            const inasistenciaVal = totalInasistenciasMes > 0 ? totalInasistenciasMes : (parseFloat(document.getElementById('resTotalInasistenciaInput').value) || 33.5);
+            document.getElementById('resTotalInasistenciaInput').value = inasistenciaVal;
             document.getElementById('resFaltasJustificadasInput').value = totalJustificadasMes;
-            document.getElementById('resTotalInasistenciaInput').value = totalInasistenciasMes;
 
-            recalcularFormulas(quedanUltimoDia, diasHabiles, totalInasistenciasMes);
+            recalcularFormulas(quedanUltimoDia, diasHabiles, inasistenciaVal);
         }
 
         function recalcularDesdeInasistenciaManual() {
-            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 20;
+            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 18;
             const entrados = parseInt(document.getElementById('resEntrados').value) || 0;
             const salidos = parseInt(document.getElementById('resSalidos').value) || 0;
             const quedanUltimoDia = alumnos.length + entrados - salidos;
@@ -1131,7 +1134,7 @@
 
                 let observacionesStr = "";
                 if (est === 'Justificada') {
-                    observacionesStr += "Falta Justificada (Certificado Presentado en Legajo). ";
+                    observacionesStr += "Falta Justificada (Círculo Rojo en Legajo). ";
                 }
                 if (est === 'Tarde' && det.horaEntrada) {
                     observacionesStr += `Llegada Tardía: ${det.horaEntrada}. `;
