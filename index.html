@@ -57,6 +57,10 @@
                     <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
                     <span>Inicio / Resumen</span>
                 </button>
+                <button onclick="cambiarSolapa('cierre')" id="tab-cierre" class="text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+                    <span>Cierre Mensual Registro</span>
+                </button>
                 <button onclick="cambiarSolapa('alumnos')" id="tab-alumnos" class="text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0">
                     <i data-lucide="users" class="w-3.5 h-3.5"></i>
                     <span>Nómina y Boletines</span>
@@ -141,6 +145,104 @@
                     <button onclick="cambiarSolapa('alertas')" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
                         Ver Lista Crítica
                     </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CIERRE MENSUAL DE REGISTRO (OFICIAL FÍSICO) -->
+        <section id="sec-cierre" class="hidden">
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+                <div class="p-4 border-b border-slate-100 bg-blue-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="font-bold text-base flex items-center space-x-2">
+                            <i data-lucide="calculator" class="w-5 h-5 text-blue-400"></i>
+                            <span>Cierre Mensual - Registro Oficial de Asistencia</span>
+                        </h3>
+                        <p class="text-xs text-blue-200 mt-0.5">Cálculo automático de la celda de resumen del registro físico (3° 7° E).</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs text-slate-800">
+                        <select id="selectMesCierre" onchange="calcularCierreMensual()" class="border border-slate-300 rounded-lg px-2.5 py-1.5 font-bold bg-white focus:outline-none">
+                            <option value="3">Marzo 2026</option>
+                            <option value="4">Abril 2026</option>
+                            <option value="5">Mayo 2026</option>
+                            <option value="6">Junio 2026</option>
+                            <option value="7">Julio 2026</option>
+                            <option value="8">Agosto 2026</option>
+                            <option value="9" selected>Septiembre 2026</option>
+                            <option value="10">Octubre 2026</option>
+                            <option value="11">Noviembre 2026</option>
+                            <option value="12">Diciembre 2026</option>
+                        </select>
+                        <div class="flex items-center space-x-1 bg-white px-2 py-1 rounded-lg border border-slate-300">
+                            <span class="text-slate-600 font-medium">Días Hábiles:</span>
+                            <input type="number" id="inputDiasHabiles" value="20" min="1" max="31" onchange="calcularCierreMensual()" class="w-12 text-center font-bold text-blue-900 border-none focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recuadro Azul de Resumen (Replica exacto del formato físico) -->
+                <div class="p-6 bg-slate-50 flex justify-center">
+                    <div class="max-w-2xl w-full border-2 border-blue-900 bg-white rounded-lg shadow-md p-4 text-xs font-mono">
+                        <div class="text-center font-bold text-blue-950 uppercase border-b border-blue-200 pb-2 mb-3 text-sm">
+                            Resumen Estadístico Mensual
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <!-- Columna 1: Movimiento de Matrícula -->
+                            <div class="border border-blue-300 rounded overflow-hidden">
+                                <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300">
+                                    Matrícula del Mes
+                                </div>
+                                <div class="p-2 space-y-2">
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600">Alumnos Inscriptos:</span>
+                                        <span id="resInscriptos" class="font-bold text-slate-900 text-sm">40</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600">Alumnos Entrados:</span>
+                                        <input type="number" id="resEntrados" value="0" min="0" onchange="calcularCierreMensual()" class="w-12 text-center border border-slate-300 rounded font-bold text-blue-800">
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600">Alumnos Salidos:</span>
+                                        <input type="number" id="resSalidos" value="0" min="0" onchange="calcularCierreMensual()" class="w-12 text-center border border-slate-300 rounded font-bold text-red-800">
+                                    </div>
+                                    <div class="flex justify-between items-center bg-blue-50/50 p-1 rounded font-bold text-blue-950">
+                                        <span>Quedan al último día:</span>
+                                        <span id="resQuedanUltimoDia" class="text-sm">40</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Columna 2: Totales de Asistencia -->
+                            <div class="border border-blue-300 rounded overflow-hidden">
+                                <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300">
+                                    Totales Asistencia
+                                </div>
+                                <div class="p-2 space-y-2">
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600">Total de Asistencia:</span>
+                                        <span id="resTotalAsistencia" class="font-bold text-emerald-700 text-sm">0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600">Total de Inasistencia:</span>
+                                        <span id="resTotalInasistencia" class="font-bold text-red-700 text-sm">0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                        <span class="text-slate-600">Asistencia Media:</span>
+                                        <span id="resAsistenciaMedia" class="font-bold text-blue-900 text-sm">0</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-blue-900 text-white p-1 rounded font-bold">
+                                        <span>% de Asistencia:</span>
+                                        <span id="resPorcentajeAsistencia" class="text-sm">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-200 text-[10px] text-slate-500 text-center">
+                            * Datos listos para transcribir directamente al folio del Registro de Asistencia Diaria del mes.
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -484,7 +586,7 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasMes: 3.0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
-        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v20_justificativos')) || nominaOficial.map(item => ({
+        let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v21_cierre_mes')) || nominaOficial.map(item => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
@@ -534,17 +636,19 @@
         }
 
         function guardarPersistencia() {
-            localStorage.setItem('alumnos_et17_v20_justificativos', JSON.stringify(alumnos));
+            localStorage.setItem('alumnos_et17_v21_cierre_mes', JSON.stringify(alumnos));
         }
 
         function cambiarSolapa(solapa) {
             document.getElementById('sec-inicio').classList.add('hidden');
+            document.getElementById('sec-cierre').classList.add('hidden');
             document.getElementById('sec-alumnos').classList.add('hidden');
             document.getElementById('sec-fichas').classList.add('hidden');
             document.getElementById('sec-taller').classList.add('hidden');
             document.getElementById('sec-alertas').classList.add('hidden');
 
             document.getElementById('tab-inicio').className = "text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0";
+            document.getElementById('tab-cierre').className = "text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0";
             document.getElementById('tab-alumnos').className = "text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0";
             document.getElementById('tab-fichas').className = "text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0";
             document.getElementById('tab-taller').className = "text-slate-400 hover:text-white pb-1 flex items-center space-x-1 shrink-0";
@@ -553,6 +657,10 @@
             if (solapa === 'inicio') {
                 document.getElementById('sec-inicio').classList.remove('hidden');
                 document.getElementById('tab-inicio').className = "text-blue-400 border-b-2 border-blue-500 pb-1 flex items-center space-x-1 shrink-0";
+            } else if (solapa === 'cierre') {
+                document.getElementById('sec-cierre').classList.remove('hidden');
+                document.getElementById('tab-cierre').className = "text-blue-400 border-b-2 border-blue-500 pb-1 flex items-center space-x-1 shrink-0";
+                calcularCierreMensual();
             } else if (solapa === 'alumnos') {
                 document.getElementById('sec-alumnos').classList.remove('hidden');
                 document.getElementById('tab-alumnos').className = "text-blue-400 border-b-2 border-blue-500 pb-1 flex items-center space-x-1 shrink-0";
@@ -566,6 +674,33 @@
                 document.getElementById('sec-alertas').classList.remove('hidden');
                 document.getElementById('tab-alertas').className = "text-blue-400 border-b-2 border-blue-500 pb-1 flex items-center space-x-1 shrink-0";
             }
+        }
+
+        function calcularCierreMensual() {
+            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 20;
+            const entrados = parseInt(document.getElementById('resEntrados').value) || 0;
+            const salidos = parseInt(document.getElementById('resSalidos').value) || 0;
+
+            const totalInscriptos = alumnos.length;
+            const quedanUltimoDia = totalInscriptos + entrados - salidos;
+
+            let totalInasistenciasMes = 0;
+            alumnos.forEach(a => {
+                totalInasistenciasMes += (a.faltasMes || 0);
+            });
+
+            const totalAsistencia = Math.round((quedanUltimoDia * diasHabiles) - totalInasistenciasMes);
+            const asistenciaMedia = (totalAsistencia / diasHabiles).toFixed(1);
+            
+            const totalPosible = totalAsistencia + totalInasistenciasMes;
+            const pctAsistencia = totalPosible > 0 ? ((totalAsistencia / totalPosible) * 100).toFixed(0) : 100;
+
+            document.getElementById('resInscriptos').innerText = totalInscriptos;
+            document.getElementById('resQuedanUltimoDia').innerText = quedanUltimoDia;
+            document.getElementById('resTotalAsistencia').innerText = totalAsistencia;
+            document.getElementById('resTotalInasistencia').innerText = totalInasistenciasMes;
+            document.getElementById('resAsistenciaMedia').innerText = asistenciaMedia;
+            document.getElementById('resPorcentajeAsistencia').innerText = `${pctAsistencia}%`;
         }
 
         function lanzarNotificacionAndroid(titulo, cuerpo) {
