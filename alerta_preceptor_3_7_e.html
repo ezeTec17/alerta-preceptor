@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta Preceptor - Esc. Técnica N° 17 DE 13</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-bottom: 2px solid #2563eb; color: #2563eb; font-weight: 600; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-600 p-2 rounded-lg">
+                        <i data-lucide="shield-alert" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">Alerta Preceptor</h1>
+                        <p class="text-xs text-slate-400">Esc. Técnica N° 17 DE 13 | 3° 7° E (2026)</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="flex gap-1 md:gap-4 text-sm font-medium">
+                    <button onclick="switchTab('dashboard')" id="tab-dashboard" class="px-3 py-2 rounded-md hover:text-white text-slate-300 flex items-center gap-2 tab-active">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Dashboard</span>
+                    </button>
+                    <button onclick="switchTab('alumnos')" id="tab-alumnos" class="px-3 py-2 rounded-md hover:text-white text-slate-300 flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Alumnos</span>
+                    </button>
+                    <button onclick="switchTab('alertas')" id="tab-alertas" class="px-3 py-2 rounded-md hover:text-white text-slate-300 flex items-center gap-2 relative">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span class="hidden sm:inline">Alertas Académicas</span>
+                        <span id="badge-alertas-count" class="bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold">0</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="space-y-6">
+            <!-- Metrics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Alumnos Cargados</p>
+                        <h3 class="text-2xl font-bold text-slate-800 mt-1" id="metric-total-alumnos">40 / 40</h3>
+                        <p class="text-xs text-slate-500 mt-1">División 3° 7° E - Turno Tarde</p>
+                    </div>
+                    <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                        <i data-lucide="user-check" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Riesgo Académico</p>
+                        <h3 class="text-2xl font-bold text-red-600 mt-1" id="metric-riesgo-academico">0</h3>
+                        <p class="text-xs text-slate-500 mt-1">≥ 3 materias En Proceso (3° Bim)</p>
+                    </div>
+                    <div class="p-3 bg-red-50 text-red-600 rounded-lg">
+                        <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rendimiento Promedio</p>
+                        <h3 class="text-2xl font-bold text-emerald-600 mt-1" id="metric-rendimiento">Suficiente</h3>
+                        <p class="text-xs text-slate-500 mt-1">Suficiente / Avanzado (3° Bim)</p>
+                    </div>
+                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
+                        <i data-lucide="trending-up" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Inasistencias Altas</p>
+                        <h3 class="text-2xl font-bold text-amber-600 mt-1" id="metric-faltas-altas">0</h3>
+                        <p class="text-xs text-slate-500 mt-1">≥ 10 ausentes acumulados</p>
+                    </div>
+                    <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
+                        <i data-lucide="calendar-x" class="w-6 h-6"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Academic Chart -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-semibold text-slate-800 text-base mb-4 flex items-center gap-2">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-blue-600"></i>
+                        Estado Académico por Materia (3° Bimestre)
+                    </h3>
+                    <div class="h-64 relative">
+                        <canvas id="chartMaterias"></canvas>
+                    </div>
+                </div>
+
+                <!-- Attendance Distribution -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-semibold text-slate-800 text-base mb-4 flex items-center gap-2">
+                        <i data-lucide="pie-chart" class="w-5 h-5 text-blue-600"></i>
+                        Distribución General de Inasistencias
+                    </h3>
+                    <div class="h-64 relative flex justify-center">
+                        <canvas id="chartAsistencia"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Table / Critical Subjects -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-5 border-b border-slate-100 flex justify-between items-center">
+                    <h3 class="font-semibold text-slate-800 text-base flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i>
+                        Resumen de Materias Críticas (3er Bimestre)
+                    </h3>
+                    <span class="text-xs text-slate-500" id="total-evaluados-txt">40 Estudiantes Evaluados</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600">
+                                <th class="py-3 px-4 font-semibold">Materia</th>
+                                <th class="py-3 px-4 font-semibold text-center">Avanzado</th>
+                                <th class="py-3 px-4 font-semibold text-center">Suficiente</th>
+                                <th class="py-3 px-4 font-semibold text-center">En Proceso (EP)</th>
+                                <th class="py-3 px-4 font-semibold text-center">% Aprobación</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-materias-body" class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALUMNOS VIEW -->
+        <section id="view-alumnos" class="space-y-6 hidden">
+            <!-- Search & Filters -->
+            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
+                <div class="relative w-full md:w-96">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                    <input type="text" id="input-search-student" onkeyup="filterStudents()" placeholder="Buscar por apellido, nombre o DNI..." class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <select id="filter-status" onchange="filterStudents()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white">
+                        <option value="todos">Todos los Estados</option>
+                        <option value="riesgo">En Riesgo Académico (≥3 EP)</option>
+                        <option value="faltas">Con Inasistencias (≥10)</option>
+                        <option value="regular">Sin Alertas</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Student List Grid / Table -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Students List Sidebar -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden md:col-span-1 max-h-[700px] flex flex-col">
+                    <div class="p-3 bg-slate-100 border-b border-slate-200 font-semibold text-xs text-slate-600 uppercase tracking-wider flex justify-between">
+                        <span>Listado de Alumnos</span>
+                        <span id="student-count-badge">40</span>
+                    </div>
+                    <div id="student-list-container" class="divide-y divide-slate-100 overflow-y-auto flex-1 hide-scrollbar">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Selected Student Details Card -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm md:col-span-2 p-6 flex flex-col justify-between" id="student-detail-card">
+                    <div class="text-center py-12 text-slate-400">
+                        <i data-lucide="user-search" class="w-12 h-12 mx-auto mb-3 text-slate-300"></i>
+                        <p class="text-sm font-medium">Seleccioná un alumno de la lista para ver su legajo completo, notas y asistencias.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALERTAS VIEW -->
+        <section id="view-alertas" class="space-y-6 hidden">
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 text-amber-800">
+                <i data-lucide="bell-ring" class="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"></i>
+                <div class="text-sm">
+                    <p class="font-semibold">Módulo de Seguimiento de Riesgo Pedagógico y Asistencia</p>
+                    <p class="mt-0.5">Listado automático de estudiantes que requieren intervención del preceptor/a debido a materias en proceso o acumulación de inasistencias en septiembre/octubre.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-slate-100 font-semibold text-slate-800 flex justify-between items-center">
+                    <span>Alumnos con Alertas Activas</span>
+                    <button onclick="exportAlertsList()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-medium flex items-center gap-1.5 transition">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        Exportar Alertas
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-600">
+                                <th class="py-3 px-4 font-semibold">Alumno</th>
+                                <th class="py-3 px-4 font-semibold">DNI</th>
+                                <th class="py-3 px-4 font-semibold text-center">Materias en Proceso (3° Bim)</th>
+                                <th class="py-3 px-4 font-semibold text-center">Faltas Acumuladas</th>
+                                <th class="py-3 px-4 font-semibold text-center">Estado Alerta</th>
+                                <th class="py-3 px-4 font-semibold text-right">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-alerts-body" class="divide-y divide-slate-100">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Editar Datos Personales -->
+    <div id="modal-edit-student" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 m-4 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-800 text-lg">Editar Datos Personales</h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form id="form-edit-student" onsubmit="saveStudentPersonalData(event)" class="space-y-3">
+                <input type="hidden" id="edit-student-id">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Nombre Completo</label>
+                    <input type="text" id="edit-student-name" readonly class="w-full bg-slate-100 border border-slate-300 rounded-lg p-2 text-sm text-slate-600 cursor-not-allowed">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">DNI</label>
+                        <input type="text" id="edit-student-dni" readonly class="w-full bg-slate-100 border border-slate-300 rounded-lg p-2 text-sm text-slate-600 cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">CUIL</label>
+                        <input type="text" id="edit-student-cuil" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Correo Institucional</label>
+                    <input type="email" id="edit-student-email" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Teléfono / Celular</label>
+                        <input type="text" id="edit-student-phone" placeholder="Ej: 11 2345-6789" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Domicilio</label>
+                        <input type="text" id="edit-student-address" placeholder="Ej: Av. Rivadavia 1234" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                    </div>
+                </div>
+                <div class="pt-3 flex justify-end gap-2 border-t border-slate-100">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-600 hover:bg-slate-50">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Data & Logic -->
+    <script>
+        // Full dataset of 40 students with Complete Grades and Attendance
+        const studentsData = [
+            { id: "1", nombre: "ALTAMIRANDA, MATEO", dni: "49012301", email: "mateoaltamiranda@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Avanzado"} } },
+            { id: "2", nombre: "ARNEDO, NICOLAS VALENTIN", dni: "49012302", email: "nicolasarnedo@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 13.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Geografía": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Historia": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Inglés": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Lengua y lit.": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Matemática": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Tecnología": {b1:"En Proceso", b2:"5", b3:"Suficiente"} } },
+            { id: "3", nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "49012303", email: "thiagoaruni@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.0, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "4", nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "49012304", email: "nahuelcamargo@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "5", nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "49012305", email: "mateocardena@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 2.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "6", nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "49012306", email: "sebastiancayo@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 3.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "7", nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "49012307", email: "alfredchuca@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.0, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "8", nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "49012308", email: "francoconde@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 6.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "9", nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "49012309", email: "briancondori@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "10", nombre: "CONDORI TICONA, JOSE SANTOS", dni: "49012310", email: "josecondori@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 6.0, faltasOct: 1.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "11", nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "49012311", email: "joelcopa@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 2.0, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "12", nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "49012312", email: "valentinodehnike@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 14.0, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Educación Física": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Geografía": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Historia": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Inglés": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Lengua y lit.": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Matemática": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"4", b3:"En Proceso"}, "Tecnología": {b1:"En Proceso", b2:"5", b3:"En Proceso"} } },
+            { id: "13", nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "49012313", email: "owenespinoza@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "14", nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "49012314", email: "mayrahinojosa@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "15", nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49012315", email: "juanillanes@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 0.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "16", nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49012316", email: "yoeljimenez@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 5.5, faltasOct: 1.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "17", nombre: "LIMA, DAMIAN EMANUEL", dni: "49012317", email: "damianlima@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 2.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "18", nombre: "LOPEZ, AYLEN CELINDA", dni: "49012318", email: "aylenlopez@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "19", nombre: "MAMANI JUICA, NAIRA KEILA", dni: "49012319", email: "nairamamani@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "20", nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "49012320", email: "thiagomartinez@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 2.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Química": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "21", nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", email: "matiasmejia@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 3.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"-", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"En Proceso", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"5", b3:"Avanzado"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"En Proceso", b2:"5", b3:"Avanzado"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"Avanzado"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"-", b3:"Avanzado"} } },
+            { id: "22", nombre: "MELGAR RIVERO, TOBIAS", dni: "49012322", email: "tobiasmelgar@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 5.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "23", nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "49012323", email: "dantemerlo@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 7.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "24", nombre: "OJEDA LAIME, LEONEL", dni: "49012324", email: "leonelojeda@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 3.0, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "25", nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "49012325", email: "judithchoquehuanca@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 3.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "26", nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "49012326", email: "jonathanramos@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 0.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "27", nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "49012327", email: "orlandoricaldi@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.7, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "28", nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "49012328", email: "valentinoriera@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.0, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "29", nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "49012329", email: "agustinsaravia@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 3.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "30", nombre: "SATURI CALLE, YAMIR RONALD", dni: "49012330", email: "yamirsaturi@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 0.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "31", nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "49012331", email: "lucascravaglieri@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.0, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "32", nombre: "SOLIS, MARCO ANTONIO", dni: "49012332", email: "marcosolis@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.0, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "33", nombre: "SOSA, AXEL YAIR", dni: "49012333", email: "axelsosa@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 1.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "34", nombre: "TABOADA, CARLOS ALEXANDER", dni: "49012334", email: "carlostaboada@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "35", nombre: "TICONA ALVAREZ, GABRIELA", dni: "49012335", email: "gabrielaticona@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 5.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "36", nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "49012336", email: "dylantoledo@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 2.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "37", nombre: "TOÑANE, JAVIER NICOLAS", dni: "49012337", email: "javirtonane@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 5.0, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } },
+            { id: "38", nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "49012338", email: "dantetucci@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 4.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Física": {b1:"En Proceso", b2:"5", b3:"Suficiente"}, "Geografía": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "39", nombre: "URIA AVALOS, WILFREDO JOEL", dni: "49012339", email: "wilfredouria@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 2.5, faltasOct: 0.0, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Avanzado"}, "Educación Física": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Física": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Geografía": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Historia": {b1:"Suficiente", b2:"8", b3:"Avanzado"}, "Inglés": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Lengua y lit.": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Matemática": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Química": {b1:"Suficiente", b2:"7", b3:"Avanzado"}, "Tecnología": {b1:"Suficiente", b2:"8", b3:"Avanzado"} } },
+            { id: "40", nombre: "VEIGA, THIAGO", dni: "49012340", email: "thiagoveiga@alum.tec17ba.edu.ar", phone: "", address: "", faltasSep: 6.5, faltasOct: 0.5, materias: { "Ed. Ciudadana": {b1:"Suficiente", b2:"Suficiente", b3:"Suficiente"}, "Educación Física": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Física": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Geografía": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Historia": {b1:"Suficiente", b2:"7", b3:"Suficiente"}, "Inglés": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Lengua y lit.": {b1:"Suficiente", b2:"6", b3:"Suficiente"}, "Matemática": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Química": {b1:"En Proceso", b2:"5", b3:"En Proceso"}, "Tecnología": {b1:"Suficiente", b2:"7", b3:"Suficiente"} } }
+        ];
+
+        let selectedStudentId = "1";
+        let chartMateriasInstance = null;
+        let chartAsistenciaInstance = null;
+
+        // Initialize Application
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            calculateMetricsAndRender();
+            renderStudentList(studentsData);
+            selectStudent("1");
+            renderAlertsTable();
+        });
+
+        // Tab Switching Logic
+        function switchTab(tab) {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-alumnos').classList.add('hidden');
+            document.getElementById('view-alertas').classList.add('hidden');
+
+            document.getElementById('tab-dashboard').classList.remove('tab-active');
+            document.getElementById('tab-alumnos').classList.remove('tab-active');
+            document.getElementById('tab-alertas').classList.remove('tab-active');
+
+            document.getElementById(`view-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).classList.add('tab-active');
+        }
+
+        // Helper: Get Student Status & Alerts
+        function getStudentStats(student) {
+            let epCountB3 = 0;
+            const subjects = Object.keys(student.materias);
+            subjects.forEach(sub => {
+                if (student.materias[sub].b3 === "En Proceso") epCountB3++;
+            });
+
+            const totalFaltas = student.faltasSep + student.faltasOct;
+            const isRiesgoAcademico = epCountB3 >= 3;
+            const isFaltasAltas = totalFaltas >= 10;
+
+            return {
+                epCountB3,
+                totalFaltas,
+                isRiesgoAcademico,
+                isFaltasAltas,
+                hasAlert: isRiesgoAcademico || isFaltasAltas
+            };
+        }
+
+        // Calculate Overview Metrics and Render Charts
+        function calculateMetricsAndRender() {
+            let riesgoCount = 0;
+            let faltasAltasCount = 0;
+            let alertCount = 0;
+
+            const subjectStats = {};
+            const subjectsList = Object.keys(studentsData[0].materias);
+            subjectsList.forEach(s => subjectStats[s] = { Avanzado: 0, Suficiente: 0, EP: 0 });
+
+            studentsData.forEach(st => {
+                const stats = getStudentStats(st);
+                if (stats.isRiesgoAcademico) riesgoCount++;
+                if (stats.isFaltasAltas) faltasAltasCount++;
+                if (stats.hasAlert) alertCount++;
+
+                subjectsList.forEach(sub => {
+                    const grade = st.materias[sub].b3;
+                    if (grade === "Avanzado") subjectStats[sub].Avanzado++;
+                    else if (grade === "Suficiente") subjectStats[sub].Suficiente++;
+                    else if (grade === "En Proceso") subjectStats[sub].EP++;
+                });
+            });
+
+            document.getElementById('metric-total-alumnos').innerText = `${studentsData.length} / ${studentsData.length}`;
+            document.getElementById('metric-riesgo-academico').innerText = riesgoCount;
+            document.getElementById('metric-faltas-altas').innerText = faltasAltasCount;
+            document.getElementById('badge-alertas-count').innerText = alertCount;
+
+            renderDashboardCharts(subjectStats);
+            renderSubjectsTable(subjectStats);
+        }
+
+        // Render Dashboard Charts
+        function renderDashboardCharts(subjectStats) {
+            const labels = Object.keys(subjectStats);
+            const epData = labels.map(s => subjectStats[s].EP);
+            const sufData = labels.map(s => subjectStats[s].Suficiente);
+            const avData = labels.map(s => subjectStats[s].Avanzado);
+
+            const ctx1 = document.getElementById('chartMaterias').getContext('2d');
+            if (chartMateriasInstance) chartMateriasInstance.destroy();
+
+            chartMateriasInstance = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Avanzado', data: avData, backgroundColor: '#10b981' },
+                        { label: 'Suficiente', data: sufData, backgroundColor: '#3b82f6' },
+                        { label: 'En Proceso', data: epData, backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { x: { stacked: true }, y: { stacked: true, max: 40 } }
+                }
+            });
+
+            // Attendance Pie Chart
+            const ctx2 = document.getElementById('chartAsistencia').getContext('2d');
+            if (chartAsistenciaInstance) chartAsistenciaInstance.destroy();
+
+            let de0a5 = 0, de5a10 = 0, mas10 = 0;
+            studentsData.forEach(st => {
+                const total = st.faltasSep + st.faltasOct;
+                if (total < 5) de0a5++;
+                else if (total < 10) de5a10++;
+                else mas10++;
+            });
+
+            chartAsistenciaInstance = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['0 a 5 Faltas (Buena)', '5 a 10 Faltas (Atención)', 'Más de 10 Faltas (Crítico)'],
+                    datasets: [{
+                        data: [de0a5, de5a10, mas10],
+                        backgroundColor: ['#10b981', '#f59e0b', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Render Subjects Critical Table
+        function renderSubjectsTable(subjectStats) {
+            const tbody = document.getElementById('table-materias-body');
+            tbody.innerHTML = '';
+
+            Object.keys(subjectStats).forEach(sub => {
+                const total = studentsData.length;
+                const ep = subjectStats[sub].EP;
+                const suf = subjectStats[sub].Suficiente;
+                const av = subjectStats[sub].Avanzado;
+                const passRate = (((av + suf) / total) * 100).toFixed(0);
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition';
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-medium text-slate-800">${sub}</td>
+                    <td class="py-3 px-4 text-center font-semibold text-emerald-600">${av}</td>
+                    <td class="py-3 px-4 text-center font-semibold text-blue-600">${suf}</td>
+                    <td class="py-3 px-4 text-center font-semibold ${ep > 0 ? 'text-red-600 bg-red-50/50' : 'text-slate-400'}">${ep}</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="px-2 py-1 rounded-full text-xs font-bold ${passRate >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                            ${passRate}% Aprobados
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Render Student List
+        function renderStudentList(list) {
+            const container = document.getElementById('student-list-container');
+            container.innerHTML = '';
+            document.getElementById('student-count-badge').innerText = list.length;
+
+            list.forEach(st => {
+                const stats = getStudentStats(st);
+                const item = document.createElement('div');
+                item.className = `p-3 cursor-pointer hover:bg-blue-50 transition flex justify-between items-center ${st.id === selectedStudentId ? 'bg-blue-100/70 border-l-4 border-blue-600' : ''}`;
+                item.onclick = () => selectStudent(st.id);
+
+                let badge = '';
+                if (stats.isRiesgoAcademico) {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700">Riesgo (${stats.epCountB3} EP)</span>`;
+                } else if (stats.isFaltasAltas) {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-700">${stats.totalFaltas} Faltas</span>`;
+                } else {
+                    badge = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-600">Al día</span>`;
+                }
+
+                item.innerHTML = `
+                    <div>
+                        <p class="font-semibold text-slate-800 text-sm leading-tight">${st.nombre}</p>
+                        <p class="text-xs text-slate-400">DNI: ${st.dni}</p>
+                    </div>
+                    <div>${badge}</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Select Student & Render Full Detail
+        function selectStudent(id) {
+            selectedStudentId = id;
+            renderStudentList(studentsData);
+
+            const st = studentsData.find(s => s.id === id);
+            if (!st) return;
+
+            const stats = getStudentStats(st);
+            const card = document.getElementById('student-detail-card');
+
+            let alertBanner = '';
+            if (stats.isRiesgoAcademico) {
+                alertBanner = `
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3 text-red-800 text-xs flex justify-between items-center mb-4">
+                        <span class="font-semibold flex items-center gap-1.5"><i data-lucide="alert-circle" class="w-4 h-4 text-red-600"></i> Alerta: Tiene ${stats.epCountB3} materias En Proceso en el 3er Bimestre.</span>
+                    </div>`;
+            }
+
+            // Academic Grades Rows
+            let gradesHtml = '';
+            Object.keys(st.materias).forEach(m => {
+                const b1 = st.materias[m].b1;
+                const b2 = st.materias[m].b2;
+                const b3 = st.materias[m].b3;
+
+                const getBadge = (val) => {
+                    if (val === "En Proceso" || val === "4" || val === "5") return `<span class="px-2 py-0.5 rounded bg-red-100 text-red-700 text-xs font-semibold">${val}</span>`;
+                    if (val === "Avanzado" || val === "8" || val === "9" || val === "10") return `<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-xs font-semibold">${val}</span>`;
+                    return `<span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-xs font-semibold">${val}</span>`;
+                };
+
+                gradesHtml += `
+                    <tr class="border-b border-slate-100 hover:bg-slate-50">
+                        <td class="py-2 px-3 font-medium text-slate-700 text-xs">${m}</td>
+                        <td class="py-2 px-3 text-center">${getBadge(b1)}</td>
+                        <td class="py-2 px-3 text-center">${getBadge(b2)}</td>
+                        <td class="py-2 px-3 text-center">${getBadge(b3)}</td>
+                    </tr>`;
+            });
+
+            const cuil = `20-${st.dni}-9`;
+
+            card.innerHTML = `
+                <div class="space-y-5">
+                    <!-- Student Header -->
+                    <div class="flex justify-between items-start border-b border-slate-100 pb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-900">${st.nombre}</h2>
+                            <p class="text-xs text-slate-500 mt-0.5">Estudiante Regular de 3° Año 7° Div. (E.E.T N° 17)</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="openEditModal('${st.id}')" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg flex items-center gap-1">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Editar Datos
+                            </button>
+                            <button onclick="sendEmailAlert('${st.id}')" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg flex items-center gap-1">
+                                <i data-lucide="mail" class="w-3.5 h-3.5"></i> Enviar Mail Alerta
+                            </button>
+                        </div>
+                    </div>
+
+                    ${alertBanner}
+
+                    <!-- Personal Info Grid -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-3 rounded-lg text-xs">
+                        <div>
+                            <span class="text-slate-400 block font-medium">DNI</span>
+                            <span class="font-bold text-slate-700">${st.dni}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block font-medium">CUIL</span>
+                            <span class="font-bold text-slate-700">${cuil}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block font-medium">Teléfono</span>
+                            <span class="font-bold text-slate-700">${st.phone || 'Sin registrar'}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block font-medium">Domicilio</span>
+                            <span class="font-bold text-slate-700">${st.address || 'Sin registrar'}</span>
+                        </div>
+                        <div class="col-span-2 sm:col-span-4 mt-1 pt-1 border-t border-slate-200">
+                            <span class="text-slate-400 font-medium">Email Institucional: </span>
+                            <span class="font-bold text-blue-600">${st.email}</span>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Metrics for Student -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="border border-slate-200 rounded-lg p-3 text-center">
+                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Faltas Septiembre</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5">${st.faltasSep} días</p>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg p-3 text-center">
+                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Faltas Octubre</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5">${st.faltasOct} días</p>
+                        </div>
+                        <div class="border border-slate-200 rounded-lg p-3 text-center ${stats.isFaltasAltas ? 'bg-amber-50 border-amber-300' : ''}">
+                            <p class="text-[10px] text-slate-400 uppercase font-semibold">Total Acumulado</p>
+                            <p class="text-lg font-bold ${stats.isFaltasAltas ? 'text-amber-700' : 'text-slate-800'} mt-0.5">${stats.totalFaltas} días</p>
+                        </div>
+                    </div>
+
+                    <!-- Academic Performance Table -->
+                    <div>
+                        <h4 class="font-semibold text-xs text-slate-600 uppercase tracking-wider mb-2">Boletín de Calificaciones de 3° Bimestre</h4>
+                        <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                                        <th class="py-2 px-3 font-semibold">Materia</th>
+                                        <th class="py-2 px-3 font-semibold text-center">1° Bimestre</th>
+                                        <th class="py-2 px-3 font-semibold text-center">2° Bimestre</th>
+                                        <th class="py-2 px-3 font-semibold text-center">3° Bimestre</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${gradesHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Render Alerts View Table
+        function renderAlertsTable() {
+            const tbody = document.getElementById('table-alerts-body');
+            tbody.innerHTML = '';
+
+            const alertsList = studentsData.filter(st => getStudentStats(st).hasAlert);
+
+            if (alertsList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">No hay estudiantes con alertas actualmente.</td></tr>`;
+                return;
+            }
+
+            alertsList.forEach(st => {
+                const stats = getStudentStats(st);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
+
+                let statusBadge = '';
+                if (stats.isRiesgoAcademico && stats.isFaltasAltas) {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">Riesgo Alto (Notas + Faltas)</span>`;
+                } else if (stats.isRiesgoAcademico) {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">Riesgo Académico</span>`;
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">Atención Faltas</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-semibold text-slate-800">${st.nombre}</td>
+                    <td class="py-3 px-4 text-slate-500">${st.dni}</td>
+                    <td class="py-3 px-4 text-center font-bold ${stats.epCountB3 >= 3 ? 'text-red-600' : 'text-slate-600'}">${stats.epCountB3} EP</td>
+                    <td class="py-3 px-4 text-center font-bold ${stats.totalFaltas >= 10 ? 'text-amber-600' : 'text-slate-600'}">${stats.totalFaltas} Faltas</td>
+                    <td class="py-3 px-4 text-center">${statusBadge}</td>
+                    <td class="py-3 px-4 text-right">
+                        <button onclick="sendEmailAlert('${st.id}')" class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-medium">
+                            Notificar Email
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Filter Students Input/Select
+        function filterStudents() {
+            const query = document.getElementById('input-search-student').value.toLowerCase();
+            const filter = document.getElementById('filter-status').value;
+
+            const filtered = studentsData.filter(st => {
+                const matchesQuery = st.nombre.toLowerCase().includes(query) || st.dni.includes(query);
+                const stats = getStudentStats(st);
+
+                let matchesFilter = true;
+                if (filter === 'riesgo') matchesFilter = stats.isRiesgoAcademico;
+                else if (filter === 'faltas') matchesFilter = stats.isFaltasAltas;
+                else if (filter === 'regular') matchesFilter = !stats.hasAlert;
+
+                return matchesQuery && matchesFilter;
+            });
+
+            renderStudentList(filtered);
+        }
+
+        // Send Email Helper (Opens Default Mail Client with Template)
+        function sendEmailAlert(id) {
+            const st = studentsData.find(s => s.id === id);
+            if (!st) return;
+
+            const stats = getStudentStats(st);
+            const subject = encodeURIComponent(`ALERTA PRECEPTORIA - Desempeño Académico / Asistencia - ${st.nombre}`);
+            
+            let bodyText = `Estimado/a ${st.nombre},\n\nNos comunicamos desde la Preceptoría de 3° 7° E de la Esc. Técnica N° 17 DE 13 para informarte el estado del 3er Bimestre:\n\n`;
+            
+            if (stats.isRiesgoAcademico) {
+                bodyText += `- Materias en proceso (3° Bimestre): ${stats.epCountB3}\n`;
+            }
+            bodyText += `- Inasistencias acumuladas: ${stats.totalFaltas} días\n\n`;
+            bodyText += `Te pedimos contactarte a la brevedad con la preceptoría para coordinar las tutorías de apoyo.\n\nAtentamente,\nPreceptoría 3° 7° E`;
+
+            const mailtoUrl = `mailto:${st.email}?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+            window.location.href = mailtoUrl;
+        }
+
+        // Modal Edit Handlers
+        function openEditModal(id) {
+            const st = studentsData.find(s => s.id === id);
+            if (!st) return;
+
+            document.getElementById('edit-student-id').value = st.id;
+            document.getElementById('edit-student-name').value = st.nombre;
+            document.getElementById('edit-student-dni').value = st.dni;
+            document.getElementById('edit-student-cuil').value = `20-${st.dni}-9`;
+            document.getElementById('edit-student-email').value = st.email;
+            document.getElementById('edit-student-phone').value = st.phone || '';
+            document.getElementById('edit-student-address').value = st.address || '';
+
+            document.getElementById('modal-edit-student').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('modal-edit-student').classList.add('hidden');
+        }
+
+        function saveStudentPersonalData(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-student-id').value;
+            const st = studentsData.find(s => s.id === id);
+
+            if (st) {
+                st.email = document.getElementById('edit-student-email').value;
+                st.phone = document.getElementById('edit-student-phone').value;
+                st.address = document.getElementById('edit-student-address').value;
+                selectStudent(id);
+                closeEditModal();
+            }
+        }
+
+        function exportAlertsList() {
+            const alertsList = studentsData.filter(st => getStudentStats(st).hasAlert);
+            let csv = "Nombre,DNI,Email,Materias EP,Faltas Totales\n";
+            alertsList.forEach(st => {
+                const stats = getStudentStats(st);
+                csv += `"${st.nombre}",${st.dni},${st.email},${stats.epCountB3},${stats.totalFaltas}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'Alertas_Preceptoria_3_7_E.csv');
+            a.click();
+        }
+    </script>
+</body>
+</html>
