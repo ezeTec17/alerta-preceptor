@@ -1241,7 +1241,6 @@
                 const est = estadosHoy[a.id] || 'Presente';
                 const det = detallesAsistencia[a.id] || {};
 
-                // Buscar el objeto del alumno principal en la lista global
                 const alGlobal = alumnos.find(item => item.id === a.id);
 
                 if (alGlobal && !verif.esNoLectivo) {
