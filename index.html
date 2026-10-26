@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <!-- APP PRINCIPAL (OCULTA HASTA AUTENTICAR) -->
+    <!-- APP PRINCIPAL -->
     <div id="contenidoApp" class="hidden flex-1 flex flex-col">
         <!-- Navbar Principal -->
         <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
@@ -217,7 +217,6 @@
                         </div>
                     </div>
 
-                    <!-- Recuadro Azul de Resumen -->
                     <div class="p-2 sm:p-6 bg-slate-50 flex justify-center">
                         <div class="w-full max-w-2xl border-2 border-blue-900 bg-white rounded-lg shadow-md p-3 sm:p-4 text-xs font-mono">
                             <div class="text-center font-bold text-blue-950 uppercase border-b border-blue-200 pb-2 mb-3 text-xs sm:text-sm">
@@ -262,7 +261,7 @@
                                         <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                                             <span class="text-slate-600 flex items-center space-x-1">
                                                 <span>Faltas Justificadas:</span>
-                                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block" title="Faltas Justificadas en Azul"></span>
+                                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
                                             </span>
                                             <input type="number" step="0.25" id="resFaltasJustificadasInput" value="0" min="0" onchange="recalcularDesdeInasistenciaManual()" class="w-14 text-center border border-blue-300 rounded font-bold text-blue-700 bg-blue-50/40">
                                         </div>
@@ -280,14 +279,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="mt-3 pt-2 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-[10px] text-slate-500 gap-1">
-                                <span>* Faltas Justificadas en AZUL, Inasistencias Injustificadas en ROJO.</span>
-                                <button onclick="calcularCierreMensual()" class="text-blue-700 hover:underline font-bold flex items-center space-x-1">
-                                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
-                                    <span>Sincronizar Datos</span>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -321,7 +312,6 @@
                                 </tr>
                             </thead>
                             <tbody id="tablaTodosAlumnos" class="divide-y divide-slate-100 text-sm">
-                                <!-- Carga dinámica -->
                             </tbody>
                         </table>
                     </div>
@@ -354,7 +344,6 @@
                                 </tr>
                             </thead>
                             <tbody id="tablaFichasAlumnos" class="divide-y divide-slate-100 text-sm">
-                                <!-- Carga dinámica -->
                             </tbody>
                         </table>
                     </div>
@@ -370,11 +359,6 @@
                                 <i data-lucide="wrench" class="w-5 h-5 text-emerald-600"></i>
                                 <span>Seguimiento Especial: Taller (18:00 - 20:50hs) y Ed. Física (Jue 09:45 - 11:45hs)</span>
                             </h3>
-                            <p class="text-xs text-emerald-700 mt-0.5">
-                                <span class="font-bold">Grupo A (20 alumn):</span> Lun y Mié (Altamiranda - Martínez) | 
-                                <span class="font-bold">Grupo B (20 alumn):</span> Mar y Vie (Mejía - Veiga) | 
-                                <span class="font-bold">Ed. Física:</span> Jueves (Todos)
-                            </p>
                         </div>
                         <button onclick="abrirModalAsistencia('taller')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
                             <i data-lucide="check-square" class="w-4 h-4"></i>
@@ -394,7 +378,6 @@
                                 </tr>
                             </thead>
                             <tbody id="tablaTallerAlumnos" class="divide-y divide-slate-100 text-sm">
-                                <!-- Carga dinámica -->
                             </tbody>
                         </table>
                     </div>
@@ -423,7 +406,6 @@
                                 </tr>
                             </thead>
                             <tbody id="tablaAlertasAlumnos" class="divide-y divide-slate-100 text-sm">
-                                <!-- Carga dinámica -->
                             </tbody>
                         </table>
                     </div>
@@ -450,38 +432,35 @@
                 <input type="hidden" id="editAlumnoId">
                 <div>
                     <label class="font-semibold text-slate-600 block mb-1">Apellido y Nombre</label>
-                    <input type="text" id="editNombre" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-medium">
+                    <input type="text" id="editNombre" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none font-medium">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">DNI</label>
-                        <input type="text" id="editDni" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                        <input type="text" id="editDni" class="w-full p-2 border border-slate-300 rounded-lg">
                     </div>
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">Código App Familias</label>
-                        <input type="text" id="editCodigoApp" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-mono text-indigo-700 bg-indigo-50/50">
+                        <input type="text" id="editCodigoApp" class="w-full p-2 border border-slate-300 rounded-lg font-mono text-indigo-700 bg-indigo-50/50">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">Teléfono Tutor</label>
-                        <input type="text" id="editTelefono" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                        <input type="text" id="editTelefono" class="w-full p-2 border border-slate-300 rounded-lg">
                     </div>
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">Email</label>
-                        <input type="email" id="editEmail" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-medium text-slate-800">
+                        <input type="email" id="editEmail" class="w-full p-2 border border-slate-300 rounded-lg font-medium text-slate-800">
                     </div>
                 </div>
-
                 <div>
                     <label class="font-semibold text-slate-600 block mb-1">Domicilio</label>
-                    <input type="text" id="editDomicilio" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="editDomicilio" class="w-full p-2 border border-slate-300 rounded-lg">
                 </div>
-
                 <div>
                     <label class="font-semibold text-amber-800 block mb-1">Materias Previas / Pendientes</label>
-                    <textarea id="editMateriasPrevias" rows="2" class="w-full p-2 border border-amber-300 bg-amber-50/30 rounded-lg focus:outline-none focus:border-amber-500 text-amber-900 font-medium"></textarea>
+                    <textarea id="editMateriasPrevias" rows="2" class="w-full p-2 border border-amber-300 bg-amber-50/30 rounded-lg font-medium"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 border-t border-slate-200 pt-2">
@@ -533,19 +512,17 @@
             <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-600">
                 <div class="flex items-center space-x-2">
                     <span>Fecha:</span>
-                    <input type="date" id="fechaAsistenciaInput" onchange="actualizarAsistenciaSegunFecha(true)" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none focus:border-blue-500">
+                    <input type="date" id="fechaAsistenciaInput" onchange="actualizarAsistenciaSegunFecha(true)" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none">
                 </div>
                 <span id="badgeTipoModal" class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">Teoría - 3° 7° E</span>
             </div>
 
-            <!-- Banner Alerta de Día No Lectivo / Filtro de Grupo -->
             <div id="bannerDiaNoLectivo" class="hidden bg-amber-50 border-b border-amber-200 p-3 text-xs text-amber-800 flex items-center space-x-2">
                 <i data-lucide="calendar-off" class="w-4 h-4 text-amber-600 shrink-0"></i>
                 <span id="textoDiaNoLectivo" class="font-medium">Día No Lectivo.</span>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-2 flex-1" id="listaTomarAsistencia">
-                <!-- Carga dinámica -->
             </div>
 
             <div class="p-4 border-t border-slate-100 bg-white flex items-center justify-end space-x-2">
@@ -607,9 +584,8 @@
         function esDiaNoLectivo(fechaObj) {
             const diaSemana = fechaObj.getDay();
             if (diaSemana === 0 || diaSemana === 6) {
-                return { esNoLectivo: true, motivo: diaSemana === 0 ? "Domingo (Fin de semana)" : "Sábado (Fin de semana)" };
+                return { esNoLectivo: true, motivo: diaSemana === 0 ? "Domingo" : "Sábado" };
             }
-
             const mes = fechaObj.getMonth() + 1;
             const dia = fechaObj.getDate();
             const mmdd = `${mes.toString().padStart(2, '0')}-${dia.toString().padStart(2, '0')}`;
@@ -617,14 +593,8 @@
             if (feriadosYRecesos[mmdd]) {
                 return { esNoLectivo: true, motivo: `Feriado: ${feriadosYRecesos[mmdd]}` };
             }
-
-            if (mes === 7 && dia >= 20 && dia <= 31) {
-                return { esNoLectivo: true, motivo: "Receso Escolar de Invierno" };
-            }
-
-            if (mes === 1 || (mes === 2 && dia <= 15) || (mes === 12 && dia >= 26)) {
-                return { esNoLectivo: true, motivo: "Receso Escolar de Verano" };
-            }
+            if (mes === 7 && dia >= 20 && dia <= 31) return { esNoLectivo: true, motivo: "Receso Escolar de Invierno" };
+            if (mes === 1 || (mes === 2 && dia <= 15) || (mes === 12 && dia >= 26)) return { esNoLectivo: true, motivo: "Receso Escolar de Verano" };
 
             return { esNoLectivo: false, motivo: "" };
         }
@@ -692,42 +662,9 @@
             boletinPdf: item.boletinPdf || ""
         }));
 
-        alumnos.forEach((al, idx) => {
-            al.grupoTaller = (idx < 20) ? "Grupo A (Lun/Mié)" : "Grupo B (Mar/Vie)";
-        });
-
         let modoAsistenciaModal = 'teoria';
         let estadosHoy = {};
         let detallesAsistencia = {};
-        let alumnosCargadosEnModal = [];
-
-        function reproducirSonidoAlerta() {
-            try {
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                const ctx = new AudioCtx();
-                
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.value = 880;
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(ctx.currentTime);
-                osc1.stop(ctx.currentTime + 0.15);
-
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.type = 'sine';
-                osc2.frequency.value = 1200;
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.start(ctx.currentTime + 0.15);
-                osc2.stop(ctx.currentTime + 0.35);
-            } catch (e) {
-                console.log("Audio no disponible.");
-            }
-        }
 
         function guardarPersistencia() {
             localStorage.setItem('alumnos_et17_v26_colores_personalizados', JSON.stringify(alumnos));
@@ -770,82 +707,304 @@
             }
         }
 
-        function calcularCierreMensual() {
-            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 18;
-            const entrados = parseInt(document.getElementById('resEntrados').value) || 0;
-            const salidos = parseInt(document.getElementById('resSalidos').value) || 0;
+        function abrirModalAsistencia(tipo) {
+            modoAsistenciaModal = tipo;
+            estadosHoy = {};
+            detallesAsistencia = {};
 
-            const totalInscriptos = alumnos.length;
-            const quedanUltimoDia = totalInscriptos + entrados - salidos;
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+            const dd = String(hoy.getDate()).padStart(2, '0');
+            document.getElementById('fechaAsistenciaInput').value = `${yyyy}-${mm}-${dd}`;
 
-            let totalInasistenciasMes = 0;
-            let totalJustificadasMes = 0;
-
-            alumnos.forEach(a => {
-                totalInasistenciasMes += (a.faltasMes || 0);
-                totalJustificadasMes += (a.faltasJustificadasMes || 0);
-            });
-
-            document.getElementById('resInscriptos').innerText = totalInscriptos;
-            document.getElementById('resQuedanUltimoDia').innerText = quedanUltimoDia;
-            
-            const inasistenciaVal = totalInasistenciasMes > 0 ? totalInasistenciasMes : (parseFloat(document.getElementById('resTotalInasistenciaInput').value) || 33.5);
-            document.getElementById('resTotalInasistenciaInput').value = inasistenciaVal;
-            document.getElementById('resFaltasJustificadasInput').value = totalJustificadasMes;
-
-            recalcularFormulas(quedanUltimoDia, diasHabiles, inasistenciaVal);
-        }
-
-        function recalcularDesdeInasistenciaManual() {
-            const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 18;
-            const entrados = parseInt(document.getElementById('resEntrados').value) || 0;
-            const salidos = parseInt(document.getElementById('resSalidos').value) || 0;
-            const quedanUltimoDia = alumnos.length + entrados - salidos;
-
-            const inasistenciaManual = parseFloat(document.getElementById('resTotalInasistenciaInput').value) || 0;
-            recalcularFormulas(quedanUltimoDia, diasHabiles, inasistenciaManual);
-        }
-
-        function recalcularFormulas(quedanUltimoDia, diasHabiles, totalInasistencia) {
-            const totalAsistencia = Math.round((quedanUltimoDia * diasHabiles) - totalInasistencia);
-            const asistenciaMedia = (totalAsistencia / diasHabiles).toFixed(1);
-            
-            const totalPosible = totalAsistencia + totalInasistencia;
-            const pctAsistencia = totalPosible > 0 ? ((totalAsistencia / totalPosible) * 100).toFixed(0) : 100;
-
-            document.getElementById('resTotalAsistencia').innerText = totalAsistencia;
-            document.getElementById('resAsistenciaMedia').innerText = asistenciaMedia;
-            document.getElementById('resPorcentajeAsistencia').innerText = `${pctAsistencia}%`;
-        }
-
-        function lanzarNotificacionAndroid(titulo, cuerpo) {
-            reproducirSonidoAlerta();
-            if ("Notification" in window) {
-                if (Notification.permission === "granted") {
-                    new Notification(titulo, { body: cuerpo, icon: "logo.png", vibrate: [200, 100, 200] });
-                } else if (Notification.permission !== "denied") {
-                    Notification.requestPermission().then(permission => {
-                        if (permission === "granted") {
-                            new Notification(titulo, { body: cuerpo, icon: "logo.png" });
-                        }
-                    });
-                }
+            if (tipo === 'taller') {
+                document.getElementById('tituloModalAsistencia').innerText = "Tomar Asistencia Taller / Ed. Física";
+                document.getElementById('badgeTipoModal').innerText = "Contraturno - 3° 7° E";
+                document.getElementById('badgeTipoModal').className = "bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded";
+            } else {
+                document.getElementById('tituloModalAsistencia').innerText = "Tomar Asistencia Teoría";
+                document.getElementById('badgeTipoModal').innerText = "Teoría - 3° 7° E";
+                document.getElementById('badgeTipoModal').className = "bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded";
             }
+
+            actualizarAsistenciaSegunFecha(false);
+            document.getElementById('modalAsistencia').classList.remove('hidden');
         }
 
-        function solicitarPermisoNotificacion() {
-            reproducirSonidoAlerta();
-            if (!("Notification" in window)) {
-                alert("Navegador sin soporte de notificaciones nativas.");
-                return;
+        function actualizarAsistenciaSegunFecha(resetEstados = false) {
+            const inputVal = document.getElementById('fechaAsistenciaInput').value;
+            if (!inputVal) return;
+
+            const partes = inputVal.split('-');
+            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
+            const verif = esDiaNoLectivo(fechaSel);
+            const diaSemana = fechaSel.getDay();
+
+            const banner = document.getElementById('bannerDiaNoLectivo');
+            const texto = document.getElementById('textoDiaNoLectivo');
+
+            if (resetEstados) {
+                estadosHoy = {};
             }
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    lanzarNotificacionAndroid("🔔 Notificaciones Activas", "Prueba de sonido y alerta exitosa.");
+
+            let listaFiltrada = alumnos;
+
+            if (verif.esNoLectivo) {
+                texto.innerText = `Atención: ${verif.motivo}. Estado configurado en 'NC'.`;
+                banner.classList.remove('hidden');
+            } else if (modoAsistenciaModal === 'taller') {
+                if (diaSemana === 1 || diaSemana === 3) {
+                    listaFiltrada = alumnos.slice(0, 20);
+                    texto.innerText = "🗓️ Lunes / Miércoles: GRUPO A al Taller (18:00 a 20:50 hs).";
+                    banner.classList.remove('hidden');
+                } else if (diaSemana === 2 || diaSemana === 5) {
+                    listaFiltrada = alumnos.slice(20, 40);
+                    texto.innerText = "🗓️ Martes / Viernes: GRUPO B al Taller (18:00 a 20:50 hs).";
+                    banner.classList.remove('hidden');
+                } else if (diaSemana === 4) {
+                    listaFiltrada = alumnos;
+                    texto.innerText = "🏃 Jueves: DIVISIÓN COMPLETA a Educación Física (09:45 a 11:45 hs).";
+                    banner.classList.remove('hidden');
                 } else {
-                    alert("Permití las notificaciones para escuchar las alertas.");
+                    banner.classList.add('hidden');
+                }
+            } else {
+                banner.classList.add('hidden');
+            }
+
+            renderizarListaAsistencia(verif.esNoLectivo, listaFiltrada);
+        }
+
+        function renderizarListaAsistencia(esNoLectivo, listaFiltrada) {
+            const contenedor = document.getElementById('listaTomarAsistencia');
+            contenedor.innerHTML = '';
+
+            listaFiltrada.forEach(a => {
+                if (!estadosHoy[a.id]) {
+                    estadosHoy[a.id] = esNoLectivo ? 'NC' : 'Presente';
+                }
+                const estActual = estadosHoy[a.id];
+
+                const div = document.createElement('div');
+                div.className = "p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-2";
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="font-medium text-slate-800">${a.nombre}</span>
+                            <span class="text-[10px] block text-slate-400">${a.grupoTaller || ''}</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600'} transition">P</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600'} transition">A</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'} transition">T</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" id="btn-jus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Justificada' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} transition">J</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'NC')" id="btn-nc-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'NC' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-600'} transition">NC</button>
+                        </div>
+                    </div>
+                `;
+                contenedor.appendChild(div);
+            });
+        }
+
+        function setEstado(id, estado) {
+            estadosHoy[id] = estado;
+            const btnPres = document.getElementById(`btn-pres-${id}`);
+            const btnAus = document.getElementById(`btn-aus-${id}`);
+            const btnTar = document.getElementById(`btn-tar-${id}`);
+            const btnJus = document.getElementById(`btn-jus-${id}`);
+            const btnNc = document.getElementById(`btn-nc-${id}`);
+
+            if (btnPres) btnPres.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            if (btnAus) btnAus.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            if (btnTar) btnTar.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            if (btnJus) btnJus.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+            if (btnNc) btnNc.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
+
+            if (estado === 'Presente' && btnPres) btnPres.className = "px-2 py-1 rounded font-bold bg-green-600 text-white transition";
+            if (estado === 'Ausente' && btnAus) btnAus.className = "px-2 py-1 rounded font-bold bg-red-600 text-white transition";
+            if (estado === 'Tarde' && btnTar) btnTar.className = "px-2 py-1 rounded font-bold bg-amber-500 text-white transition";
+            if (estado === 'Justificada' && btnJus) btnJus.className = "px-2 py-1 rounded font-bold bg-blue-600 text-white transition";
+            if (estado === 'NC' && btnNc) btnNc.className = "px-2 py-1 rounded font-bold bg-slate-700 text-white transition";
+        }
+
+        function cerrarModalAsistencia() {
+            document.getElementById('modalAsistencia').classList.add('hidden');
+        }
+
+        function guardarAsistenciaDiaria() {
+            const inputVal = document.getElementById('fechaAsistenciaInput').value;
+            if (!inputVal) return;
+
+            const partes = inputVal.split('-');
+            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
+            const verif = esDiaNoLectivo(fechaSel);
+            const diaSemana = fechaSel.getDay();
+
+            // Recorrer los marcados en la ventana de asistencia
+            Object.keys(estadosHoy).forEach(idStr => {
+                const id = parseInt(idStr);
+                const est = estadosHoy[id];
+                const alGlobal = alumnos.find(item => item.id === id);
+
+                if (alGlobal && !verif.esNoLectivo) {
+                    if (modoAsistenciaModal === 'taller') {
+                        if (diaSemana === 4) {
+                            // Jueves: Ed. Física
+                            if (est === 'Ausente') alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.5;
+                            else if (est === 'Justificada') { alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.5; alGlobal.faltasJustificadas = (alGlobal.faltasJustificadas || 0) + 0.5; }
+                            else if (est === 'Tarde') alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.25;
+                        } else {
+                            // Taller
+                            if (est === 'Ausente') alGlobal.faltasTaller = (alGlobal.faltasTaller || 0) + 0.5;
+                            else if (est === 'Justificada') { alGlobal.faltasTaller = (alGlobal.faltasTaller || 0) + 0.5; alGlobal.faltasJustificadas = (alGlobal.faltasJustificadas || 0) + 0.5; }
+                            else if (est === 'Tarde') alGlobal.faltasTaller = (alGlobal.faltasTaller || 0) + 0.25;
+                        }
+                    } else {
+                        // Teoría
+                        if (est === 'Ausente') {
+                            alGlobal.faltasAnuales = (alGlobal.faltasAnuales || 0) + 0.5;
+                            alGlobal.faltasMes = (alGlobal.faltasMes || 0) + 0.5;
+                        } else if (est === 'Justificada') {
+                            alGlobal.faltasAnuales = (alGlobal.faltasAnuales || 0) + 0.5;
+                            alGlobal.faltasJustificadas = (alGlobal.faltasJustificadas || 0) + 0.5;
+                            alGlobal.faltasMes = (alGlobal.faltasMes || 0) + 0.5;
+                        } else if (est === 'Tarde') {
+                            alGlobal.faltasAnuales = (alGlobal.faltasAnuales || 0) + 0.25;
+                            alGlobal.faltasMes = (alGlobal.faltasMes || 0) + 0.25;
+                        }
+                    }
                 }
             });
+
+            // Guardar cambios en el almacenamiento local del navegador
+            guardarPersistencia();
+
+            // Refrescar de inmediato todas las tablas de la aplicación
+            evaluarAlertas();
+            cerrarModalAsistencia();
+
+            alert("✅ Asistencia guardada con éxito.");
+        }
+
+        function evaluarAlertas() {
+            let criticosMaterias = 0;
+            let criticosAnuales = 0;
+            let criticosTaller = 0;
+            let totalAlertas = 0;
+
+            const tbodyTodos = document.getElementById('tablaTodosAlumnos');
+            const tbodyFichas = document.getElementById('tablaFichasAlumnos');
+            const tbodyTaller = document.getElementById('tablaTallerAlumnos');
+            const tbodyAlertas = document.getElementById('tablaAlertasAlumnos');
+            
+            tbodyTodos.innerHTML = '';
+            tbodyFichas.innerHTML = '';
+            tbodyTaller.innerHTML = '';
+            tbodyAlertas.innerHTML = '';
+
+            alumnos.forEach((a, index) => {
+                const esCriticoMaterias = a.materiasBajas > 5;
+                const esCriticoAnuales = a.faltasAnuales > 17;
+                const esCriticoTaller = a.faltasTaller >= 3;
+                const tieneAlerta = esCriticoMaterias || esCriticoAnuales || esCriticoTaller;
+
+                if (esCriticoMaterias) criticosMaterias++;
+                if (esCriticoAnuales) criticosAnuales++;
+                if (esCriticoTaller) criticosTaller++;
+                if (tieneAlerta) totalAlertas++;
+
+                const pdfRuta = encodeURI(`./${a.boletinPdf}`);
+                const esGrupoA = index < 20;
+
+                const trTodos = document.createElement('tr');
+                trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
+                trTodos.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-400 text-xs">${a.id}</td>
+                    <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-bold ${esGrupoA ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
+                            ${esGrupoA ? 'Grupo A (Lun/Mié)' : 'Grupo B (Mar/Vie)'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-xs font-medium text-amber-900 bg-amber-50/30 rounded">${a.materiasPrevias || 'Ninguna'}</td>
+                    <td class="p-3 text-center">
+                        <a href="${pdfRuta}" target="_blank" class="inline-flex items-center space-x-1 bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                            <span>PDF</span>
+                        </a>
+                    </td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-100 border border-red-200">${a.faltasAnuales}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200">${a.faltasJustificadas || 0}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200">${a.faltasTaller}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-50 border border-red-200">${a.faltasEF || 0}</span></td>
+                    <td class="p-3 text-right">
+                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-slate-200 text-slate-700 font-bold text-xs px-2.5 py-1 rounded-md">Editar</button>
+                    </td>
+                `;
+                tbodyTodos.appendChild(trTodos);
+
+                const trFicha = document.createElement('tr');
+                trFicha.className = "hover:bg-indigo-50/40";
+                trFicha.innerHTML = `
+                    <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
+                    <td class="p-3 font-mono text-slate-700 text-xs">${a.dni || 'Sin DNI'}</td>
+                    <td class="p-3 font-mono font-bold text-indigo-700 text-xs">${a.codigoApp || 'Sin Código'}</td>
+                    <td class="p-3 text-xs text-slate-700 font-medium">${a.telefono || 'Sin Teléfono'}</td>
+                    <td class="p-3 text-xs text-slate-600 font-medium">${a.emailTutor || 'Sin Email'}</td>
+                    <td class="p-3 text-xs text-slate-800 font-medium">${a.domicilio || 'Sin Domicilio'}</td>
+                    <td class="p-3 text-right">
+                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-indigo-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg">Editar</button>
+                    </td>
+                `;
+                tbodyFichas.appendChild(trFicha);
+
+                const trTaller = document.createElement('tr');
+                trTaller.className = esCriticoTaller ? "bg-emerald-50/70" : "hover:bg-slate-50";
+                trTaller.innerHTML = `
+                    <td class="p-3 font-medium text-slate-900">${a.nombre}</td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 rounded text-[11px] font-bold ${esGrupoA ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
+                            ${esGrupoA ? 'Grupo A (Lun/Mié)' : 'Grupo B (Mar/Vie)'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200">${a.faltasTaller}</span></td>
+                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-100 border border-red-200">${a.faltasEF || 0}</span></td>
+                    <td class="p-3 text-center">${esCriticoTaller ? `<span class="bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">Alerta Taller</span>` : `<span class="text-xs text-slate-400">Regular</span>`}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="enviarEmail(${a.id}, 'taller')" class="bg-emerald-600 text-white text-xs px-3 py-1 rounded-md font-semibold">Aviso Taller</button>
+                    </td>
+                `;
+                tbodyTaller.appendChild(trTaller);
+
+                if (tieneAlerta) {
+                    const trAlerta = document.createElement('tr');
+                    trAlerta.className = "hover:bg-red-50";
+                    trAlerta.innerHTML = `
+                        <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
+                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoMaterias ? 'bg-red-100 text-red-700' : 'text-slate-400'}">${a.materiasBajas}</span></td>
+                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoAnuales ? 'bg-red-100 text-red-800' : 'text-slate-400'}">${a.faltasAnuales}</span></td>
+                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoTaller ? 'bg-emerald-100 text-emerald-800' : 'text-slate-400'}">${a.faltasTaller}</span></td>
+                        <td class="p-3 text-right">
+                            <button onclick="enviarEmail(${a.id}, 'general')" class="bg-red-600 text-white text-xs px-3 py-1 rounded-md font-semibold">Notificar</button>
+                        </td>
+                    `;
+                    tbodyAlertas.appendChild(trAlerta);
+                }
+            });
+
+            document.getElementById('statMateriasBajas').innerText = criticosMaterias;
+            document.getElementById('statFaltasAnuales').innerText = criticosAnuales;
+            document.getElementById('statFaltasTaller').innerText = criticosTaller;
+            document.getElementById('cantAlertasCriticas').innerText = totalAlertas;
+
+            if (totalAlertas > 0) {
+                document.getElementById('bannerAlerta').classList.remove('hidden');
+            } else {
+                document.getElementById('bannerAlerta').classList.add('hidden');
+            }
+
+            lucide.createIcons();
         }
 
         function abrirModalFicha(id) {
@@ -894,424 +1053,13 @@
             }
         }
 
-        function evaluarAlertas() {
-            let criticosMaterias = 0;
-            let criticosAnuales = 0;
-            let criticosTaller = 0;
-            let totalAlertas = 0;
-
-            const tbodyTodos = document.getElementById('tablaTodosAlumnos');
-            const tbodyFichas = document.getElementById('tablaFichasAlumnos');
-            const tbodyTaller = document.getElementById('tablaTallerAlumnos');
-            const tbodyAlertas = document.getElementById('tablaAlertasAlumnos');
-            
-            tbodyTodos.innerHTML = '';
-            tbodyFichas.innerHTML = '';
-            tbodyTaller.innerHTML = '';
-            tbodyAlertas.innerHTML = '';
-
-            alumnos.forEach((a, index) => {
-                const esCriticoMaterias = a.materiasBajas > 5;
-                const esCriticoAnuales = a.faltasAnuales > 17;
-                const esCriticoTaller = a.faltasTaller >= 3;
-                const tieneAlerta = esCriticoMaterias || esCriticoAnuales || esCriticoTaller;
-
-                if (esCriticoMaterias) criticosMaterias++;
-                if (esCriticoAnuales) criticosAnuales++;
-                if (esCriticoTaller) criticosTaller++;
-                if (tieneAlerta) totalAlertas++;
-
-                const pdfRuta = encodeURI(`./${a.boletinPdf}`);
-                const esGrupoA = index < 20;
-
-                const trTodos = document.createElement('tr');
-                trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
-                trTodos.innerHTML = `
-                    <td class="p-3 font-semibold text-slate-400 text-xs">${a.id}</td>
-                    <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
-                    <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 rounded text-[11px] font-bold ${esGrupoA ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
-                            ${esGrupoA ? 'Grupo A (Lun/Mié)' : 'Grupo B (Mar/Vie)'}
-                        </span>
-                    </td>
-                    <td class="p-3 text-xs font-medium text-amber-900 bg-amber-50/30 rounded">${a.materiasPrevias || 'Ninguna'}</td>
-                    <td class="p-3 text-center">
-                        <a href="${pdfRuta}" target="_blank" class="inline-flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow transition">
-                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                            <span>PDF</span>
-                        </a>
-                    </td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-100 border border-red-200">${a.faltasAnuales}</span></td>
-                    <td class="p-3 text-center">
-                        <span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200">
-                            <span class="w-2 h-2 rounded-full bg-blue-600 inline-block"></span>
-                            <span>${a.faltasJustificadas || 0}</span>
-                        </span>
-                    </td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200">${a.faltasTaller}</span></td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-50 border border-red-200">${a.faltasEF || 0}</span></td>
-                    <td class="p-3 text-right">
-                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-slate-200 hover:bg-blue-600 hover:text-white text-slate-700 font-bold text-xs px-2.5 py-1 rounded-md transition">
-                            Editar
-                        </button>
-                    </td>
-                `;
-                tbodyTodos.appendChild(trTodos);
-
-                const trFicha = document.createElement('tr');
-                trFicha.className = "hover:bg-indigo-50/40";
-                trFicha.innerHTML = `
-                    <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
-                    <td class="p-3 font-mono text-slate-700 text-xs">${a.dni || 'Sin DNI'}</td>
-                    <td class="p-3 font-mono font-bold text-indigo-700 text-xs">${a.codigoApp || 'Sin Código'}</td>
-                    <td class="p-3 text-xs text-slate-700 font-medium">${a.telefono || 'Sin Teléfono'}</td>
-                    <td class="p-3 text-xs text-slate-600 font-medium">${a.emailTutor || 'Sin Email'}</td>
-                    <td class="p-3 text-xs text-slate-800 font-medium">${a.domicilio || 'Sin Domicilio'}</td>
-                    <td class="p-3 text-right">
-                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow transition">
-                            Editar
-                        </button>
-                    </td>
-                `;
-                tbodyFichas.appendChild(trFicha);
-
-                const trTaller = document.createElement('tr');
-                trTaller.className = esCriticoTaller ? "bg-emerald-50/70 hover:bg-emerald-100/60" : "hover:bg-slate-50";
-                trTaller.innerHTML = `
-                    <td class="p-3 font-medium text-slate-900">${a.nombre}</td>
-                    <td class="p-3 text-center">
-                        <span class="px-2 py-0.5 rounded text-[11px] font-bold ${esGrupoA ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
-                            ${esGrupoA ? 'Grupo A (Lun/Mié 18-20:50)' : 'Grupo B (Mar/Vie 18-20:50)'}
-                        </span>
-                    </td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200">${a.faltasTaller}</span></td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-100 border border-red-200">${a.faltasEF || 0}</span></td>
-                    <td class="p-3 text-center">${esCriticoTaller ? `<span class="bg-emerald-700 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">Alerta Taller</span>` : `<span class="text-xs text-slate-400">Regular</span>`}</td>
-                    <td class="p-3 text-right">
-                        <button onclick="enviarEmail(${a.id}, 'taller')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1 rounded-md font-semibold transition">
-                            Aviso Taller
-                        </button>
-                    </td>
-                `;
-                tbodyTaller.appendChild(trTaller);
-
-                if (tieneAlerta) {
-                    const trAlerta = document.createElement('tr');
-                    trAlerta.className = "hover:bg-red-50";
-                    trAlerta.innerHTML = `
-                        <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
-                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoMaterias ? 'bg-red-100 text-red-700' : 'text-slate-400'}">${a.materiasBajas}</span></td>
-                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoAnuales ? 'bg-red-100 text-red-800' : 'text-slate-400'}">${a.faltasAnuales}</span></td>
-                        <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold ${esCriticoTaller ? 'bg-emerald-100 text-emerald-800' : 'text-slate-400'}">${a.faltasTaller}</span></td>
-                        <td class="p-3 text-right">
-                            <button onclick="enviarEmail(${a.id}, 'general')" class="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded-md font-semibold transition">
-                                Notificar
-                            </button>
-                        </td>
-                    `;
-                    tbodyAlertas.appendChild(trAlerta);
-                }
-            });
-
-            document.getElementById('statMateriasBajas').innerText = criticosMaterias;
-            document.getElementById('statFaltasAnuales').innerText = criticosAnuales;
-            document.getElementById('statFaltasTaller').innerText = criticosTaller;
-            document.getElementById('cantAlertasCriticas').innerText = totalAlertas;
-
-            if (totalAlertas > 0) {
-                document.getElementById('bannerAlerta').classList.remove('hidden');
-            } else {
-                document.getElementById('bannerAlerta').classList.add('hidden');
-            }
-
-            lucide.createIcons();
-        }
-
-        function renderizarListaAsistencia(esNoLectivo, listaFiltrada) {
-            const contenedor = document.getElementById('listaTomarAsistencia');
-            contenedor.innerHTML = '';
-
-            alumnosCargadosEnModal = listaFiltrada || alumnos;
-
-            alumnosCargadosEnModal.forEach(a => {
-                const estadoPredeterminado = esNoLectivo ? 'NC' : 'Presente';
-                if (!estadosHoy[a.id]) estadosHoy[a.id] = estadoPredeterminado;
-                if (!detallesAsistencia[a.id]) detallesAsistencia[a.id] = { horaEntrada: '', retiro: false, horaRetiro: '' };
-
-                const estActual = estadosHoy[a.id];
-
-                const div = document.createElement('div');
-                div.className = "p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-2";
-                div.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <span class="font-medium text-slate-800">${a.nombre}</span>
-                            <span class="text-[10px] block text-slate-400">${a.grupoTaller || ''}</span>
-                        </div>
-                        <div class="flex items-center space-x-1">
-                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-green-100 hover:text-green-700'} transition">P</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-red-100 hover:text-red-700'} transition">A</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600 hover:bg-amber-100 hover:text-amber-700'} transition">T</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" id="btn-jus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Justificada' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-blue-100 hover:text-blue-700'} transition">J</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'NC')" id="btn-nc-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'NC' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'} transition">NC</button>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between pt-1 border-t border-slate-200/60 text-[11px]">
-                        <div id="div-hora-llegada-${a.id}" class="${estActual === 'Tarde' ? '' : 'hidden'} flex items-center space-x-1">
-                            <span class="text-amber-700 font-semibold">Hora Entrada:</span>
-                            <input type="time" id="hora-llegada-${a.id}" onchange="guardarDetalle(${a.id})" class="border border-amber-300 rounded px-1.5 py-0.5 bg-amber-50/50 font-mono text-amber-900 focus:outline-none">
-                        </div>
-
-                        <div id="div-comprobante-jus-${a.id}" class="${estActual === 'Justificada' ? '' : 'hidden'} flex items-center space-x-1">
-                            <a href="${CERTIFICADO_MEDICO_URL}" target="_blank" class="inline-flex items-center space-x-1 bg-blue-50 text-blue-700 border border-blue-200 font-bold px-2 py-0.5 rounded text-[10px] hover:bg-blue-100 transition">
-                                <i data-lucide="file-check" class="w-3 h-3"></i>
-                                <span>Ver Comprobante Legajo</span>
-                            </a>
-                        </div>
-
-                        <div class="flex items-center space-x-2 ml-auto">
-                            <label class="flex items-center space-x-1 cursor-pointer">
-                                <input type="checkbox" id="chk-retiro-${a.id}" onchange="toggleRetiroUI(${a.id})" class="rounded text-blue-600 focus:ring-0">
-                                <span class="text-slate-600 font-medium">Retiro Anticipado</span>
-                            </label>
-                            <input type="time" id="hora-retiro-${a.id}" onchange="guardarDetalle(${a.id})" class="hidden border border-blue-300 rounded px-1.5 py-0.5 bg-blue-50/50 font-mono text-blue-900 focus:outline-none">
-                        </div>
-                    </div>
-                `;
-                contenedor.appendChild(div);
-            });
-        }
-
-        function toggleRetiroUI(id) {
-            const chk = document.getElementById(`chk-retiro-${id}`);
-            const inputHora = document.getElementById(`hora-retiro-${id}`);
-            if (chk.checked) {
-                inputHora.classList.remove('hidden');
-                if (!inputHora.value) {
-                    const ahora = new Date();
-                    inputHora.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                }
-            } else {
-                inputHora.classList.add('hidden');
-            }
-            guardarDetalle(id);
-        }
-
-        function guardarDetalle(id) {
-            if (!detallesAsistencia[id]) detallesAsistencia[id] = {};
-            const inputLlegada = document.getElementById(`hora-llegada-${id}`);
-            const chkRetiro = document.getElementById(`chk-retiro-${id}`);
-            const inputRetiro = document.getElementById(`hora-retiro-${id}`);
-
-            detallesAsistencia[id].horaEntrada = inputLlegada ? inputLlegada.value : '';
-            detallesAsistencia[id].retiro = chkRetiro ? chkRetiro.checked : false;
-            detallesAsistencia[id].horaRetiro = (chkRetiro && chkRetiro.checked && inputRetiro) ? inputRetiro.value : '';
-        }
-
-        function actualizarAsistenciaSegunFecha(resetEstados = false) {
-            const inputVal = document.getElementById('fechaAsistenciaInput').value;
-            if (!inputVal) return;
-
-            const partes = inputVal.split('-');
-            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
-            const verif = esDiaNoLectivo(fechaSel);
-            const diaSemana = fechaSel.getDay();
-
-            const banner = document.getElementById('bannerDiaNoLectivo');
-            const texto = document.getElementById('textoDiaNoLectivo');
-
-            if (resetEstados) {
-                estadosHoy = {};
-            }
-
-            let listaFiltrada = alumnos;
-
-            if (verif.esNoLectivo) {
-                texto.innerText = `Atención: ${verif.motivo}. Estado configurado automáticamente en 'NC'.`;
-                banner.classList.remove('hidden');
-            } else if (modoAsistenciaModal === 'taller') {
-                if (diaSemana === 1 || diaSemana === 3) {
-                    listaFiltrada = alumnos.slice(0, 20);
-                    texto.innerText = "🗓️ Lunes / Miércoles: Asisten 20 alumnos del GRUPO A al Taller (18:00 a 20:50 hs).";
-                    banner.classList.remove('hidden');
-                } else if (diaSemana === 2 || diaSemana === 5) {
-                    listaFiltrada = alumnos.slice(20, 40);
-                    texto.innerText = "🗓️ Martes / Viernes: Asisten 20 alumnos del GRUPO B al Taller (18:00 a 20:50 hs).";
-                    banner.classList.remove('hidden');
-                } else if (diaSemana === 4) {
-                    listaFiltrada = alumnos;
-                    texto.innerText = "🏃 Jueves: Asiste la DIVISIÓN COMPLETA a Educación Física (09:45 a 11:45 hs).";
-                    banner.classList.remove('hidden');
-                } else {
-                    banner.classList.add('hidden');
-                }
-            } else {
-                banner.classList.add('hidden');
-            }
-
-            renderizarListaAsistencia(verif.esNoLectivo, listaFiltrada);
-        }
-
-        function abrirModalAsistencia(tipo) {
-            modoAsistenciaModal = tipo;
-            estadosHoy = {};
-            detallesAsistencia = {};
-
-            const hoy = new Date();
-            const yyyy = hoy.getFullYear();
-            const mm = String(hoy.getMonth() + 1).padStart(2, '0');
-            const dd = String(hoy.getDate()).padStart(2, '0');
-            document.getElementById('fechaAsistenciaInput').value = `${yyyy}-${mm}-${dd}`;
-
-            if (tipo === 'taller') {
-                document.getElementById('tituloModalAsistencia').innerText = "Tomar Asistencia Taller / Ed. Física";
-                document.getElementById('badgeTipoModal').innerText = "Contraturno - 3° 7° E";
-                document.getElementById('badgeTipoModal').className = "bg-emerald-100 text-emerald-800 font-semibold px-2 py-0.5 rounded";
-            } else {
-                document.getElementById('tituloModalAsistencia').innerText = "Tomar Asistencia Teoría";
-                document.getElementById('badgeTipoModal').innerText = "Teoría - 3° 7° E";
-                document.getElementById('badgeTipoModal').className = "bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded";
-            }
-
-            actualizarAsistenciaSegunFecha(false);
-            document.getElementById('modalAsistencia').classList.remove('hidden');
-        }
-
-        function setEstado(id, estado) {
-            estadosHoy[id] = estado;
-            const btnPres = document.getElementById(`btn-pres-${id}`);
-            const btnAus = document.getElementById(`btn-aus-${id}`);
-            const btnTar = document.getElementById(`btn-tar-${id}`);
-            const btnJus = document.getElementById(`btn-jus-${id}`);
-            const btnNc = document.getElementById(`btn-nc-${id}`);
-            const divLlegada = document.getElementById(`div-hora-llegada-${id}`);
-            const divJusComprobante = document.getElementById(`div-comprobante-jus-${id}`);
-            const inputLlegada = document.getElementById(`hora-llegada-${id}`);
-
-            if (btnPres) btnPres.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
-            if (btnAus) btnAus.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
-            if (btnTar) btnTar.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
-            if (btnJus) btnJus.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
-            if (btnNc) btnNc.className = "px-2 py-1 rounded font-bold bg-slate-200 text-slate-600 transition";
-
-            if (divLlegada) divLlegada.classList.add('hidden');
-            if (divJusComprobante) divJusComprobante.classList.add('hidden');
-
-            if (estado === 'Presente') {
-                if (btnPres) btnPres.className = "px-2 py-1 rounded font-bold bg-green-600 text-white transition";
-            } else if (estado === 'Ausente') {
-                if (btnAus) btnAus.className = "px-2 py-1 rounded font-bold bg-red-600 text-white transition";
-            } else if (estado === 'Tarde') {
-                if (btnTar) btnTar.className = "px-2 py-1 rounded font-bold bg-amber-500 text-white transition";
-                if (divLlegada) {
-                    divLlegada.classList.remove('hidden');
-                    if (inputLlegada && !inputLlegada.value) {
-                        const ahora = new Date();
-                        inputLlegada.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                    }
-                }
-            } else if (estado === 'Justificada') {
-                if (btnJus) btnJus.className = "px-2 py-1 rounded font-bold bg-blue-600 text-white transition";
-                if (divJusComprobante) divJusComprobante.classList.remove('hidden');
-            } else if (estado === 'NC') {
-                if (btnNc) btnNc.className = "px-2 py-1 rounded font-bold bg-slate-700 text-white transition";
-            }
-
-            guardarDetalle(id);
-        }
-
-        function cerrarModalAsistencia() {
-            document.getElementById('modalAsistencia').classList.add('hidden');
-        }
-
-        function guardarAsistenciaDiaria() {
-            const inputVal = document.getElementById('fechaAsistenciaInput').value;
-            if (!inputVal) return;
-
-            const partes = inputVal.split('-');
-            const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
-            const verif = esDiaNoLectivo(fechaSel);
-            const diaSemana = fechaSel.getDay();
-
-            const hoyTexto = `${partes[2]}/${partes[1]}/${partes[0]}`;
-            const registros = [];
-
-            alumnosCargadosEnModal.forEach(a => {
-                const est = estadosHoy[a.id] || 'Presente';
-                const det = detallesAsistencia[a.id] || {};
-
-                const alGlobal = alumnos.find(item => item.id === a.id);
-
-                if (alGlobal && !verif.esNoLectivo) {
-                    if (modoAsistenciaModal === 'taller') {
-                        if (diaSemana === 4) {
-                            if (est === 'Ausente') alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.5;
-                            else if (est === 'Justificada') { alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.5; alGlobal.faltasJustificadas += 0.5; alGlobal.faltasJustificadasMes += 0.5; }
-                            else if (est === 'Tarde') alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.25;
-                        } else {
-                            if (est === 'Ausente') alGlobal.faltasTaller += 0.5;
-                            else if (est === 'Justificada') { alGlobal.faltasTaller += 0.5; alGlobal.faltasJustificadas += 0.5; alGlobal.faltasJustificadasMes += 0.5; }
-                            else if (est === 'Tarde') alGlobal.faltasTaller += 0.25;
-                        }
-                    } else {
-                        if (est === 'Ausente') {
-                            alGlobal.faltasAnuales += 0.5;
-                            alGlobal.faltasMes += 0.5;
-                        } else if (est === 'Justificada') {
-                            alGlobal.faltasAnuales += 0.5;
-                            alGlobal.faltasJustificadas += 0.5;
-                            alGlobal.faltasMes += 0.5;
-                            alGlobal.faltasJustificadasMes += 0.5;
-                        } else if (est === 'Tarde') {
-                            alGlobal.faltasAnuales += 0.25;
-                            alGlobal.faltasMes += 0.25;
-                        }
-                    }
-                }
-
-                let observacionesStr = "";
-                if (est === 'Justificada') {
-                    observacionesStr += "Falta Justificada (Azul). ";
-                }
-                if (est === 'Tarde' && det.horaEntrada) {
-                    observacionesStr += `Llegada Tardía: ${det.horaEntrada}. `;
-                }
-                if (det.retiro && det.horaRetiro) {
-                    observacionesStr += `Retiro Anticipado: ${det.horaRetiro}.`;
-                }
-
-                registros.push({ 
-                    fecha: hoyTexto, 
-                    alumno: a.nombre, 
-                    tipo: modoAsistenciaModal === 'taller' ? (diaSemana === 4 ? "Ed. Física" : "Taller") : "Teoría",
-                    estado: est, 
-                    observaciones: observacionesStr.trim(),
-                    bimestre: "3° 7° E" 
-                });
-            });
-
-            guardarPersistencia();
-            evaluarAlertas();
-            cerrarModalAsistencia();
-
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ registros: registros })
-            }).then(() => {
-                lanzarNotificacionAndroid("✅ Asistencia Guardada", `Registros de ${modoAsistenciaModal === 'taller' ? 'Taller/EF' : 'Teoría'} guardados correctamente.`);
-            });
-        }
-
         function enviarEmail(id, tipoContexto = 'general') {
             const a = alumnos.find(item => item.id === id);
             if (!a) return;
 
             const email = (a.emailTutor || "").trim();
             if (!email) {
-                alert(`El alumno ${a.nombre} no tiene un correo registrado. Podés agregarlo en la solapa Datos Personales.`);
+                alert(`El alumno ${a.nombre} no tiene un correo registrado.`);
                 return;
             }
 
