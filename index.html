@@ -225,7 +225,6 @@
                             </div>
                             
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                                <!-- Columna 1: Matrícula del Mes -->
                                 <div class="border border-blue-300 rounded overflow-hidden">
                                     <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 text-xs">
                                         Matrícula del Mes
@@ -250,7 +249,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Columna 2: Totales Asistencia e Inasistencias -->
                                 <div class="border border-blue-300 rounded overflow-hidden">
                                     <div class="bg-blue-100/70 p-2 font-bold text-blue-950 border-b border-blue-300 flex justify-between items-center text-xs">
                                         <span>Totales Asistencia</span>
@@ -435,7 +433,7 @@
         </main>
     </div>
 
-    <!-- Modal Editar Ficha Personal, Previas e Inasistencias -->
+    <!-- Modal Editar Ficha Personal -->
     <div id="modalFicha" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-xl border border-slate-100 flex flex-col">
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
@@ -457,54 +455,54 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">DNI</label>
-                        <input type="text" id="editDni" placeholder="Ej: 50.257.512" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                        <input type="text" id="editDni" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">Código App Familias</label>
-                        <input type="text" id="editCodigoApp" placeholder="Código de 8 caracteres" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-mono text-indigo-700 bg-indigo-50/50">
+                        <input type="text" id="editCodigoApp" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-mono text-indigo-700 bg-indigo-50/50">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">Teléfono Tutor</label>
-                        <input type="text" id="editTelefono" placeholder="11 1234-5678" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                        <input type="text" id="editTelefono" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
                     </div>
                     <div>
                         <label class="font-semibold text-slate-600 block mb-1">Email</label>
-                        <input type="email" id="editEmail" placeholder="correo@alum.tec17ba.edu.ar" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-medium text-slate-800">
+                        <input type="email" id="editEmail" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500 font-medium text-slate-800">
                     </div>
                 </div>
 
                 <div>
                     <label class="font-semibold text-slate-600 block mb-1">Domicilio</label>
-                    <input type="text" id="editDomicilio" placeholder="Ej: Av. Lacarra 1234, CABA" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="editDomicilio" class="w-full p-2 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-500">
                 </div>
 
                 <div>
                     <label class="font-semibold text-amber-800 block mb-1">Materias Previas / Pendientes</label>
-                    <textarea id="editMateriasPrevias" rows="2" placeholder="Ej: Matemática 2° año, Historia 1° año" class="w-full p-2 border border-amber-300 bg-amber-50/30 rounded-lg focus:outline-none focus:border-amber-500 text-amber-900 font-medium"></textarea>
+                    <textarea id="editMateriasPrevias" rows="2" class="w-full p-2 border border-amber-300 bg-amber-50/30 rounded-lg focus:outline-none focus:border-amber-500 text-amber-900 font-medium"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 border-t border-slate-200 pt-2">
                     <div>
                         <label class="font-semibold text-red-600 block mb-1">Faltas Teoría (Rojo)</label>
-                        <input type="number" step="0.25" id="editFaltasAnuales" min="0" class="w-full p-2 border border-red-300 bg-red-50/30 rounded-lg focus:outline-none focus:border-red-500 font-bold text-red-600">
+                        <input type="number" step="0.25" id="editFaltasAnuales" min="0" class="w-full p-2 border border-red-300 bg-red-50/30 rounded-lg font-bold text-red-600">
                     </div>
                     <div>
                         <label class="font-semibold text-blue-600 block mb-1">Faltas Justificadas (Azul)</label>
-                        <input type="number" step="0.25" id="editFaltasJustificadas" min="0" class="w-full p-2 border border-blue-300 bg-blue-50/30 rounded-lg focus:outline-none focus:border-blue-500 font-bold text-blue-600">
+                        <input type="number" step="0.25" id="editFaltasJustificadas" min="0" class="w-full p-2 border border-blue-300 bg-blue-50/30 rounded-lg font-bold text-blue-600">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-semibold text-emerald-600 block mb-1">Faltas Taller (Verde)</label>
-                        <input type="number" step="0.25" id="editFaltasTaller" min="0" class="w-full p-2 border border-emerald-300 bg-emerald-50/30 rounded-lg focus:outline-none focus:border-emerald-500 font-bold text-emerald-600">
+                        <input type="number" step="0.25" id="editFaltasTaller" min="0" class="w-full p-2 border border-emerald-300 bg-emerald-50/30 rounded-lg font-bold text-emerald-600">
                     </div>
                     <div>
                         <label class="font-semibold text-red-600 block mb-1">Faltas Ed. Física (Rojo)</label>
-                        <input type="number" step="0.25" id="editFaltasEF" min="0" class="w-full p-2 border border-red-300 bg-red-50/30 rounded-lg focus:outline-none focus:border-red-500 font-bold text-red-600">
+                        <input type="number" step="0.25" id="editFaltasEF" min="0" class="w-full p-2 border border-red-300 bg-red-50/30 rounded-lg font-bold text-red-600">
                     </div>
                 </div>
             </div>
@@ -535,7 +533,7 @@
             <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-600">
                 <div class="flex items-center space-x-2">
                     <span>Fecha:</span>
-                    <input type="date" id="fechaAsistenciaInput" onchange="actualizarAsistenciaSegunFecha()" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none focus:border-blue-500">
+                    <input type="date" id="fechaAsistenciaInput" onchange="actualizarAsistenciaSegunFecha(true)" class="border border-slate-300 rounded px-2 py-1 font-bold text-slate-800 bg-white focus:outline-none focus:border-blue-500">
                 </div>
                 <span id="badgeTipoModal" class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">Teoría - 3° 7° E</span>
             </div>
@@ -543,7 +541,7 @@
             <!-- Banner Alerta de Día No Lectivo / Filtro de Grupo -->
             <div id="bannerDiaNoLectivo" class="hidden bg-amber-50 border-b border-amber-200 p-3 text-xs text-amber-800 flex items-center space-x-2">
                 <i data-lucide="calendar-off" class="w-4 h-4 text-amber-600 shrink-0"></i>
-                <span id="textoDiaNoLectivo" class="font-medium">Día No Lectivo. Estado configurado automáticamente en 'NC'.</span>
+                <span id="textoDiaNoLectivo" class="font-medium">Día No Lectivo.</span>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-2 flex-1" id="listaTomarAsistencia">
@@ -563,7 +561,6 @@
     <script>
         lucide.createIcons();
 
-        // CONTRASEÑA DE SEGURIDAD DEL PRECEPTOR
         const CONTRASENA_ACCESO = "PreceTec17";
 
         function validarAcceso(event) {
@@ -728,7 +725,7 @@
                 osc2.start(ctx.currentTime + 0.15);
                 osc2.stop(ctx.currentTime + 0.35);
             } catch (e) {
-                console.log("Audio no disponible aún.");
+                console.log("Audio no disponible.");
             }
         }
 
@@ -927,7 +924,6 @@
                 const pdfRuta = encodeURI(`./${a.boletinPdf}`);
                 const esGrupoA = index < 20;
 
-                // Fila Tabla Todos Alumnos
                 const trTodos = document.createElement('tr');
                 trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
                 trTodos.innerHTML = `
@@ -962,7 +958,6 @@
                 `;
                 tbodyTodos.appendChild(trTodos);
 
-                // Fila Tabla Fichas Personales
                 const trFicha = document.createElement('tr');
                 trFicha.className = "hover:bg-indigo-50/40";
                 trFicha.innerHTML = `
@@ -980,7 +975,6 @@
                 `;
                 tbodyFichas.appendChild(trFicha);
 
-                // Fila Tabla Taller
                 const trTaller = document.createElement('tr');
                 trTaller.className = esCriticoTaller ? "bg-emerald-50/70 hover:bg-emerald-100/60" : "hover:bg-slate-50";
                 trTaller.innerHTML = `
@@ -1001,7 +995,6 @@
                 `;
                 tbodyTaller.appendChild(trTaller);
 
-                // Fila Tabla Alertas
                 if (tieneAlerta) {
                     const trAlerta = document.createElement('tr');
                     trAlerta.className = "hover:bg-red-50";
@@ -1056,11 +1049,11 @@
                             <span class="text-[10px] block text-slate-400">${a.grupoTaller || ''}</span>
                         </div>
                         <div class="flex items-center space-x-1">
-                            <button onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-green-100 hover:text-green-700'} transition">P</button>
-                            <button onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-red-100 hover:text-red-700'} transition">A</button>
-                            <button onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600 hover:bg-amber-100 hover:text-amber-700'} transition">T</button>
-                            <button onclick="setEstado(${a.id}, 'Justificada')" id="btn-jus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Justificada' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-blue-100 hover:text-blue-700'} transition">J</button>
-                            <button onclick="setEstado(${a.id}, 'NC')" id="btn-nc-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'NC' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'} transition">NC</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-green-100 hover:text-green-700'} transition">P</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-red-100 hover:text-red-700'} transition">A</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600 hover:bg-amber-100 hover:text-amber-700'} transition">T</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" id="btn-jus-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'Justificada' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600 hover:bg-blue-100 hover:text-blue-700'} transition">J</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'NC')" id="btn-nc-${a.id}" class="px-2 py-1 rounded font-bold ${estActual === 'NC' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-600 hover:bg-slate-300'} transition">NC</button>
                         </div>
                     </div>
 
@@ -1116,19 +1109,22 @@
             detallesAsistencia[id].horaRetiro = (chkRetiro && chkRetiro.checked && inputRetiro) ? inputRetiro.value : '';
         }
 
-        function actualizarAsistenciaSegunFecha() {
+        function actualizarAsistenciaSegunFecha(resetEstados = false) {
             const inputVal = document.getElementById('fechaAsistenciaInput').value;
             if (!inputVal) return;
 
             const partes = inputVal.split('-');
             const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
             const verif = esDiaNoLectivo(fechaSel);
-            const diaSemana = fechaSel.getDay(); // 0 Dom, 1 Lun, 2 Mar, 3 Mié, 4 Jue, 5 Vie, 6 Sáb
+            const diaSemana = fechaSel.getDay();
 
             const banner = document.getElementById('bannerDiaNoLectivo');
             const texto = document.getElementById('textoDiaNoLectivo');
 
-            estadosHoy = {}; 
+            if (resetEstados) {
+                estadosHoy = {};
+            }
+
             let listaFiltrada = alumnos;
 
             if (verif.esNoLectivo) {
@@ -1159,6 +1155,9 @@
 
         function abrirModalAsistencia(tipo) {
             modoAsistenciaModal = tipo;
+            estadosHoy = {};
+            detallesAsistencia = {};
+
             const hoy = new Date();
             const yyyy = hoy.getFullYear();
             const mm = String(hoy.getMonth() + 1).padStart(2, '0');
@@ -1175,7 +1174,7 @@
                 document.getElementById('badgeTipoModal').className = "bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded";
             }
 
-            actualizarAsistenciaSegunFecha();
+            actualizarAsistenciaSegunFecha(false);
             document.getElementById('modalAsistencia').classList.remove('hidden');
         }
 
@@ -1242,32 +1241,32 @@
                 const est = estadosHoy[a.id] || 'Presente';
                 const det = detallesAsistencia[a.id] || {};
 
-                if (!verif.esNoLectivo) {
+                // Buscar el objeto del alumno principal en la lista global
+                const alGlobal = alumnos.find(item => item.id === a.id);
+
+                if (alGlobal && !verif.esNoLectivo) {
                     if (modoAsistenciaModal === 'taller') {
                         if (diaSemana === 4) {
-                            // Educación Física los jueves
-                            if (est === 'Ausente') a.faltasEF = (a.faltasEF || 0) + 0.5;
-                            else if (est === 'Justificada') { a.faltasEF = (a.faltasEF || 0) + 0.5; a.faltasJustificadas += 0.5; a.faltasJustificadasMes += 0.5; }
-                            else if (est === 'Tarde') a.faltasEF = (a.faltasEF || 0) + 0.25;
+                            if (est === 'Ausente') alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.5;
+                            else if (est === 'Justificada') { alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.5; alGlobal.faltasJustificadas += 0.5; alGlobal.faltasJustificadasMes += 0.5; }
+                            else if (est === 'Tarde') alGlobal.faltasEF = (alGlobal.faltasEF || 0) + 0.25;
                         } else {
-                            // Taller regular (Lun, Mar, Mié, Vie)
-                            if (est === 'Ausente') a.faltasTaller += 0.5;
-                            else if (est === 'Justificada') { a.faltasTaller += 0.5; a.faltasJustificadas += 0.5; a.faltasJustificadasMes += 0.5; }
-                            else if (est === 'Tarde') a.faltasTaller += 0.25;
+                            if (est === 'Ausente') alGlobal.faltasTaller += 0.5;
+                            else if (est === 'Justificada') { alGlobal.faltasTaller += 0.5; alGlobal.faltasJustificadas += 0.5; alGlobal.faltasJustificadasMes += 0.5; }
+                            else if (est === 'Tarde') alGlobal.faltasTaller += 0.25;
                         }
                     } else {
-                        // Asistencia de Teoría
                         if (est === 'Ausente') {
-                            a.faltasAnuales += 0.5;
-                            a.faltasMes += 0.5;
+                            alGlobal.faltasAnuales += 0.5;
+                            alGlobal.faltasMes += 0.5;
                         } else if (est === 'Justificada') {
-                            a.faltasAnuales += 0.5;
-                            a.faltasJustificadas += 0.5;
-                            a.faltasMes += 0.5;
-                            a.faltasJustificadasMes += 0.5;
+                            alGlobal.faltasAnuales += 0.5;
+                            alGlobal.faltasJustificadas += 0.5;
+                            alGlobal.faltasMes += 0.5;
+                            alGlobal.faltasJustificadasMes += 0.5;
                         } else if (est === 'Tarde') {
-                            a.faltasAnuales += 0.25;
-                            a.faltasMes += 0.25;
+                            alGlobal.faltasAnuales += 0.25;
+                            alGlobal.faltasMes += 0.25;
                         }
                     }
                 }
