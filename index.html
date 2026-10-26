@@ -296,7 +296,7 @@
                 </div>
             </section>
 
-            <!-- SECCIÓN 2: TABLA GENERAL DE ALUMNOS, BOLETINES Y PREVIAS CON COLORES ESPECÍFICOS -->
+            <!-- SECCIÓN 2: TABLA GENERAL DE ALUMNOS, BOLETINES Y PREVIAS -->
             <section id="sec-alumnos" class="hidden">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -675,7 +675,6 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasJustificadas: 0, faltasMes: 3.0, faltasJustificadasMes: 0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
-        // Asignación de Grupo A (1-20) y Grupo B (21-40)
         let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v26_colores_personalizados')) || nominaOficial.map((item, index) => ({
             id: item.id,
             nombre: item.nombre,
@@ -696,7 +695,6 @@
             boletinPdf: item.boletinPdf || ""
         }));
 
-        // Asegurar la propiedad grupoTaller en registros existentes
         alumnos.forEach((al, idx) => {
             al.grupoTaller = (idx < 20) ? "Grupo A (Lun/Mié)" : "Grupo B (Mar/Vie)";
         });
@@ -704,6 +702,7 @@
         let modoAsistenciaModal = 'teoria';
         let estadosHoy = {};
         let detallesAsistencia = {};
+        let alumnosCargadosEnModal = [];
 
         function reproducirSonidoAlerta() {
             try {
@@ -1039,9 +1038,9 @@
             const contenedor = document.getElementById('listaTomarAsistencia');
             contenedor.innerHTML = '';
 
-            const alumnosARenderizar = listaFiltrada || alumnos;
+            alumnosCargadosEnModal = listaFiltrada || alumnos;
 
-            alumnosARenderizar.forEach(a => {
+            alumnosCargadosEnModal.forEach(a => {
                 const estadoPredeterminado = esNoLectivo ? 'NC' : 'Presente';
                 if (!estadosHoy[a.id]) estadosHoy[a.id] = estadoPredeterminado;
                 if (!detallesAsistencia[a.id]) detallesAsistencia[a.id] = { horaEntrada: '', retiro: false, horaRetiro: '' };
@@ -1129,7 +1128,7 @@
             const banner = document.getElementById('bannerDiaNoLectivo');
             const texto = document.getElementById('textoDiaNoLectivo');
 
-            estadosHoy = {}; // Resetear estados para la nueva fecha
+            estadosHoy = {}; 
             let listaFiltrada = alumnos;
 
             if (verif.esNoLectivo) {
@@ -1137,17 +1136,14 @@
                 banner.classList.remove('hidden');
             } else if (modoAsistenciaModal === 'taller') {
                 if (diaSemana === 1 || diaSemana === 3) {
-                    // Lunes o Miércoles -> Grupo A Taller (18:00 a 20:50hs)
                     listaFiltrada = alumnos.slice(0, 20);
                     texto.innerText = "🗓️ Lunes / Miércoles: Asisten 20 alumnos del GRUPO A al Taller (18:00 a 20:50 hs).";
                     banner.classList.remove('hidden');
                 } else if (diaSemana === 2 || diaSemana === 5) {
-                    // Martes o Viernes -> Grupo B Taller (18:00 a 20:50hs)
                     listaFiltrada = alumnos.slice(20, 40);
                     texto.innerText = "🗓️ Martes / Viernes: Asisten 20 alumnos del GRUPO B al Taller (18:00 a 20:50 hs).";
                     banner.classList.remove('hidden');
                 } else if (diaSemana === 4) {
-                    // Jueves -> Educación Física (09:45 a 11:45 hs) - División Completa
                     listaFiltrada = alumnos;
                     texto.innerText = "🏃 Jueves: Asiste la DIVISIÓN COMPLETA a Educación Física (09:45 a 11:45 hs).";
                     banner.classList.remove('hidden');
@@ -1237,20 +1233,30 @@
             const partes = inputVal.split('-');
             const fechaSel = new Date(partes[0], partes[1] - 1, partes[2]);
             const verif = esDiaNoLectivo(fechaSel);
+            const diaSemana = fechaSel.getDay();
 
             const hoyTexto = `${partes[2]}/${partes[1]}/${partes[0]}`;
             const registros = [];
 
-            alumnos.forEach(a => {
+            alumnosCargadosEnModal.forEach(a => {
                 const est = estadosHoy[a.id] || 'Presente';
                 const det = detallesAsistencia[a.id] || {};
 
                 if (!verif.esNoLectivo) {
                     if (modoAsistenciaModal === 'taller') {
-                        if (est === 'Ausente') a.faltasTaller += 0.5;
-                        else if (est === 'Justificada') { a.faltasTaller += 0.5; a.faltasJustificadas += 0.5; a.faltasJustificadasMes += 0.5; }
-                        else if (est === 'Tarde') a.faltasTaller += 0.25;
+                        if (diaSemana === 4) {
+                            // Educación Física los jueves
+                            if (est === 'Ausente') a.faltasEF = (a.faltasEF || 0) + 0.5;
+                            else if (est === 'Justificada') { a.faltasEF = (a.faltasEF || 0) + 0.5; a.faltasJustificadas += 0.5; a.faltasJustificadasMes += 0.5; }
+                            else if (est === 'Tarde') a.faltasEF = (a.faltasEF || 0) + 0.25;
+                        } else {
+                            // Taller regular (Lun, Mar, Mié, Vie)
+                            if (est === 'Ausente') a.faltasTaller += 0.5;
+                            else if (est === 'Justificada') { a.faltasTaller += 0.5; a.faltasJustificadas += 0.5; a.faltasJustificadasMes += 0.5; }
+                            else if (est === 'Tarde') a.faltasTaller += 0.25;
+                        }
                     } else {
+                        // Asistencia de Teoría
                         if (est === 'Ausente') {
                             a.faltasAnuales += 0.5;
                             a.faltasMes += 0.5;
@@ -1280,7 +1286,7 @@
                 registros.push({ 
                     fecha: hoyTexto, 
                     alumno: a.nombre, 
-                    tipo: modoAsistenciaModal === 'taller' ? "Taller/EF" : "Teoría",
+                    tipo: modoAsistenciaModal === 'taller' ? (diaSemana === 4 ? "Ed. Física" : "Taller") : "Teoría",
                     estado: est, 
                     observaciones: observacionesStr.trim(),
                     bimestre: "3° 7° E" 
@@ -1297,7 +1303,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ registros: registros })
             }).then(() => {
-                lanzarNotificacionAndroid("✅ Asistencia Guardada", `Registros de ${modoAsistenciaModal === 'taller' ? 'Taller/EF' : 'Teoría'} sincronizados.`);
+                lanzarNotificacionAndroid("✅ Asistencia Guardada", `Registros de ${modoAsistenciaModal === 'taller' ? 'Taller/EF' : 'Teoría'} guardados correctamente.`);
             });
         }
 
