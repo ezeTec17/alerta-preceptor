@@ -71,8 +71,7 @@
                     </div>
                     
                     <div class="flex items-center space-x-2">
-                        <!-- ACCESO DIRECTO A APRENDEBA -->
-                        <a href="https://aprendeba.bue.edu.ar/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
+                        <a href="https://aprendeba.bue.edu.ar/" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
                             <i data-lucide="graduation-cap" class="w-4 h-4"></i>
                             <span class="hidden sm:inline">AprendeBA</span>
                         </a>
@@ -123,8 +122,7 @@
                         <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
                         <span>Casos en Alerta</span>
                     </button>
-                    <!-- SOLAPA DIRECTA APRENDEBA -->
-                    <a href="https://aprendeba.bue.edu.ar/" target="_blank" class="text-indigo-400 hover:text-indigo-300 pb-1 flex items-center space-x-1 shrink-0 font-bold ml-auto">
+                    <a href="https://aprendeba.bue.edu.ar/" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:text-indigo-300 pb-1 flex items-center space-x-1 shrink-0 font-bold ml-auto">
                         <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                         <span>Ir a AprendeBA (.bue)</span>
                     </a>
@@ -153,7 +151,7 @@
                         <div>
                             <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Riesgo (>5 Materias)</p>
                             <h3 id="statMateriasBajas" class="text-2xl font-bold text-red-600 mt-1">0</h3>
-                            <p class="text-xs text-slate-400 mt-0.5">Materias Bajas en 3° Bim</p>
+                            <p class="text-xs text-slate-400 mt-0.5">Materias Bajas</p>
                         </div>
                         <div class="bg-red-50 p-3 rounded-lg text-red-600">
                             <i data-lucide="alert-triangle" class="w-6 h-6"></i>
@@ -294,19 +292,16 @@
                 </div>
             </section>
 
-            <!-- TABLA GENERAL (NÓMINA Y BOLETINES) -->
+            <!-- TABLA GENERAL (NÓMINA Y BOLETINES CON FALTAS POR BIMESTRE) -->
             <section id="sec-alumnos" class="hidden">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <h3 class="font-bold text-slate-800 text-base flex items-center space-x-2">
                             <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
-                            <span>Nómina Oficial 3° 7° E - Boletines PDF e Inasistencias</span>
+                            <span>Nómina Oficial 3° 7° E - Desglose de Faltas por Bimestres</span>
                         </h3>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold text-purple-900 bg-purple-100 border border-purple-200 px-3 py-1 rounded-full">
-                                📅 3° Bim: 05/10 - 04/12
-                            </span>
-                            <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">40 Alumnos</span>
+                        <div class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">
+                            40 Alumnos
                         </div>
                     </div>
                     <div class="overflow-x-auto">
@@ -315,14 +310,15 @@
                                 <tr class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
                                     <th class="p-3">N°</th>
                                     <th class="p-3">Apellido y Nombre</th>
-                                    <th class="p-3 text-center">Grupo Contraturno</th>
+                                    <th class="p-3 text-center">Grupo</th>
                                     <th class="p-3 text-center">Boletín PDF</th>
-                                    <th class="p-3 text-center bg-purple-50 text-purple-950 border-x border-purple-200">Faltas 3° Bim</th>
-                                    <th class="p-3 text-center">Faltas Teoría (Anual)</th>
-                                    <th class="p-3 text-center">Faltas Justic.</th>
+                                    <th class="p-3 text-center bg-blue-50 text-blue-950 border-x border-blue-100" title="10/04 al 07/05">1° Bim</th>
+                                    <th class="p-3 text-center bg-indigo-50 text-indigo-950 border-r border-indigo-100" title="08/05 al 17/07">2° Bim</th>
+                                    <th class="p-3 text-center bg-purple-50 text-purple-950 border-r border-purple-100" title="03/08 al 02/10">3° Bim</th>
+                                    <th class="p-3 text-center bg-fuchsia-50 text-fuchsia-950 border-r border-fuchsia-100" title="05/10 al 04/12">4° Bim</th>
+                                    <th class="p-3 text-center font-bold text-red-700">Total Anual</th>
                                     <th class="p-3 text-center">Llegadas Tarde</th>
-                                    <th class="p-3 text-center">Faltas Taller</th>
-                                    <th class="p-3 text-center">Faltas EF</th>
+                                    <th class="p-3 text-center">Taller</th>
                                     <th class="p-3 text-right">Acción</th>
                                 </tr>
                             </thead>
@@ -464,7 +460,7 @@
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="font-semibold text-red-600 block mb-1">Materias Bajas (3° Bim)</label>
+                        <label class="font-semibold text-red-600 block mb-1">Materias Bajas</label>
                         <input type="number" id="editMateriasBajas" min="0" class="w-full p-2.5 border border-red-300 rounded-xl font-bold text-red-600">
                     </div>
                     <div>
@@ -545,10 +541,10 @@
                 <span id="badgeTipoModal" class="bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded">Teoría - 3° 7° E</span>
             </div>
 
-            <!-- AVISO DE JORNADA ESPECIAL / EMI -->
+            <!-- AVISO DE DÍAS SIN ACTIVIDAD -->
             <div id="bannerEmiModal" class="hidden bg-purple-100 border-b border-purple-200 p-2 text-xs text-purple-900 font-bold flex items-center space-x-2">
                 <i data-lucide="info" class="w-4 h-4 text-purple-700"></i>
-                <span id="textoEmiModal">Día Sin Actividad Escolar (EMI / Receso / Duelo). No se contabilizan faltas.</span>
+                <span id="textoEmiModal">Día Sin Actividad (Feriado / Jornada EMI / Duelo). No se contabilizan faltas.</span>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-3 flex-1" id="listaTomarAsistencia">
@@ -568,13 +564,18 @@
 
         const CONTRASENA_ACCESO = "PreceTec17";
 
-        // CONFIGURACIÓN DE DÍAS ESPECIALES DE 2026
-        const fechasJornadasEMI = ["2026-02-18", "2026-05-22", "2026-08-14", "2026-09-21", "2026-10-16"];
-        const FECHA_INICIO_3BIM = "2026-10-05";
-        const FECHA_FIN_3BIM = "2026-12-04";
+        // FECHAS SIN ACTIVIDAD
+        const fechasSinActividad = [
+            "2026-04-01", "2026-04-02", "2026-04-03",
+            "2026-05-01", "2026-05-14", "2026-05-25",
+            "2026-07-09", "2026-07-10",
+            "2026-08-12", "2026-08-17",
+            "2026-09-11", "2026-09-21",
+            "2026-10-07", "2026-10-12", "2026-10-22"
+        ];
 
-        function esDiaEspecial(fechaStr) {
-            return fechasJornadasEMI.includes(fechaStr);
+        function esDiaSinActividad(fechaStr) {
+            return fechasSinActividad.includes(fechaStr);
         }
 
         function reproducirSonidoAlerta() {
@@ -771,7 +772,7 @@
             if (!fechaKey) return;
 
             const bannerEmi = document.getElementById('bannerEmiModal');
-            if (esDiaEspecial(fechaKey)) {
+            if (esDiaSinActividad(fechaKey)) {
                 bannerEmi.classList.remove('hidden');
             } else {
                 bannerEmi.classList.add('hidden');
@@ -797,11 +798,11 @@
             contenedor.innerHTML = '';
 
             const fechaSel = document.getElementById('fechaAsistenciaInput').value;
-            const esEmi = esDiaEspecial(fechaSel);
+            const esSinClase = esDiaSinActividad(fechaSel);
 
             alumnos.forEach(a => {
                 if (!estadosHoy[a.id]) {
-                    estadosHoy[a.id] = esEmi ? 'NC' : 'Presente';
+                    estadosHoy[a.id] = esSinClase ? 'NC' : 'Presente';
                 }
                 const estActual = estadosHoy[a.id];
                 const retiroObj = detallesRetiro[a.id] || { retiro: false, hora: '' };
@@ -816,28 +817,26 @@
                             <span class="text-[10px] text-slate-400">${a.grupoTaller || ''}</span>
                         </div>
                         <div class="flex items-center space-x-1">
-                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" ${esEmi ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600'} transition ${esEmi ? 'opacity-40 cursor-not-allowed' : ''}">P</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" ${esEmi ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600'} transition ${esEmi ? 'opacity-40 cursor-not-allowed' : ''}">A</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" ${esEmi ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'} transition ${esEmi ? 'opacity-40 cursor-not-allowed' : ''}">T</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" id="btn-jus-${a.id}" ${esEmi ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Justificada' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} transition ${esEmi ? 'opacity-40 cursor-not-allowed' : ''}">J</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" id="btn-pres-${a.id}" ${esSinClase ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Presente' ? 'bg-green-600 text-white' : 'bg-slate-200 text-slate-600'} transition ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">P</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" id="btn-aus-${a.id}" ${esSinClase ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Ausente' ? 'bg-red-600 text-white' : 'bg-slate-200 text-slate-600'} transition ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">A</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" id="btn-tar-${a.id}" ${esSinClase ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Tarde' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-600'} transition ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">T</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" id="btn-jus-${a.id}" ${esSinClase ? 'disabled' : ''} class="px-2.5 py-1 rounded-md font-bold ${estActual === 'Justificada' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'} transition ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">J</button>
                             <button type="button" onclick="setEstado(${a.id}, 'NC')" id="btn-nc-${a.id}" class="px-2.5 py-1 rounded-md font-bold ${estActual === 'NC' ? 'bg-slate-700 text-white' : 'bg-slate-200 text-slate-600'} transition">NC</button>
                         </div>
                     </div>
 
-                    <!-- LLEGADA TARDE HORARIO -->
                     <div id="row-tarde-${a.id}" class="${estActual === 'Tarde' ? '' : 'hidden'} pt-1.5 border-t border-slate-200 flex items-center justify-between text-[11px] bg-amber-50/60 p-2 rounded-lg">
                         <span class="font-bold text-amber-800 flex items-center space-x-1">
                             <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-                            <span>Hora de Ingreso (Llegada Tarde):</span>
+                            <span>Hora de Ingreso:</span>
                         </span>
                         <input type="time" id="hora-tarde-${a.id}" onchange="guardarHoraTarde(${a.id})" value="${horaTarde}" class="border border-amber-300 bg-white rounded px-2 py-0.5 text-amber-900 font-mono font-bold focus:outline-none">
                     </div>
 
-                    <!-- BOTÓN JUSTIFICATIVO MÉDICO -->
                     <div id="row-justif-${a.id}" class="${estActual === 'Justificada' ? '' : 'hidden'} pt-1.5 border-t border-slate-200 flex items-center justify-between text-[11px] bg-blue-50/60 p-2 rounded-lg">
                         <span class="font-bold text-blue-800 flex items-center space-x-1">
                             <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                            <span>El justificativo médico se encuentra en el legajo del alumno.</span>
+                            <span>Justificativo en Legajo</span>
                         </span>
                         <a href="certificado.pdf" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1 rounded-md flex items-center space-x-1 shadow transition">
                             <i data-lucide="external-link" class="w-3 h-3"></i>
@@ -845,10 +844,9 @@
                         </a>
                     </div>
 
-                    <!-- RETIRO ANTICIPADO -->
                     <div class="pt-1.5 border-t border-slate-200 flex items-center justify-end space-x-2 text-[11px]">
                         <label class="flex items-center space-x-1 cursor-pointer font-medium text-slate-600">
-                            <input type="checkbox" id="chk-retiro-${a.id}" ${esEmi ? 'disabled' : ''} onchange="toggleRetiro(${a.id})" ${retiroObj.retiro ? 'checked' : ''} class="rounded text-blue-600 focus:ring-0">
+                            <input type="checkbox" id="chk-retiro-${a.id}" ${esSinClase ? 'disabled' : ''} onchange="toggleRetiro(${a.id})" ${retiroObj.retiro ? 'checked' : ''} class="rounded text-blue-600 focus:ring-0">
                             <span>Retiro Anticipado</span>
                         </label>
                         <input type="time" id="hora-retiro-${a.id}" onchange="guardarHoraRetiro(${a.id})" value="${retiroObj.hora || ''}" class="${retiroObj.retiro ? '' : 'hidden'} border border-blue-300 bg-blue-50 rounded px-1.5 py-0.5 text-blue-900 font-mono focus:outline-none">
@@ -860,86 +858,15 @@
             lucide.createIcons();
         }
 
-        function toggleRetiro(id) {
-            const chk = document.getElementById(`chk-retiro-${id}`);
-            const inputHora = document.getElementById(`hora-retiro-${id}`);
-            
-            if (!detallesRetiro[id]) detallesRetiro[id] = { retiro: false, hora: '' };
-
-            if (chk.checked) {
-                inputHora.classList.remove('hidden');
-                if (!inputHora.value) {
-                    const ahora = new Date();
-                    inputHora.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                }
-                detallesRetiro[id].retiro = true;
-                detallesRetiro[id].hora = inputHora.value;
-            } else {
-                inputHora.classList.add('hidden');
-                detallesRetiro[id].retiro = false;
-            }
-        }
-
-        function guardarHoraRetiro(id) {
-            const inputHora = document.getElementById(`hora-retiro-${id}`);
-            if (detallesRetiro[id]) {
-                detallesRetiro[id].hora = inputHora.value;
-            }
-        }
-
-        function guardarHoraTarde(id) {
-            const inputHora = document.getElementById(`hora-tarde-${id}`);
-            if (inputHora) {
-                detallesLlegadaTarde[id] = inputHora.value;
-            }
-        }
-
         function setEstado(id, estado) {
             const fechaSel = document.getElementById('fechaAsistenciaInput').value;
-            if (esDiaEspecial(fechaSel) && estado !== 'NC') {
-                alert("⚠️ En días especiales o de Jornada EMI no corresponde registrar faltas.");
+            if (esDiaSinActividad(fechaSel) && estado !== 'NC') {
+                alert("⚠️ En días especiales o de Jornada no corresponde registrar faltas.");
                 return;
             }
 
             estadosHoy[id] = estado;
-            
-            const btnPres = document.getElementById(`btn-pres-${id}`);
-            const btnAus = document.getElementById(`btn-aus-${id}`);
-            const btnTar = document.getElementById(`btn-tar-${id}`);
-            const btnJus = document.getElementById(`btn-jus-${id}`);
-            const btnNc = document.getElementById(`btn-nc-${id}`);
-
-            const rowTarde = document.getElementById(`row-tarde-${id}`);
-            const rowJustif = document.getElementById(`row-justif-${id}`);
-
-            if (btnPres) btnPres.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
-            if (btnAus) btnAus.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
-            if (btnTar) btnTar.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
-            if (btnJus) btnJus.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
-            if (btnNc) btnNc.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
-
-            if (rowTarde) rowTarde.classList.add('hidden');
-            if (rowJustif) rowJustif.classList.add('hidden');
-
-            if (estado === 'Presente' && btnPres) btnPres.className = "px-2.5 py-1 rounded-md font-bold bg-green-600 text-white transition";
-            if (estado === 'Ausente' && btnAus) btnAus.className = "px-2.5 py-1 rounded-md font-bold bg-red-600 text-white transition";
-            if (estado === 'Tarde' && btnTar) {
-                btnTar.className = "px-2.5 py-1 rounded-md font-bold bg-amber-500 text-white transition";
-                if (rowTarde) {
-                    rowTarde.classList.remove('hidden');
-                    const inputHoraTarde = document.getElementById(`hora-tarde-${id}`);
-                    if (inputHoraTarde && !inputHoraTarde.value) {
-                        const ahora = new Date();
-                        inputHoraTarde.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                        detallesLlegadaTarde[id] = inputHoraTarde.value;
-                    }
-                }
-            }
-            if (estado === 'Justificada' && btnJus) {
-                btnJus.className = "px-2.5 py-1 rounded-md font-bold bg-blue-600 text-white transition";
-                if (rowJustif) rowJustif.classList.remove('hidden');
-            }
-            if (estado === 'NC' && btnNc) btnNc.className = "px-2.5 py-1 rounded-md font-bold bg-slate-700 text-white transition";
+            cargarAsistenciaFechaSeleccionada();
         }
 
         function cerrarModalAsistencia() {
@@ -950,7 +877,7 @@
             const fechaKey = document.getElementById('fechaAsistenciaInput').value;
             if (!fechaKey) return;
 
-            if (esDiaEspecial(fechaKey)) {
+            if (esDiaSinActividad(fechaKey)) {
                 Object.keys(estadosHoy).forEach(id => {
                     estadosHoy[id] = 'NC';
                 });
@@ -958,61 +885,6 @@
 
             const fullKey = `${modoAsistenciaModal}_${fechaKey}`;
             
-            if (historialDiario[fullKey]) {
-                const viejosEstados = historialDiario[fullKey].estados || {};
-                Object.keys(viejosEstados).forEach(idStr => {
-                    const id = parseInt(idStr);
-                    const estViejo = viejosEstados[idStr];
-                    const alGlobal = alumnos.find(a => a.id === id);
-
-                    if (alGlobal) {
-                        if (modoAsistenciaModal === 'teoria') {
-                            if (estViejo === 'Ausente') alGlobal.faltasAnuales = Math.max(0, (alGlobal.faltasAnuales || 0) - 0.5);
-                            if (estViejo === 'Tarde') {
-                                alGlobal.faltasAnuales = Math.max(0, (alGlobal.faltasAnuales || 0) - 0.25);
-                                alGlobal.llegadasTarde = Math.max(0, (alGlobal.llegadasTarde || 0) - 1);
-                            }
-                            if (estViejo === 'Justificada') { 
-                                alGlobal.faltasAnuales = Math.max(0, (alGlobal.faltasAnuales || 0) - 0.5); 
-                                alGlobal.faltasJustificadas = Math.max(0, (alGlobal.faltasJustificadas || 0) - 0.5); 
-                            }
-                        } else {
-                            if (estViejo === 'Ausente') alGlobal.faltasTaller = Math.max(0, (alGlobal.faltasTaller || 0) - 0.5);
-                            if (estViejo === 'Tarde') {
-                                alGlobal.faltasTaller = Math.max(0, (alGlobal.faltasTaller || 0) - 0.25);
-                                alGlobal.llegadasTarde = Math.max(0, (alGlobal.llegadasTarde || 0) - 1);
-                            }
-                        }
-                    }
-                });
-            }
-
-            Object.keys(estadosHoy).forEach(idStr => {
-                const id = parseInt(idStr);
-                const est = estadosHoy[id];
-                const alGlobal = alumnos.find(a => a.id === id);
-
-                if (alGlobal) {
-                    if (modoAsistenciaModal === 'teoria') {
-                        if (est === 'Ausente') alGlobal.faltasAnuales = (alGlobal.faltasAnuales || 0) + 0.5;
-                        else if (est === 'Tarde') {
-                            alGlobal.faltasAnuales = (alGlobal.faltasAnuales || 0) + 0.25;
-                            alGlobal.llegadasTarde = (alGlobal.llegadasTarde || 0) + 1;
-                        }
-                        else if (est === 'Justificada') { 
-                            alGlobal.faltasAnuales = (alGlobal.faltasAnuales || 0) + 0.5; 
-                            alGlobal.faltasJustificadas = (alGlobal.faltasJustificadas || 0) + 0.5; 
-                        }
-                    } else {
-                        if (est === 'Ausente') alGlobal.faltasTaller = (alGlobal.faltasTaller || 0) + 0.5;
-                        else if (est === 'Tarde') {
-                            alGlobal.faltasTaller = (alGlobal.faltasTaller || 0) + 0.25;
-                            alGlobal.llegadasTarde = (alGlobal.llegadasTarde || 0) + 1;
-                        }
-                    }
-                }
-            });
-
             historialDiario[fullKey] = {
                 estados: JSON.parse(JSON.stringify(estadosHoy)),
                 retiros: JSON.parse(JSON.stringify(detallesRetiro)),
@@ -1026,9 +898,9 @@
             alert("✅ Registro guardado correctamente.");
         }
 
-        // CÁLCULO DE FALTAS EN EL 3° BIMESTRE (05/10/2026 al 04/12/2026)
-        function calcularFaltas3Bimestre(alumnoId) {
-            let total3Bim = 0;
+        // CÁLCULO DE FALTAS SEGÚN RANGOS EXACTOS DE BIMESTRES
+        function calcularFaltasBimestre(alumnoId, desdeFecha, hastaFecha) {
+            let totalBim = 0;
 
             Object.keys(historialDiario).forEach(fullKey => {
                 const partes = fullKey.split('_');
@@ -1036,23 +908,23 @@
                     const tipo = partes[0];
                     const fecha = partes[1];
 
-                    if (fecha >= FECHA_INICIO_3BIM && fecha <= FECHA_FIN_3BIM && !esDiaEspecial(fecha)) {
+                    if (fecha >= desdeFecha && fecha <= hastaFecha && !esDiaSinActividad(fecha)) {
                         const registro = historialDiario[fullKey];
                         if (registro && registro.estados && registro.estados[alumnoId]) {
                             const est = registro.estados[alumnoId];
                             if (tipo === 'teoria') {
-                                if (est === 'Ausente' || est === 'Justificada') total3Bim += 0.5;
-                                else if (est === 'Tarde') total3Bim += 0.25;
+                                if (est === 'Ausente' || est === 'Justificada') totalBim += 0.5;
+                                else if (est === 'Tarde') totalBim += 0.25;
                             } else if (tipo === 'taller') {
-                                if (est === 'Ausente') total3Bim += 0.5;
-                                else if (est === 'Tarde') total3Bim += 0.25;
+                                if (est === 'Ausente') totalBim += 0.5;
+                                else if (est === 'Tarde') totalBim += 0.25;
                             }
                         }
                     }
                 }
             });
 
-            return total3Bim;
+            return totalBim;
         }
 
         function evaluarAlertas() {
@@ -1084,7 +956,12 @@
 
                 const pdfRuta = encodeURI(`./${a.boletinPdf}`);
                 const esGrupoA = index < 20;
-                const faltas3Bim = calcularFaltas3Bimestre(a.id);
+
+                // CÁLCULO DE FALTAS DE CADA BIMESTRE
+                const f1Bim = calcularFaltasBimestre(a.id, "2026-04-10", "2026-05-07");
+                const f2Bim = calcularFaltasBimestre(a.id, "2026-05-08", "2026-07-17");
+                const f3Bim = calcularFaltasBimestre(a.id, "2026-08-03", "2026-10-02");
+                const f4Bim = calcularFaltasBimestre(a.id, "2026-10-05", "2026-12-04");
 
                 const trTodos = document.createElement('tr');
                 trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
@@ -1093,25 +970,24 @@
                     <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
                     <td class="p-3 text-center">
                         <span class="px-2 py-0.5 rounded text-[11px] font-bold ${esGrupoA ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
-                            ${esGrupoA ? 'Grupo A (Lun/Mié)' : 'Grupo B (Mar/Vie)'}
+                            ${esGrupoA ? 'G.A' : 'G.B'}
                         </span>
                     </td>
                     <td class="p-3 text-center">
-                        <a href="${pdfRuta}" target="_blank" class="inline-flex items-center space-x-1 bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg">
+                        <a href="${pdfRuta}" target="_blank" class="inline-flex items-center space-x-1 bg-blue-600 text-white font-bold text-xs px-2.5 py-1 rounded-lg">
                             <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
                             <span>PDF</span>
                         </a>
                     </td>
-                    <td class="p-3 text-center font-bold bg-purple-50/80 text-purple-900 border-x border-purple-200">
-                        <span class="px-2 py-0.5 rounded bg-purple-200/60">${faltas3Bim}</span>
-                    </td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-100 border border-red-200">${a.faltasAnuales}</span></td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200">${a.faltasJustificadas || 0}</span></td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-amber-800 bg-amber-100 border border-amber-200">${a.llegadasTarde || 0}</span></td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-emerald-800 bg-emerald-100 border border-emerald-200">${a.faltasTaller}</span></td>
-                    <td class="p-3 text-center"><span class="px-2 py-0.5 rounded text-xs font-bold text-red-700 bg-red-50 border border-red-200">${a.faltasEF || 0}</span></td>
+                    <td class="p-3 text-center font-bold bg-blue-50/50 border-x border-blue-100 text-blue-900">${f1Bim}</td>
+                    <td class="p-3 text-center font-bold bg-indigo-50/50 border-r border-indigo-100 text-indigo-900">${f2Bim}</td>
+                    <td class="p-3 text-center font-bold bg-purple-50/50 border-r border-purple-100 text-purple-900">${f3Bim}</td>
+                    <td class="p-3 text-center font-bold bg-fuchsia-50/50 border-r border-fuchsia-100 text-fuchsia-900">${f4Bim}</td>
+                    <td class="p-3 text-center font-bold text-red-700 bg-red-50/30">${a.faltasAnuales}</td>
+                    <td class="p-3 text-center text-amber-800 font-semibold">${a.llegadasTarde || 0}</td>
+                    <td class="p-3 text-center text-emerald-800 font-semibold">${a.faltasTaller}</td>
                     <td class="p-3 text-right">
-                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-slate-200 text-slate-700 font-bold text-xs px-2.5 py-1 rounded-md">Editar</button>
+                        <button type="button" onclick="abrirModalFicha(${a.id})" class="bg-slate-200 text-slate-700 font-bold text-xs px-2 py-1 rounded-md">Editar</button>
                     </td>
                 `;
                 tbodyTodos.appendChild(trTodos);
@@ -1302,9 +1178,11 @@
                         'Teléfono': a.telefono,
                         'Email': a.email || a.emailTutor,
                         'Grupo Contraturno': a.grupoTaller,
-                        'Materias Bajas (3° Bimestre)': a.materiasBajas,
-                        'Faltas 3° Bimestre': calcularFaltas3Bimestre(a.id),
-                        'Faltas Teoría (Anual)': a.faltasAnuales,
+                        '1° Bimestre': calcularFaltasBimestre(a.id, "2026-04-10", "2026-05-07"),
+                        '2° Bimestre': calcularFaltasBimestre(a.id, "2026-05-08", "2026-07-17"),
+                        '3° Bimestre': calcularFaltasBimestre(a.id, "2026-08-03", "2026-10-02"),
+                        '4° Bimestre': calcularFaltasBimestre(a.id, "2026-10-05", "2026-12-04"),
+                        'Total Anual': a.faltasAnuales,
                         'Llegadas Tarde': a.llegadasTarde || 0,
                         'Faltas Taller': a.faltasTaller,
                         'Faltas Ed. Física': a.faltasEF || 0,
