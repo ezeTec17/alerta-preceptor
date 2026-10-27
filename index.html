@@ -78,10 +78,13 @@
                             <i data-lucide="wrench" class="w-4 h-4"></i>
                             <span class="hidden sm:inline">Taller / EF</span>
                         </button>
-                        <div id="badgeAlertas" class="bg-red-500 text-white font-bold text-xs px-2.5 py-1 rounded-full flex items-center space-x-1">
-                            <i data-lucide="bell" class="w-3.5 h-3.5"></i>
+                        
+                        <!-- BOTÓN CON SONIDO DE ALERTA -->
+                        <button onclick="reproducirSonidoAlerta(); cambiarSolapa('alertas');" id="badgeAlertas" class="bg-red-500 hover:bg-red-600 active:scale-95 text-white font-bold text-xs px-2.5 py-1 rounded-full flex items-center space-x-1 transition cursor-pointer shadow">
+                            <i data-lucide="bell" class="w-3.5 h-3.5 animate-bounce"></i>
                             <span id="cantAlertasCriticas">0</span>
-                        </div>
+                        </button>
+
                         <button onclick="cerrarSesion()" class="bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white p-1.5 rounded-lg text-xs transition ml-2" title="Cerrar Sesión">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
                         </button>
@@ -178,14 +181,14 @@
                                 <p class="text-xs text-red-700 mt-0.5">Revisá la solapa de Alertas para gestionar los avisos a los tutores.</p>
                             </div>
                         </div>
-                        <button onclick="cambiarSolapa('alertas')" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
+                        <button onclick="reproducirSonidoAlerta(); cambiarSolapa('alertas');" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition">
                             Ver Lista Crítica
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- CIERRE MENSUAL DE REGISTRO (CON TODOS LOS CAMPOS OFICIALES) -->
+            <!-- CIERRE MENSUAL DE REGISTRO -->
             <section id="sec-cierre" class="hidden">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
                     <div class="p-3 sm:p-4 border-b border-slate-100 bg-blue-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -280,7 +283,7 @@
                 </div>
             </section>
 
-            <!-- TABLA GENERAL (NÓMINA Y BOLETINES CON LLEGADAS TARDE) -->
+            <!-- TABLA GENERAL (NÓMINA Y BOLETINES) -->
             <section id="sec-alumnos" class="hidden">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -313,7 +316,7 @@
                 </div>
             </section>
 
-            <!-- DATOS PERSONALES (CON DOMICILIO Y TELÉFONO) -->
+            <!-- DATOS PERSONALES -->
             <section id="sec-fichas" class="hidden">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-slate-100 bg-indigo-50">
@@ -406,45 +409,80 @@
         </main>
     </div>
 
-    <!-- MODAL EDITAR FICHA Y DATOS PERSONALES -->
+    <!-- MODAL FICHA COMPLETA DEL ALUMNO (ESTRUCTURA EXACTA ANTERIOR) -->
     <div id="modalFicha" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full overflow-hidden shadow-xl border border-slate-100 flex flex-col">
+        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+            <!-- Encabezado Modal -->
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
-                <h3 class="font-bold text-base" id="tituloFichaAlumno">Editar Faltas y Datos</h3>
-                <button type="button" onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="id-card" class="w-5 h-5 text-blue-400"></i>
+                    <h3 class="font-bold text-base">Ficha Completa del Alumno</h3>
+                </div>
+                <button type="button" onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             
-            <div class="p-4 space-y-3 text-xs max-h-[75vh] overflow-y-auto">
+            <!-- Cuerpo Modal con todos los campos -->
+            <div class="p-4 space-y-3 text-xs overflow-y-auto flex-1">
                 <input type="hidden" id="editAlumnoId">
+                
                 <div>
-                    <label class="font-semibold text-slate-600 block mb-1">Nombre y Apellido</label>
-                    <input type="text" id="editNombre" class="w-full p-2 border border-slate-300 rounded-lg">
+                    <label class="font-semibold text-slate-700 block mb-1">Apellido y Nombre</label>
+                    <input type="text" id="editNombre" class="w-full p-2.5 border border-slate-300 rounded-xl font-bold text-slate-800">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="font-semibold text-slate-600 block mb-1">Domicilio</label>
-                        <input type="text" id="editDomicilio" class="w-full p-2 border border-slate-300 rounded-lg">
+                        <label class="font-semibold text-slate-600 block mb-1">DNI</label>
+                        <input type="text" id="editDni" class="w-full p-2.5 border border-slate-300 rounded-xl font-mono text-slate-800">
                     </div>
                     <div>
-                        <label class="font-semibold text-slate-600 block mb-1">Teléfono</label>
-                        <input type="text" id="editTelefono" class="w-full p-2 border border-slate-300 rounded-lg">
+                        <label class="font-semibold text-slate-600 block mb-1">CUIL</label>
+                        <input type="text" id="editCuil" class="w-full p-2.5 border border-slate-200 bg-slate-50 rounded-xl font-mono text-slate-500">
                     </div>
                 </div>
+
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">Código App Familias (Vinculación)</label>
+                    <input type="text" id="editCodigoApp" class="w-full p-2.5 border border-blue-200 bg-blue-50/50 rounded-xl font-mono font-bold text-blue-700">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="font-semibold text-red-600 block mb-1">Materias Bajas (3° Bim)</label>
+                        <input type="number" id="editMateriasBajas" min="0" class="w-full p-2.5 border border-red-300 rounded-xl font-bold text-red-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-red-600 block mb-1">Faltas Acumuladas</label>
+                        <input type="number" step="0.25" id="editFaltasAnuales" min="0" class="w-full p-2.5 border border-red-300 rounded-xl font-bold text-red-600">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Teléfono Tutor</label>
+                        <input type="text" id="editTelefono" placeholder="11 1234-5678" class="w-full p-2.5 border border-slate-300 rounded-xl text-slate-800">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-slate-600 block mb-1">Email Tutor</label>
+                        <input type="email" id="editEmailTutor" placeholder="tutor@gmail.com" class="w-full p-2.5 border border-slate-300 rounded-xl text-slate-800">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="font-semibold text-slate-600 block mb-1">Domicilio</label>
+                    <input type="text" id="editDomicilio" placeholder="Ej: Av. Lacarra 1234, CABA" class="w-full p-2.5 border border-slate-300 rounded-xl text-slate-800">
+                </div>
+
                 <div>
                     <label class="font-semibold text-amber-800 block mb-1">Materias Previas</label>
-                    <input type="text" id="editMateriasPrevias" class="w-full p-2 border border-amber-300 bg-amber-50 rounded-lg">
+                    <input type="text" id="editMateriasPrevias" class="w-full p-2.5 border border-amber-300 bg-amber-50 rounded-xl text-slate-800">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+
+                <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-100">
                     <div>
-                        <label class="font-semibold text-red-600 block mb-1">Faltas Teoría</label>
-                        <input type="number" step="0.25" id="editFaltasAnuales" min="0" class="w-full p-2 border border-red-300 rounded-lg font-bold text-red-600">
-                    </div>
-                    <div>
-                        <label class="font-semibold text-blue-600 block mb-1">Faltas Justificadas</label>
+                        <label class="font-semibold text-blue-600 block mb-1">Faltas Justif.</label>
                         <input type="number" step="0.25" id="editFaltasJustificadas" min="0" class="w-full p-2 border border-blue-300 rounded-lg font-bold text-blue-600">
                     </div>
-                </div>
-                <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="font-semibold text-amber-600 block mb-1">Llegadas Tarde</label>
                         <input type="number" id="editLlegadasTarde" min="0" class="w-full p-2 border border-amber-300 rounded-lg font-bold text-amber-600">
@@ -453,21 +491,21 @@
                         <label class="font-semibold text-emerald-600 block mb-1">Faltas Taller</label>
                         <input type="number" step="0.25" id="editFaltasTaller" min="0" class="w-full p-2 border border-emerald-300 rounded-lg font-bold text-emerald-600">
                     </div>
-                    <div>
-                        <label class="font-semibold text-red-600 block mb-1">Faltas EF</label>
-                        <input type="number" step="0.25" id="editFaltasEF" min="0" class="w-full p-2 border border-red-300 rounded-lg font-bold text-red-600">
-                    </div>
                 </div>
             </div>
 
-            <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end space-x-2">
-                <button type="button" onclick="cerrarModalFicha()" class="px-4 py-2 text-xs font-semibold text-slate-600">Cancelar</button>
-                <button type="button" onclick="guardarFichaAlumno()" class="px-4 py-2 text-xs font-bold bg-indigo-600 text-white rounded-lg shadow">Guardar Cambios</button>
+            <!-- Botones Modal -->
+            <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end space-x-3">
+                <button type="button" onclick="cerrarModalFicha()" class="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition">Cancelar</button>
+                <button type="button" onclick="guardarFichaAlumno()" class="px-5 py-2.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow transition flex items-center space-x-1">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <span>Guardar Ficha</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL TOMAR ASISTENCIA (TEORÍA Y TALLER) -->
+    <!-- MODAL TOMAR ASISTENCIA -->
     <div id="modalAsistencia" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-xl border border-slate-100 flex flex-col max-h-[90vh]">
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
@@ -505,6 +543,33 @@
 
         const CONTRASENA_ACCESO = "PreceTec17";
 
+        // SINTETIZADOR DE SONIDO WEB PARA ALERTAS
+        function reproducirSonidoAlerta() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, ctx.currentTime); // Tono A5
+                osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
+                
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + 0.3);
+            } catch(e) {
+                console.log("Audio no soportado o bloqueado");
+            }
+        }
+
         function validarAcceso(event) {
             event.preventDefault();
             const pass = document.getElementById('inputPasswordLogin').value;
@@ -528,52 +593,53 @@
         }
 
         const nominaOficial = [
-            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", domicilio: "Av. Lacarra 1234", telefono: "11-4455-6677", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
-            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", domicilio: "Av. Directorio 3456", telefono: "11-3322-1100", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Física (2° 1°), Inglés (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
-            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", domicilio: "Culpina 567", telefono: "11-6677-8899", codigoApp: "16d1ded5", emailTutor: "thiagoaruni@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 1.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ARUNI CONDORI, THIAGO ALVARO - 95175997.pdf" },
-            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", domicilio: "Varela 890", telefono: "11-5544-3322", codigoApp: "cc3fabdd", emailTutor: "nahuelcamargo@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Matemática (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - CAMARGO HUANCA, NAHUEL JOAQUIN - 51066827.pdf" },
-            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", domicilio: "Ramón Falcón 2345", telefono: "11-2233-4455", codigoApp: "957500d5", emailTutor: "mateocardena@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 5.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CARDENA TERRAZAS, MATEO ESTEBAN - 50805950.pdf" },
-            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", domicilio: "Av. Eva Perón 1800", telefono: "11-7788-9900", codigoApp: "bce4c7ab", emailTutor: "sebastiancayo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CAYO ORIHUELA, SEBASTIAN ALAN - 50701185.pdf" },
-            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", domicilio: "Mariano Acosta 450", telefono: "11-8899-0011", codigoApp: "6f948894", emailTutor: "alfredchuca@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 4.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Química (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - CHUCA RODRIGUEZ, ALFRED DANIEL - 50702647.pdf" },
-            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", domicilio: "Pergamino 120", telefono: "11-9900-1122", codigoApp: "23c98d3e", emailTutor: "francoconde@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 6.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDE SANTISTEBAN, FRANCO ENRIQUE - 50802362.pdf" },
-            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", domicilio: "Av. Olivera 780", telefono: "11-1122-3344", codigoApp: "40bbddc1", emailTutor: "briancondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI CHOQUEHUANCA, BRIAN - 50799851.pdf" },
-            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", domicilio: "White 950", telefono: "11-2211-4433", codigoApp: "6e6e6c95", emailTutor: "josecondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 9.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI TICONA, JOSE SANTOS - 95498448.pdf" },
-            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", domicilio: "Medina 310", telefono: "11-3344-5566", codigoApp: "cdde759a", emailTutor: "joelcopa@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 3.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - COPA CORIA, JOEL NEHEMIAS - 50804646.pdf" },
-            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", domicilio: "Carhué 1420", telefono: "11-4433-2211", codigoApp: "d1cbbb4e", emailTutor: "valentinodehnike@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 28.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 3.5, faltasEF: 0, materiasPrevias: "Historia (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - DEHNIKE, VALENTINO AGUSTIN - 50707992.pdf" },
-            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", domicilio: "Lisandro de la Torre 2100", telefono: "11-5566-7788", codigoApp: "6d5ba204", emailTutor: "owenespinoza@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 2.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ESPINOZA SUXO, OWEN EZEQUIEL - 50708253.pdf" },
-            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", domicilio: "Murguiondo 1650", telefono: "11-6655-4433", codigoApp: "cc73089c", emailTutor: "mayrahinojosa@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 6.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - HINOJOSA SALVADOR, MAYRA BELEN - 50511132.pdf" },
-            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", domicilio: "Oliden 2800", telefono: "11-7766-5544", codigoApp: "2da2032f", emailTutor: "juanillanes@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ILLANES QUISPIA, JUAN MANUEL - 49983250.pdf" },
-            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", domicilio: "Piedra Buena 3200", telefono: "11-8877-6655", codigoApp: "a3ce6b35", emailTutor: "yoeljimenez@alum.tec17ba.edu.ar", materiasBajas: 8, faltasAnuales: 8.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - JIMENEZ SANTALLA, YOEL BENJAMIN - 49983173.pdf" },
-            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", domicilio: "Montiel 1100", telefono: "11-9988-7766", codigoApp: "a663fcf1", emailTutor: "damianlima@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LIMA, DAMIAN EMANUEL - 50785434.pdf" },
-            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", domicilio: "Av. Riestra 4500", telefono: "11-1234-5678", codigoApp: "820700aa", emailTutor: "aylenlopez@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 5.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LOPEZ, AYLEN CELINDA - 50701041.pdf" },
-            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", domicilio: "Zelarrayán 5200", telefono: "11-2345-6789", codigoApp: "383c68e5", emailTutor: "nairamamani@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MAMANI JUICA, NAIRA KEILA - 50706215.pdf" },
-            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", domicilio: "Av. Argentina 6100", telefono: "11-3456-7890", codigoApp: "50262357", emailTutor: "thiagomartinez@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Martinez , Thiago Giovanni - 50705060.pdf" },
-            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", domicilio: "Somellera 3900", telefono: "11-4567-8901", codigoApp: "689c60f9", emailTutor: "matiasmejia@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 5.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Mejia Paniagua, Matias - 95128231.pdf" },
-            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", domicilio: "Crisóstomo Alvarez 2700", telefono: "11-5678-9012", codigoApp: "77c27499", emailTutor: "tobiasmelgar@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MELGAR RIVERO, TOBIAS - 50908893.pdf" },
-            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", domicilio: "Av. Castañares 4100", telefono: "11-6789-0123", codigoApp: "d5e569f4", emailTutor: "dantemerlo@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 12.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MERLO GIMENEZ RIVERO, DANTE NICOLÁS - 50156512.pdf" },
-            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", domicilio: "Hubac 4800", telefono: "11-7890-1234", codigoApp: "07e629a6", emailTutor: "leonelojeda@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 6.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - OJEDA LAIME, LEONEL - 50705281.pdf" },
-            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", domicilio: "Guaminí 1900", telefono: "11-8901-2345", codigoApp: "0e5bfb7c", emailTutor: "judithchoquehuanca@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 7.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Matemática (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - POMA CHOQUEHUANCA, ABRIL YUDITH - 50681698.pdf" },
-            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", domicilio: "Chilavert 2400", telefono: "11-9012-3456", codigoApp: "ee1d37a3", emailTutor: "jonathanramos@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RAMOS RAMOS, JONATHAN ALEXIS - 50365960.pdf" },
-            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", domicilio: "Barros Pazos 3500", telefono: "11-0123-4567", codigoApp: "8a416f2d", emailTutor: "orlandoricaldi@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 12.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Geografía (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - Ricaldi Gutierrez, Orlando Misael - 94739323.pdf" },
-            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", domicilio: "Av. Cruz 2900", telefono: "11-1357-2468", codigoApp: "d8930d0d", emailTutor: "valentinoriera@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 2.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RIERA GENCARELLI, VALENTINO EMANUEL - 50992165.pdf" },
-            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", domicilio: "Escalada 1200", telefono: "11-2468-1357", codigoApp: "e3f641bc", emailTutor: "agustinsaravia@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SARAVIA COLQUE, MAXIMO AGUSTIN - 50903805.pdf" },
-            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", domicilio: "Basualdo 800", telefono: "11-3692-5814", codigoApp: "780684f3", emailTutor: "yamirsaturi@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SATURI CALLE, YAMIR RONALD - 50700925.pdf" },
-            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", domicilio: "Guardia Nacional 1500", telefono: "11-1472-5836", codigoApp: "f97cc410", emailTutor: "lucascravaglieri@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Scravaglieri , Luca Santino - 50418134.pdf" },
-            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", domicilio: "Av. Asturias 2200", telefono: "11-2581-4703", codigoApp: "bfce87f2", emailTutor: "marcosolis@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 1.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOLIS, MARCO ANTONIO - 51126766.pdf" },
-            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", domicilio: "Ana María Janer 3100", telefono: "11-3691-4725", codigoApp: "488ead9e", emailTutor: "axelsosa@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOSA, AXEL YAIR - 51043526.pdf" },
-            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", domicilio: "Unanué 4300", telefono: "11-4702-5836", codigoApp: "65589c2f", emailTutor: "carlostaboada@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 21.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 4.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Taboada , Carlos Alexander - 50709476.pdf" },
-            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", domicilio: "Pinto 1700", telefono: "11-5836-1472", codigoApp: "3a6477a6", emailTutor: "gabrielaticona@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 8.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TICONA ALVAREZ, GABRIELA - 50582311.pdf" },
-            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", domicilio: "Miralla 2600", telefono: "11-6925-8147", codigoApp: "1073c3c3", emailTutor: "dylantoledo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOLEDO AVILA, DYLAN LIONEL - 50415224.pdf" },
-            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", domicilio: "Pola 1900", telefono: "11-7036-9258", codigoApp: "079671c4", emailTutor: "javirtonane@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOÑANE, JAVIER NICOLAS - 49763588.pdf" },
-            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", domicilio: "Av. Larrazábal 3300", telefono: "11-8147-0258", codigoApp: "703c6ee3", emailTutor: "dantetucci@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 8.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 3.0, faltasEF: 0, materiasPrevias: "Matemática (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - TUCCI GIMENEZ, DANTE NICOLAS - 50800449.pdf" },
-            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", domicilio: "Fonrouge 1400", telefono: "11-9258-1470", codigoApp: "7aa3c2ff", emailTutor: "wilfredouria@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 1.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - URIA AVALOS, WILFREDO JOEL - 50319868.pdf" },
-            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", domicilio: "Murguiondo 2900", telefono: "11-0369-2581", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
+            { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", domicilio: "Av. Lacarra 1234, CABA", telefono: "11 1234-5678", codigoApp: "b4690449", emailTutor: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
+            { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", domicilio: "Av. Directorio 3456", telefono: "11 3322-1100", codigoApp: "eacefb2d", emailTutor: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 13.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Física (2° 1°), Inglés (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
+            { id: 3, nombre: "ARUNI CONDORI, THIAGO ALVARO", dni: "95175997", domicilio: "Culpina 567", telefono: "11 6677-8899", codigoApp: "16d1ded5", emailTutor: "thiagoaruni@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 1.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ARUNI CONDORI, THIAGO ALVARO - 95175997.pdf" },
+            { id: 4, nombre: "CAMARGO HUANCA, NAHUEL JOAQUIN", dni: "51066827", domicilio: "Varela 890", telefono: "11 5544-3322", codigoApp: "cc3fabdd", emailTutor: "nahuelcamargo@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Matemática (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - CAMARGO HUANCA, NAHUEL JOAQUIN - 51066827.pdf" },
+            { id: 5, nombre: "CARDENA TERRAZAS, MATEO ESTEBAN", dni: "50805950", domicilio: "Ramón Falcón 2345", telefono: "11 2233-4455", codigoApp: "957500d5", emailTutor: "mateocardena@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 5.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CARDENA TERRAZAS, MATEO ESTEBAN - 50805950.pdf" },
+            { id: 6, nombre: "CAYO ORIHUELA, SEBASTIAN ALAN", dni: "50701185", domicilio: "Av. Eva Perón 1800", telefono: "11 7788-9900", codigoApp: "bce4c7ab", emailTutor: "sebastiancayo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CAYO ORIHUELA, SEBASTIAN ALAN - 50701185.pdf" },
+            { id: 7, nombre: "CHUCA RODRIGUEZ, ALFRED DANIEL", dni: "50702647", domicilio: "Mariano Acosta 450", telefono: "11 8899-0011", codigoApp: "6f948894", emailTutor: "alfredchuca@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 4.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Química (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - CHUCA RODRIGUEZ, ALFRED DANIEL - 50702647.pdf" },
+            { id: 8, nombre: "CONDE SANTISTEBAN, FRANCO ENRIQUE", dni: "50802362", domicilio: "Pergamino 120", telefono: "11 9900-1122", codigoApp: "23c98d3e", emailTutor: "francoconde@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 6.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDE SANTISTEBAN, FRANCO ENRIQUE - 50802362.pdf" },
+            { id: 9, nombre: "CONDORI CHOQUEHUANCA, BRIAN", dni: "50799851", domicilio: "Av. Olivera 780", telefono: "11 1122-3344", codigoApp: "40bbddc1", emailTutor: "briancondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 1.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI CHOQUEHUANCA, BRIAN - 50799851.pdf" },
+            { id: 10, nombre: "CONDORI TICONA, JOSE SANTOS", dni: "95498448", domicilio: "White 950", telefono: "11 2211-4433", codigoApp: "6e6e6c95", emailTutor: "josecondori@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 9.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - CONDORI TICONA, JOSE SANTOS - 95498448.pdf" },
+            { id: 11, nombre: "COPA CORIA, JOEL NEHEMIAS", dni: "50804646", domicilio: "Medina 310", telefono: "11 3344-5566", codigoApp: "cdde759a", emailTutor: "joelcopa@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 3.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - COPA CORIA, JOEL NEHEMIAS - 50804646.pdf" },
+            { id: 12, nombre: "DEHNIKE, VALENTINO AGUSTIN", dni: "50707992", domicilio: "Carhué 1420", telefono: "11 4433-2211", codigoApp: "d1cbbb4e", emailTutor: "valentinodehnike@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 28.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 3.5, faltasEF: 0, materiasPrevias: "Historia (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - DEHNIKE, VALENTINO AGUSTIN - 50707992.pdf" },
+            { id: 13, nombre: "ESPINOZA SUXO, OWEN EZEQUIEL", dni: "50708253", domicilio: "Lisandro de la Torre 2100", telefono: "11 5566-7788", codigoApp: "6d5ba204", emailTutor: "owenespinoza@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 2.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ESPINOZA SUXO, OWEN EZEQUIEL - 50708253.pdf" },
+            { id: 14, nombre: "HINOJOSA SALVADOR, MAYRA BELEN", dni: "50511132", domicilio: "Murguiondo 1650", telefono: "11 6655-4433", codigoApp: "cc73089c", emailTutor: "mayrahinojosa@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 6.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - HINOJOSA SALVADOR, MAYRA BELEN - 50511132.pdf" },
+            { id: 15, nombre: "ILLANES QUISPIA, JUAN MANUEL", dni: "49983250", domicilio: "Oliden 2800", telefono: "11 7766-5544", codigoApp: "2da2032f", emailTutor: "juanillanes@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - ILLANES QUISPIA, JUAN MANUEL - 49983250.pdf" },
+            { id: 16, nombre: "JIMENEZ SANTALLA, YOEL BENJAMIN", dni: "49983173", domicilio: "Piedra Buena 3200", telefono: "11 8877-6655", codigoApp: "a3ce6b35", emailTutor: "yoeljimenez@alum.tec17ba.edu.ar", materiasBajas: 8, faltasAnuales: 8.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - JIMENEZ SANTALLA, YOEL BENJAMIN - 49983173.pdf" },
+            { id: 17, nombre: "LIMA, DAMIAN EMANUEL", dni: "50785434", domicilio: "Montiel 1100", telefono: "11 9988-7766", codigoApp: "a663fcf1", emailTutor: "damianlima@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LIMA, DAMIAN EMANUEL - 50785434.pdf" },
+            { id: 18, nombre: "LOPEZ, AYLEN CELINDA", dni: "50701041", domicilio: "Av. Riestra 4500", telefono: "11 1234-5678", codigoApp: "820700aa", emailTutor: "aylenlopez@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 5.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - LOPEZ, AYLEN CELINDA - 50701041.pdf" },
+            { id: 19, nombre: "MAMANI JUICA, NAIRA KEILA", dni: "50706215", domicilio: "Zelarrayán 5200", telefono: "11 2345-6789", codigoApp: "383c68e5", emailTutor: "nairamamani@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MAMANI JUICA, NAIRA KEILA - 50706215.pdf" },
+            { id: 20, nombre: "MARTINEZ, THIAGO GIOVANNI", dni: "50705060", domicilio: "Av. Argentina 6100", telefono: "11 3456-7890", codigoApp: "50262357", emailTutor: "thiagomartinez@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Martinez , Thiago Giovanni - 50705060.pdf" },
+            { id: 21, nombre: "MEJIA PANIAGUA, MATIAS", dni: "95128231", domicilio: "Somellera 3900", telefono: "11 4567-8901", codigoApp: "689c60f9", emailTutor: "matiasmejia@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 5.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Mejia Paniagua, Matias - 95128231.pdf" },
+            { id: 22, nombre: "MELGAR RIVERO, TOBIAS", dni: "50908893", domicilio: "Crisóstomo Alvarez 2700", telefono: "11 5678-9012", codigoApp: "77c27499", emailTutor: "tobiasmelgar@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 6.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MELGAR RIVERO, TOBIAS - 50908893.pdf" },
+            { id: 23, nombre: "MERLO GIMENEZ RIVERO, DANTE NICOLÁS", dni: "50156512", domicilio: "Av. Castañares 4100", telefono: "11 6789-0123", codigoApp: "d5e569f4", emailTutor: "dantemerlo@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 12.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - MERLO GIMENEZ RIVERO, DANTE NICOLÁS - 50156512.pdf" },
+            { id: 24, nombre: "OJEDA LAIME, LEONEL", dni: "50705281", domicilio: "Hubac 4800", telefono: "11 7890-1234", codigoApp: "07e629a6", emailTutor: "leonelojeda@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 6.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - OJEDA LAIME, LEONEL - 50705281.pdf" },
+            { id: 25, nombre: "POMA CHOQUEHUANCA, ABRIL YUDITH", dni: "50681698", domicilio: "Guaminí 1900", telefono: "11 8901-2345", codigoApp: "0e5bfb7c", emailTutor: "judithchoquehuanca@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 7.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Matemática (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - POMA CHOQUEHUANCA, ABRIL YUDITH - 50681698.pdf" },
+            { id: 26, nombre: "RAMOS RAMOS, JONATHAN ALEXIS", dni: "50365960", domicilio: "Chilavert 2400", telefono: "11 9012-3456", codigoApp: "ee1d37a3", emailTutor: "jonathanramos@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RAMOS RAMOS, JONATHAN ALEXIS - 50365960.pdf" },
+            { id: 27, nombre: "RICALDI GUTIERREZ, ORLANDO MISAEL", dni: "94739323", domicilio: "Barros Pazos 3500", telefono: "11 0123-4567", codigoApp: "8a416f2d", emailTutor: "orlandoricaldi@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 12.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Geografía (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - Ricaldi Gutierrez, Orlando Misael - 94739323.pdf" },
+            { id: 28, nombre: "RIERA GENCARELLI, VALENTINO EMANUEL", dni: "50992165", domicilio: "Av. Cruz 2900", telefono: "11 1357-2468", codigoApp: "d8930d0d", emailTutor: "valentinoriera@alum.tec17ba.edu.ar", materiasBajas: 3, faltasAnuales: 2.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - RIERA GENCARELLI, VALENTINO EMANUEL - 50992165.pdf" },
+            { id: 29, nombre: "SARAVIA COLQUE, MAXIMO AGUSTIN", dni: "50903805", domicilio: "Escalada 1200", telefono: "11 2468-1357", codigoApp: "e3f641bc", emailTutor: "agustinsaravia@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SARAVIA COLQUE, MAXIMO AGUSTIN - 50903805.pdf" },
+            { id: 30, nombre: "SATURI CALLE, YAMIR RONALD", dni: "50700925", domicilio: "Basualdo 800", telefono: "11 3692-5814", codigoApp: "780684f3", emailTutor: "yamirsaturi@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 0.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SATURI CALLE, YAMIR RONALD - 50700925.pdf" },
+            { id: 31, nombre: "SCRAVAGLIERI, LUCA SANTINO", dni: "50418134", domicilio: "Guardia Nacional 1500", telefono: "11 1472-5836", codigoApp: "f97cc410", emailTutor: "lucascravaglieri@alum.tec17ba.edu.ar", materiasBajas: 2, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Scravaglieri , Luca Santino - 50418134.pdf" },
+            { id: 32, nombre: "SOLIS, MARCO ANTONIO", dni: "51126766", domicilio: "Av. Asturias 2200", telefono: "11 2581-4703", codigoApp: "bfce87f2", emailTutor: "marcosolis@alum.tec17ba.edu.ar", materiasBajas: 0, faltasAnuales: 1.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOLIS, MARCO ANTONIO - 51126766.pdf" },
+            { id: 33, nombre: "SOSA, AXEL YAIR", dni: "51043526", domicilio: "Ana María Janer 3100", telefono: "11 3691-4725", codigoApp: "488ead9e", emailTutor: "axelsosa@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - SOSA, AXEL YAIR - 51043526.pdf" },
+            { id: 34, nombre: "TABOADA, CARLOS ALEXANDER", dni: "50709476", domicilio: "Unanué 4300", telefono: "11 4702-5836", codigoApp: "65589c2f", emailTutor: "carlostaboada@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 21.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 4.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - Taboada , Carlos Alexander - 50709476.pdf" },
+            { id: 35, nombre: "TICONA ALVAREZ, GABRIELA", dni: "50582311", domicilio: "Pinto 1700", telefono: "11 5836-1472", codigoApp: "3a6477a6", emailTutor: "gabrielaticona@alum.tec17ba.edu.ar", materiasBajas: 1, faltasAnuales: 8.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TICONA ALVAREZ, GABRIELA - 50582311.pdf" },
+            { id: 36, nombre: "TOLEDO AVILA, DYLAN LIONEL", dni: "50415224", domicilio: "Miralla 2600", telefono: "11 6925-8147", codigoApp: "1073c3c3", emailTutor: "dylantoledo@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 2.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOLEDO AVILA, DYLAN LIONEL - 50415224.pdf" },
+            { id: 37, nombre: "TOÑANE, JAVIER NICOLAS", dni: "49763588", domicilio: "Pola 1900", telefono: "11 7036-9258", codigoApp: "079671c4", emailTutor: "javirtonane@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 5.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - TOÑANE, JAVIER NICOLAS - 49763588.pdf" },
+            { id: 38, nombre: "TUCCI GIMENEZ, DANTE NICOLAS", dni: "50800449", domicilio: "Av. Larrazábal 3300", telefono: "11 8147-0258", codigoApp: "703c6ee3", emailTutor: "dantetucci@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 8.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 3.0, faltasEF: 0, materiasPrevias: "Matemática (2° 1°)", boletinPdf: "Boletín - Tercer Bimestre - TUCCI GIMENEZ, DANTE NICOLAS - 50800449.pdf" },
+            { id: 39, nombre: "URIA AVALOS, WILFREDO JOEL", dni: "50319868", domicilio: "Fonrouge 1400", telefono: "11 9258-1470", codigoApp: "7aa3c2ff", emailTutor: "wilfredouria@alum.tec17ba.edu.ar", materiasBajas: 4, faltasAnuales: 1.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - URIA AVALOS, WILFREDO JOEL - 50319868.pdf" },
+            { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", domicilio: "Murguiondo 2900", telefono: "11 0369-2581", codigoApp: "737216fd", emailTutor: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
         let alumnos = JSON.parse(localStorage.getItem('alumnos_et17_v26_colores_personalizados')) || nominaOficial.map((item, index) => ({
             id: item.id,
             nombre: item.nombre,
             dni: item.dni || "",
+            cuil: item.cuil || `20-${item.dni}-7`,
             domicilio: item.domicilio || "",
             telefono: item.telefono || "",
             codigoApp: item.codigoApp || "",
@@ -591,7 +657,6 @@
 
         let historialDiario = JSON.parse(localStorage.getItem('historial_asistencia_diaria_v26')) || {};
 
-        // Definición explícita global para evitar fallos en la apertura de modales
         let modoAsistenciaModal = 'teoria';
         let estadosHoy = {};
         let detallesRetiro = {};
@@ -874,7 +939,6 @@
                 const pdfRuta = encodeURI(`./${a.boletinPdf}`);
                 const esGrupoA = index < 20;
 
-                // Tabla Nómina y Boletines (con columna Llegadas Tarde)
                 const trTodos = document.createElement('tr');
                 trTodos.className = tieneAlerta ? "bg-red-50/40 hover:bg-red-50" : "hover:bg-slate-50";
                 trTodos.innerHTML = `
@@ -902,7 +966,6 @@
                 `;
                 tbodyTodos.appendChild(trTodos);
 
-                // Tabla Datos Personales (con Domicilio y Teléfono)
                 const trFicha = document.createElement('tr');
                 trFicha.className = "hover:bg-indigo-50/40";
                 trFicha.innerHTML = `
@@ -965,20 +1028,25 @@
             lucide.createIcons();
         }
 
+        // CARGA COMPLETA DE CAMPOS EN EL MODAL DE FICHA
         function abrirModalFicha(id) {
             const al = alumnos.find(a => a.id === parseInt(id));
             if (!al) return;
 
             document.getElementById('editAlumnoId').value = al.id;
             document.getElementById('editNombre').value = al.nombre || '';
-            document.getElementById('editDomicilio').value = al.domicilio || '';
-            document.getElementById('editTelefono').value = al.telefono || '';
-            document.getElementById('editMateriasPrevias').value = al.materiasPrevias || '';
+            document.getElementById('editDni').value = al.dni || '';
+            document.getElementById('editCuil').value = al.cuil || `20-${al.dni}-7`;
+            document.getElementById('editCodigoApp').value = al.codigoApp || '';
+            document.getElementById('editMateriasBajas').value = al.materiasBajas || 0;
             document.getElementById('editFaltasAnuales').value = al.faltasAnuales || 0;
+            document.getElementById('editTelefono').value = al.telefono || '';
+            document.getElementById('editEmailTutor').value = al.emailTutor || '';
+            document.getElementById('editDomicilio').value = al.domicilio || '';
+            document.getElementById('editMateriasPrevias').value = al.materiasPrevias || '';
             document.getElementById('editFaltasJustificadas').value = al.faltasJustificadas || 0;
             document.getElementById('editLlegadasTarde').value = al.llegadasTarde || 0;
             document.getElementById('editFaltasTaller').value = al.faltasTaller || 0;
-            document.getElementById('editFaltasEF').value = al.faltasEF || 0;
 
             document.getElementById('modalFicha').classList.remove('hidden');
         }
@@ -992,14 +1060,18 @@
             const al = alumnos.find(a => a.id === id);
             if (al) {
                 al.nombre = document.getElementById('editNombre').value;
-                al.domicilio = document.getElementById('editDomicilio').value;
-                al.telefono = document.getElementById('editTelefono').value;
-                al.materiasPrevias = document.getElementById('editMateriasPrevias').value;
+                al.dni = document.getElementById('editDni').value;
+                al.cuil = document.getElementById('editCuil').value;
+                al.codigoApp = document.getElementById('editCodigoApp').value;
+                al.materiasBajas = parseInt(document.getElementById('editMateriasBajas').value) || 0;
                 al.faltasAnuales = parseFloat(document.getElementById('editFaltasAnuales').value) || 0;
+                al.telefono = document.getElementById('editTelefono').value;
+                al.emailTutor = document.getElementById('editEmailTutor').value;
+                al.domicilio = document.getElementById('editDomicilio').value;
+                al.materiasPrevias = document.getElementById('editMateriasPrevias').value;
                 al.faltasJustificadas = parseFloat(document.getElementById('editFaltasJustificadas').value) || 0;
                 al.llegadasTarde = parseInt(document.getElementById('editLlegadasTarde').value) || 0;
                 al.faltasTaller = parseFloat(document.getElementById('editFaltasTaller').value) || 0;
-                al.faltasEF = parseFloat(document.getElementById('editFaltasEF').value) || 0;
                 
                 guardarPersistencia();
                 evaluarAlertas();
@@ -1023,7 +1095,6 @@
             window.location.href = `mailto:${email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
         }
 
-        // FÓRMULA OFICIAL COMPLETA DE CIERRE MENSUAL
         function calcularCierreMensual() {
             const diasHabiles = parseInt(document.getElementById('inputDiasHabiles').value) || 20;
             const inscriptos = alumnos.length;
@@ -1071,8 +1142,10 @@
                         'N°': index + 1,
                         'Apellido y Nombre': a.nombre,
                         'DNI': a.dni,
+                        'CUIL': a.cuil,
                         'Domicilio': a.domicilio,
-                        'Teléfono': a.telefono,
+                        'Teléfono Tutor': a.telefono,
+                        'Email': a.emailTutor,
                         'Grupo Contraturno': a.grupoTaller,
                         'Materias Bajas (3° Bimestre)': a.materiasBajas,
                         'Faltas Teoría': a.faltasAnuales,
