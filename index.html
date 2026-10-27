@@ -26,7 +26,6 @@
     <!-- PANTALLA DE LOGIN -->
     <div id="pantallaLogin" class="fixed inset-0 bg-slate-900 z-[100] flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-700 text-center space-y-4">
-            <!-- Escudo más grande -->
             <div class="mx-auto w-20 h-20 bg-slate-800 p-2 rounded-2xl border border-slate-700 flex items-center justify-center shadow-md">
                 <img src="logo.png" alt="ET N17 Logo" class="w-16 h-16 object-contain" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1827/1827349.png'">
             </div>
@@ -50,7 +49,6 @@
                 </button>
             </form>
 
-            <!-- Copyright inmediatamente debajo del botón de ingreso -->
             <div class="pt-2 border-t border-slate-100 text-[10px] text-slate-400 font-medium leading-relaxed">
                 © 2026 Ezequiel Marino. Todos los derechos reservados.<br>
                 Prohibida su copia, reproducción o comercialización.
@@ -82,7 +80,6 @@
                             <span class="hidden sm:inline">Taller / EF</span>
                         </button>
                         
-                        <!-- BOTÓN CON SONIDO DE ALERTA RESTAURADO -->
                         <button onclick="reproducirSonidoAlerta(); cambiarSolapa('alertas');" id="badgeAlertas" class="bg-red-500 hover:bg-red-600 active:scale-95 text-white font-bold text-xs px-2.5 py-1 rounded-full flex items-center space-x-1 transition cursor-pointer shadow">
                             <i data-lucide="bell" class="w-3.5 h-3.5 animate-bounce"></i>
                             <span id="cantAlertasCriticas">0</span>
@@ -416,7 +413,6 @@
     <!-- MODAL FICHA COMPLETA DEL ALUMNO -->
     <div id="modalFicha" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
-            <!-- Encabezado Modal -->
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
                 <div class="flex items-center space-x-2">
                     <i data-lucide="id-card" class="w-5 h-5 text-blue-400"></i>
@@ -425,7 +421,6 @@
                 <button type="button" onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             
-            <!-- Cuerpo Modal -->
             <div class="p-4 space-y-3 text-xs overflow-y-auto flex-1">
                 <input type="hidden" id="editAlumnoId">
                 
@@ -482,7 +477,6 @@
                     <input type="text" id="editMateriasPrevias" class="w-full p-2.5 border border-amber-300 bg-amber-50 rounded-xl text-slate-800">
                 </div>
 
-                <!-- DESGLOSE COMPLETO DE FALTAS -->
                 <div class="grid grid-cols-4 gap-2 pt-1 border-t border-slate-100">
                     <div>
                         <label class="font-semibold text-blue-600 block mb-1">Faltas Justif.</label>
@@ -503,7 +497,6 @@
                 </div>
             </div>
 
-            <!-- Botones Modal -->
             <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-end space-x-3">
                 <button type="button" onclick="cerrarModalFicha()" class="px-4 py-2.5 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition">Cancelar</button>
                 <button type="button" onclick="guardarFichaAlumno()" class="px-5 py-2.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow transition flex items-center space-x-1">
@@ -514,7 +507,7 @@
         </div>
     </div>
 
-    <!-- MODAL TOMAR ASISTENCIA -->
+    <!-- MODAL TOMAR ASISTENCIA CON LLEGADA TARDE Y COMPROBANTE MÉDICO -->
     <div id="modalAsistencia" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-xl border border-slate-100 flex flex-col max-h-[90vh]">
             <div class="bg-slate-900 text-white p-4 flex items-center justify-between">
@@ -547,12 +540,39 @@
         </div>
     </div>
 
+    <!-- MODAL VISUALIZAR JUSTIFICATIVO MÉDICO -->
+    <div id="modalJustificativo" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-4 shadow-2xl border border-slate-200 space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+                <h3 class="font-bold text-slate-900 text-sm flex items-center space-x-1.5">
+                    <i data-lucide="file-text" class="w-4 h-4 text-blue-600"></i>
+                    <span>Comprobante Médico / Justificativo</span>
+                </h3>
+                <button onclick="cerrarModalJustificativo()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <p id="subtituloAlumnoJustificativo" class="text-xs font-bold text-blue-900 bg-blue-50 p-2 rounded-lg"></p>
+            
+            <div id="previewJustificativoContainer" class="border border-dashed border-slate-300 rounded-xl p-3 min-h-[160px] flex flex-col items-center justify-center text-center bg-slate-50">
+                <img id="imgJustificativoPreview" src="" alt="Vista previa del comprobante" class="hidden max-h-60 rounded-lg shadow object-contain mb-2">
+                <p id="txtSinJustificativo" class="text-xs text-slate-400">No hay comprobante cargado para esta fecha.</p>
+            </div>
+
+            <div class="space-y-2 pt-1">
+                <label class="block text-xs font-semibold text-slate-700">Adjuntar o actualizar justificativo (Imagen/PDF):</label>
+                <input type="file" id="inputFileJustificativo" accept="image/*,.pdf" onchange="cargarArchivoJustificativo(event)" class="w-full text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            </div>
+
+            <div class="flex items-center justify-end space-x-2 pt-2 border-t">
+                <button type="button" onclick="cerrarModalJustificativo()" class="px-3 py-1.5 bg-slate-200 text-slate-700 font-bold text-xs rounded-lg">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
 
         const CONTRASENA_ACCESO = "PreceTec17";
 
-        // SINTETIZADOR DE SONIDO WEB RESTAURADO (SONIDO ANTERIOR BITONAL / CHIME)
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -561,11 +581,10 @@
                 
                 const now = ctx.currentTime;
                 
-                // Tono 1
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.type = 'triangle';
-                osc1.frequency.setValueAtTime(523.25, now); // C5
+                osc1.frequency.setValueAtTime(523.25, now);
                 gain1.gain.setValueAtTime(0.3, now);
                 gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
                 osc1.connect(gain1);
@@ -573,11 +592,10 @@
                 osc1.start(now);
                 osc1.stop(now + 0.2);
 
-                // Tono 2 (Alerta aguda)
                 const osc2 = ctx.createOscillator();
                 const gain2 = ctx.createGain();
                 osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(880, now + 0.15); // A5
+                osc2.frequency.setValueAtTime(880, now + 0.15);
                 gain2.gain.setValueAtTime(0.4, now + 0.15);
                 gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
                 osc2.connect(gain2);
@@ -680,10 +698,14 @@
         let modoAsistenciaModal = 'teoria';
         let estadosHoy = {};
         let detallesRetiro = {};
+        let detallesLlegadaTarde = {};
+        let justificativosMedicos = JSON.parse(localStorage.getItem('justificativos_medicos_v26')) || {};
+        let alumnoSeleccionadoJustificativo = null;
 
         function guardarPersistencia() {
             localStorage.setItem('alumnos_et17_v26_colores_personalizados', JSON.stringify(alumnos));
             localStorage.setItem('historial_asistencia_diaria_v26', JSON.stringify(historialDiario));
+            localStorage.setItem('justificativos_medicos_v26', JSON.stringify(justificativosMedicos));
         }
 
         function cambiarSolapa(solapa) {
@@ -755,9 +777,11 @@
             if (historialDiario[fullKey]) {
                 estadosHoy = JSON.parse(JSON.stringify(historialDiario[fullKey].estados || {}));
                 detallesRetiro = JSON.parse(JSON.stringify(historialDiario[fullKey].retiros || {}));
+                detallesLlegadaTarde = JSON.parse(JSON.stringify(historialDiario[fullKey].llegadasTarde || {}));
             } else {
                 estadosHoy = {};
                 detallesRetiro = {};
+                detallesLlegadaTarde = {};
             }
 
             renderizarListaAsistencia();
@@ -773,6 +797,7 @@
                 }
                 const estActual = estadosHoy[a.id];
                 const retiroObj = detallesRetiro[a.id] || { retiro: false, hora: '' };
+                const horaTarde = detallesLlegadaTarde[a.id] || '';
 
                 const div = document.createElement('div');
                 div.className = "p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2";
@@ -791,6 +816,28 @@
                         </div>
                     </div>
 
+                    <!-- LLEGADA TARDE HORARIO -->
+                    <div id="row-tarde-${a.id}" class="${estActual === 'Tarde' ? '' : 'hidden'} pt-1.5 border-t border-slate-200 flex items-center justify-between text-[11px] bg-amber-50/60 p-2 rounded-lg">
+                        <span class="font-bold text-amber-800 flex items-center space-x-1">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span>Hora de Ingreso (Llegada Tarde):</span>
+                        </span>
+                        <input type="time" id="hora-tarde-${a.id}" onchange="guardarHoraTarde(${a.id})" value="${horaTarde}" class="border border-amber-300 bg-white rounded px-2 py-0.5 text-amber-900 font-mono font-bold focus:outline-none">
+                    </div>
+
+                    <!-- FALTA JUSTIFICADA / COMPROBANTE -->
+                    <div id="row-justif-${a.id}" class="${estActual === 'Justificada' ? '' : 'hidden'} pt-1.5 border-t border-slate-200 flex items-center justify-between text-[11px] bg-blue-50/60 p-2 rounded-lg">
+                        <span class="font-bold text-blue-800 flex items-center space-x-1">
+                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                            <span>Justificativo Médico / Certificado</span>
+                        </span>
+                        <button type="button" onclick="abrirModalJustificativo(${a.id})" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-2.5 py-1 rounded-md flex items-center space-x-1 shadow transition">
+                            <i data-lucide="upload" class="w-3 h-3"></i>
+                            <span>Ver / Cargar</span>
+                        </button>
+                    </div>
+
+                    <!-- RETIRO ANTICIPADO -->
                     <div class="pt-1.5 border-t border-slate-200 flex items-center justify-end space-x-2 text-[11px]">
                         <label class="flex items-center space-x-1 cursor-pointer font-medium text-slate-600">
                             <input type="checkbox" id="chk-retiro-${a.id}" onchange="toggleRetiro(${a.id})" ${retiroObj.retiro ? 'checked' : ''} class="rounded text-blue-600 focus:ring-0">
@@ -801,6 +848,8 @@
                 `;
                 contenedor.appendChild(div);
             });
+
+            lucide.createIcons();
         }
 
         function toggleRetiro(id) {
@@ -830,6 +879,13 @@
             }
         }
 
+        function guardarHoraTarde(id) {
+            const inputHora = document.getElementById(`hora-tarde-${id}`);
+            if (inputHora) {
+                detallesLlegadaTarde[id] = inputHora.value;
+            }
+        }
+
         function setEstado(id, estado) {
             estadosHoy[id] = estado;
             
@@ -839,17 +895,94 @@
             const btnJus = document.getElementById(`btn-jus-${id}`);
             const btnNc = document.getElementById(`btn-nc-${id}`);
 
+            const rowTarde = document.getElementById(`row-tarde-${id}`);
+            const rowJustif = document.getElementById(`row-justif-${id}`);
+
             if (btnPres) btnPres.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
             if (btnAus) btnAus.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
             if (btnTar) btnTar.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
             if (btnJus) btnJus.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
             if (btnNc) btnNc.className = "px-2.5 py-1 rounded-md font-bold bg-slate-200 text-slate-600 transition";
 
+            if (rowTarde) rowTarde.classList.add('hidden');
+            if (rowJustif) rowJustif.classList.add('hidden');
+
             if (estado === 'Presente' && btnPres) btnPres.className = "px-2.5 py-1 rounded-md font-bold bg-green-600 text-white transition";
             if (estado === 'Ausente' && btnAus) btnAus.className = "px-2.5 py-1 rounded-md font-bold bg-red-600 text-white transition";
-            if (estado === 'Tarde' && btnTar) btnTar.className = "px-2.5 py-1 rounded-md font-bold bg-amber-500 text-white transition";
-            if (estado === 'Justificada' && btnJus) btnJus.className = "px-2.5 py-1 rounded-md font-bold bg-blue-600 text-white transition";
+            if (estado === 'Tarde' && btnTar) {
+                btnTar.className = "px-2.5 py-1 rounded-md font-bold bg-amber-500 text-white transition";
+                if (rowTarde) {
+                    rowTarde.classList.remove('hidden');
+                    const inputHoraTarde = document.getElementById(`hora-tarde-${id}`);
+                    if (inputHoraTarde && !inputHoraTarde.value) {
+                        const ahora = new Date();
+                        inputHoraTarde.value = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+                        detallesLlegadaTarde[id] = inputHoraTarde.value;
+                    }
+                }
+            }
+            if (estado === 'Justificada' && btnJus) {
+                btnJus.className = "px-2.5 py-1 rounded-md font-bold bg-blue-600 text-white transition";
+                if (rowJustif) rowJustif.classList.remove('hidden');
+            }
             if (estado === 'NC' && btnNc) btnNc.className = "px-2.5 py-1 rounded-md font-bold bg-slate-700 text-white transition";
+        }
+
+        // JUSTIFICATIVO MÉDICO
+        function abrirModalJustificativo(alumnoId) {
+            const al = alumnos.find(a => a.id === alumnoId);
+            if (!al) return;
+
+            alumnoSeleccionadoJustificativo = alumnoId;
+            const fechaKey = document.getElementById('fechaAsistenciaInput').value;
+            const keyJustif = `${alumnoId}_${fechaKey}`;
+
+            document.getElementById('subtituloAlumnoJustificativo').innerText = `${al.nombre} - Fecha: ${fechaKey}`;
+            
+            const imgPreview = document.getElementById('imgJustificativoPreview');
+            const txtSin = document.getElementById('txtSinJustificativo');
+            document.getElementById('inputFileJustificativo').value = '';
+
+            if (justificativosMedicos[keyJustif]) {
+                imgPreview.src = justificativosMedicos[keyJustif];
+                imgPreview.classList.remove('hidden');
+                txtSin.classList.add('hidden');
+            } else {
+                imgPreview.src = '';
+                imgPreview.classList.add('hidden');
+                txtSin.classList.remove('hidden');
+            }
+
+            document.getElementById('modalJustificativo').classList.remove('hidden');
+        }
+
+        function cerrarModalJustificativo() {
+            document.getElementById('modalJustificativo').classList.add('hidden');
+            alumnoSeleccionadoJustificativo = null;
+        }
+
+        function cargarArchivoJustificativo(event) {
+            const file = event.target.files[0];
+            if (!file || !alumnoSeleccionadoJustificativo) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64Str = e.target.result;
+                const fechaKey = document.getElementById('fechaAsistenciaInput').value;
+                const keyJustif = `${alumnoSeleccionadoJustificativo}_${fechaKey}`;
+
+                justificativosMedicos[keyJustif] = base64Str;
+                guardarPersistencia();
+
+                const imgPreview = document.getElementById('imgJustificativoPreview');
+                const txtSin = document.getElementById('txtSinJustificativo');
+                imgPreview.src = base64Str;
+                imgPreview.classList.remove('hidden');
+                txtSin.classList.add('hidden');
+
+                alert("✅ Comprobante médico guardado correctamente.");
+            };
+            reader.readAsDataURL(file);
         }
 
         function cerrarModalAsistencia() {
@@ -919,7 +1052,8 @@
 
             historialDiario[fullKey] = {
                 estados: JSON.parse(JSON.stringify(estadosHoy)),
-                retiros: JSON.parse(JSON.stringify(detallesRetiro))
+                retiros: JSON.parse(JSON.stringify(detallesRetiro)),
+                llegadasTarde: JSON.parse(JSON.stringify(detallesLlegadaTarde))
             };
 
             guardarPersistencia();
@@ -986,7 +1120,6 @@
                 `;
                 tbodyTodos.appendChild(trTodos);
 
-                // DATOS PERSONALES ENUMERADOS DEL 1 AL 40
                 const mailActual = a.email || a.emailTutor || 'Sin Email';
                 const trFicha = document.createElement('tr');
                 trFicha.className = "hover:bg-indigo-50/40";
