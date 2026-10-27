@@ -586,7 +586,6 @@
             return fechasSinActividad.includes(fechaStr);
         }
 
-        // NUEVO SONIDO DE ALERTA: SIRENA INSTITUCIONAL
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -599,7 +598,6 @@
 
                 osc.type = 'sawtooth';
                 
-                // Efecto de sirena (modulación de frecuencia)
                 osc.frequency.setValueAtTime(600, now);
                 osc.frequency.exponentialRampToValueAtTime(1200, now + 0.25);
                 osc.frequency.exponentialRampToValueAtTime(600, now + 0.5);
@@ -762,7 +760,13 @@
             const yyyy = hoy.getFullYear();
             const mm = String(hoy.getMonth() + 1).padStart(2, '0');
             const dd = String(hoy.getDate()).padStart(2, '0');
-            document.getElementById('fechaAsistenciaInput').value = `${yyyy}-${mm}-${dd}`;
+            let fechaTexto = `${yyyy}-${mm}-${dd}`;
+
+            if (esDiaSinActividad(fechaTexto)) {
+                fechaTexto = "2026-10-28";
+            }
+
+            document.getElementById('fechaAsistenciaInput').value = fechaTexto;
 
             if (tipo === 'taller') {
                 document.getElementById('tituloModalAsistencia').innerText = "Tomar Asistencia Taller / Ed. Física";
@@ -804,7 +808,6 @@
             renderizarListaAsistencia();
         }
 
-        // RENDERIZADO Y CLIC EN BOTONES DE ASISTENCIA CORREGIDO
         function renderizarListaAsistencia() {
             const contenedor = document.getElementById('listaTomarAsistencia');
             contenedor.innerHTML = '';
@@ -820,14 +823,15 @@
                 const retiroObj = detallesRetiro[a.id] || { retiro: false, hora: '' };
                 const horaTarde = detallesLlegadaTarde[a.id] || '';
 
-                const btnPClass = estActual === 'Presente' ? 'bg-green-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold';
-                const btnAClass = estActual === 'Ausente' ? 'bg-red-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold';
-                const btnTClass = estActual === 'Tarde' ? 'bg-amber-500 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold';
-                const btnJClass = estActual === 'Justificada' ? 'bg-blue-600 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold';
-                const btnNCClass = estActual === 'NC' ? 'bg-slate-700 text-white font-bold' : 'bg-slate-200 text-slate-700 hover:bg-slate-300 font-semibold';
+                const btnPClass = estActual === 'Presente' ? 'bg-green-600 text-white font-bold' : 'bg-slate-200 text-slate-700 font-semibold hover:bg-slate-300';
+                const btnAClass = estActual === 'Ausente' ? 'bg-red-600 text-white font-bold' : 'bg-slate-200 text-slate-700 font-semibold hover:bg-slate-300';
+                const btnTClass = estActual === 'Tarde' ? 'bg-amber-500 text-white font-bold' : 'bg-slate-200 text-slate-700 font-semibold hover:bg-slate-300';
+                const btnJClass = estActual === 'Justificada' ? 'bg-blue-600 text-white font-bold' : 'bg-slate-200 text-slate-700 font-semibold hover:bg-slate-300';
+                const btnNCClass = estActual === 'NC' ? 'bg-slate-700 text-white font-bold' : 'bg-slate-200 text-slate-700 font-semibold hover:bg-slate-300';
 
                 const div = document.createElement('div');
                 div.className = "p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2";
+                
                 div.innerHTML = `
                     <div class="flex items-center justify-between">
                         <div>
@@ -835,11 +839,11 @@
                             <span class="text-[10px] text-slate-400">${a.grupoTaller || ''}</span>
                         </div>
                         <div class="flex items-center space-x-1">
-                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" ${esSinClase ? 'disabled' : ''} class="w-7 h-7 rounded-md text-xs ${btnPClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">P</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" ${esSinClase ? 'disabled' : ''} class="w-7 h-7 rounded-md text-xs ${btnAClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">A</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" ${esSinClase ? 'disabled' : ''} class="w-7 h-7 rounded-md text-xs ${btnTClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">T</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" ${esSinClase ? 'disabled' : ''} class="w-7 h-7 rounded-md text-xs ${btnJClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">J</button>
-                            <button type="button" onclick="setEstado(${a.id}, 'NC')" class="w-7 h-7 rounded-md text-xs ${btnNCClass} transition shadow-sm">NC</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Presente')" ${esSinClase ? 'disabled' : ''} class="w-8 h-8 rounded-lg text-xs ${btnPClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">P</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Ausente')" ${esSinClase ? 'disabled' : ''} class="w-8 h-8 rounded-lg text-xs ${btnAClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">A</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Tarde')" ${esSinClase ? 'disabled' : ''} class="w-8 h-8 rounded-lg text-xs ${btnTClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">T</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'Justificada')" ${esSinClase ? 'disabled' : ''} class="w-8 h-8 rounded-lg text-xs ${btnJClass} transition shadow-sm ${esSinClase ? 'opacity-40 cursor-not-allowed' : ''}">J</button>
+                            <button type="button" onclick="setEstado(${a.id}, 'NC')" class="w-8 h-8 rounded-lg text-xs ${btnNCClass} transition shadow-sm">NC</button>
                         </div>
                     </div>
 
@@ -892,7 +896,8 @@
 
         function guardarHoraRetiro(id) {
             const inputHora = document.getElementById(`hora-retiro-${id}`);
-            if (inputHora && detallesRetiro[id]) {
+            if (inputHora) {
+                if (!detallesRetiro[id]) detallesRetiro[id] = { retiro: true, hora: '' };
                 detallesRetiro[id].hora = inputHora.value;
             }
         }
