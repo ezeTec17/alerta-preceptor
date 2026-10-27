@@ -71,6 +71,12 @@
                     </div>
                     
                     <div class="flex items-center space-x-2">
+                        <!-- ACCESO DIRECTO A APRENDEBA -->
+                        <a href="https://aprendeba.bue.edu.ar/" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
+                            <i data-lucide="graduation-cap" class="w-4 h-4"></i>
+                            <span class="hidden sm:inline">AprendeBA</span>
+                        </a>
+
                         <button onclick="abrirModalAsistencia('teoria')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
                             <i data-lucide="check-square" class="w-4 h-4"></i>
                             <span class="hidden sm:inline">Teoría</span>
@@ -117,6 +123,11 @@
                         <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
                         <span>Casos en Alerta</span>
                     </button>
+                    <!-- SOLAPA DIRECTA APRENDEBA -->
+                    <a href="https://aprendeba.bue.edu.ar/" target="_blank" class="text-indigo-400 hover:text-indigo-300 pb-1 flex items-center space-x-1 shrink-0 font-bold ml-auto">
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        <span>Ir a AprendeBA (.bue)</span>
+                    </a>
                 </nav>
             </div>
         </header>
@@ -545,35 +556,33 @@
 
         const CONTRASENA_ACCESO = "PreceTec17";
 
+        // NUEVO SONIDO DE ALERTA POTENTE Y CLEAR (Doble bip fuerte estilo alarma)
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
                 
-                const now = ctx.currentTime;
-                
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'triangle';
-                osc1.frequency.setValueAtTime(523.25, now);
-                gain1.gain.setValueAtTime(0.3, now);
-                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.2);
+                const playBeep = (freq, startTime, duration) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth'; // Tono potente
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    
+                    gain.gain.setValueAtTime(0.8, startTime); // Alto volumen
+                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(startTime);
+                    osc.stop(startTime + duration);
+                };
 
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(880, now + 0.15);
-                gain2.gain.setValueAtTime(0.4, now + 0.15);
-                gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.start(now + 0.15);
-                osc2.stop(now + 0.5);
+                const now = ctx.currentTime;
+                playBeep(880, now, 0.15);         // Primer bip alto (A5)
+                playBeep(880, now + 0.2, 0.15);   // Segundo bip alto (A5)
+                playBeep(1046.50, now + 0.4, 0.3); // Tercer bip más agudo (C6)
 
             } catch(e) {
                 console.log("Audio no soportado o bloqueado");
