@@ -316,7 +316,7 @@
                 </div>
             </section>
 
-            <!-- DATOS PERSONALES -->
+            <!-- DATOS PERSONALES (ENUMERADOS DEL 1 AL 40) -->
             <section id="sec-fichas" class="hidden">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 border-b border-slate-100 bg-indigo-50">
@@ -329,6 +329,7 @@
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider border-b border-slate-200">
+                                    <th class="p-3">N°</th>
                                     <th class="p-3">Alumno</th>
                                     <th class="p-3">DNI</th>
                                     <th class="p-3">Domicilio</th>
@@ -409,7 +410,7 @@
         </main>
     </div>
 
-    <!-- MODAL FICHA COMPLETA DEL ALUMNO (ESTRUCTURA EXACTA ANTERIOR) -->
+    <!-- MODAL FICHA COMPLETA DEL ALUMNO (CON FALTAS TEORÍA Y ED. FÍSICA INCLUIDAS) -->
     <div id="modalFicha" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
             <!-- Encabezado Modal -->
@@ -421,7 +422,7 @@
                 <button type="button" onclick="cerrarModalFicha()" class="text-slate-400 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             
-            <!-- Cuerpo Modal con todos los campos -->
+            <!-- Cuerpo Modal -->
             <div class="p-4 space-y-3 text-xs overflow-y-auto flex-1">
                 <input type="hidden" id="editAlumnoId">
                 
@@ -452,7 +453,7 @@
                         <input type="number" id="editMateriasBajas" min="0" class="w-full p-2.5 border border-red-300 rounded-xl font-bold text-red-600">
                     </div>
                     <div>
-                        <label class="font-semibold text-red-600 block mb-1">Faltas Acumuladas</label>
+                        <label class="font-semibold text-red-600 block mb-1">Faltas Teoría</label>
                         <input type="number" step="0.25" id="editFaltasAnuales" min="0" class="w-full p-2.5 border border-red-300 rounded-xl font-bold text-red-600">
                     </div>
                 </div>
@@ -478,7 +479,8 @@
                     <input type="text" id="editMateriasPrevias" class="w-full p-2.5 border border-amber-300 bg-amber-50 rounded-xl text-slate-800">
                 </div>
 
-                <div class="grid grid-cols-3 gap-2 pt-1 border-t border-slate-100">
+                <!-- DESGLOSE COMPLETO DE FALTAS -->
+                <div class="grid grid-cols-4 gap-2 pt-1 border-t border-slate-100">
                     <div>
                         <label class="font-semibold text-blue-600 block mb-1">Faltas Justif.</label>
                         <input type="number" step="0.25" id="editFaltasJustificadas" min="0" class="w-full p-2 border border-blue-300 rounded-lg font-bold text-blue-600">
@@ -490,6 +492,10 @@
                     <div>
                         <label class="font-semibold text-emerald-600 block mb-1">Faltas Taller</label>
                         <input type="number" step="0.25" id="editFaltasTaller" min="0" class="w-full p-2 border border-emerald-300 rounded-lg font-bold text-emerald-600">
+                    </div>
+                    <div>
+                        <label class="font-semibold text-red-600 block mb-1">Faltas EF</label>
+                        <input type="number" step="0.25" id="editFaltasEF" min="0" class="w-full p-2 border border-red-300 rounded-lg font-bold text-red-600">
                     </div>
                 </div>
             </div>
@@ -966,9 +972,11 @@
                 `;
                 tbodyTodos.appendChild(trTodos);
 
+                // DATOS PERSONALES ENUMERADOS DEL 1 AL 40
                 const trFicha = document.createElement('tr');
                 trFicha.className = "hover:bg-indigo-50/40";
                 trFicha.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-400 text-xs">${a.id}</td>
                     <td class="p-3 font-bold text-slate-900">${a.nombre}</td>
                     <td class="p-3 font-mono text-slate-700 text-xs">${a.dni || 'Sin DNI'}</td>
                     <td class="p-3 text-xs text-slate-700 font-medium">${a.domicilio || 'No registrado'}</td>
@@ -1028,7 +1036,7 @@
             lucide.createIcons();
         }
 
-        // CARGA COMPLETA DE CAMPOS EN EL MODAL DE FICHA
+        // CARGA COMPLETA DE CAMPOS EN EL MODAL DE FICHA (INCLUYENDO FALTAS TEORÍA Y ED. FÍSICA)
         function abrirModalFicha(id) {
             const al = alumnos.find(a => a.id === parseInt(id));
             if (!al) return;
@@ -1047,6 +1055,7 @@
             document.getElementById('editFaltasJustificadas').value = al.faltasJustificadas || 0;
             document.getElementById('editLlegadasTarde').value = al.llegadasTarde || 0;
             document.getElementById('editFaltasTaller').value = al.faltasTaller || 0;
+            document.getElementById('editFaltasEF').value = al.faltasEF || 0;
 
             document.getElementById('modalFicha').classList.remove('hidden');
         }
@@ -1072,6 +1081,7 @@
                 al.faltasJustificadas = parseFloat(document.getElementById('editFaltasJustificadas').value) || 0;
                 al.llegadasTarde = parseInt(document.getElementById('editLlegadasTarde').value) || 0;
                 al.faltasTaller = parseFloat(document.getElementById('editFaltasTaller').value) || 0;
+                al.faltasEF = parseFloat(document.getElementById('editFaltasEF').value) || 0;
                 
                 guardarPersistencia();
                 evaluarAlertas();
@@ -1145,12 +1155,13 @@
                         'CUIL': a.cuil,
                         'Domicilio': a.domicilio,
                         'Teléfono Tutor': a.telefono,
-                        'Email': a.emailTutor,
+                        'Email Tutor': a.emailTutor,
                         'Grupo Contraturno': a.grupoTaller,
                         'Materias Bajas (3° Bimestre)': a.materiasBajas,
                         'Faltas Teoría': a.faltasAnuales,
                         'Llegadas Tarde': a.llegadasTarde || 0,
                         'Faltas Taller': a.faltasTaller,
+                        'Faltas Ed. Física': a.faltasEF || 0,
                         'Materias Previas': a.materiasPrevias || 'Ninguna',
                         'Situación Crítica (Resumen)': estadoCritico.join(' | ')
                     });
