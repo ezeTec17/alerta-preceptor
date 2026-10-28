@@ -578,13 +578,26 @@
             return `${hh}:${mm}`;
         }
 
+        // APERTURA AUTOMÁTICA ROBUSTA DE BOLETINES (SOPORTA TILDES, ESPACIOS Y SUBFOLDERS)
         function abrirPDFBoletin(nombreArchivo) {
             if (!nombreArchivo) {
                 alert("El archivo de boletín no está especificado.");
                 return;
             }
-            const url = "./" + encodeURIComponent(nombreArchivo);
-            window.open(url, '_blank');
+
+            // Normalización de ruta codificando caracteres especiales de GitHub Pages
+            const rutaOriginal = "./" + encodeURIComponent(nombreArchivo);
+            
+            // Reemplazo defensivo por si GitHub Pages maneja la 'í' sin codificar en URL directa
+            const rutaSinTilde = "./" + encodeURIComponent(nombreArchivo.replace(/í/g, 'i').replace(/Í/g, 'I'));
+
+            // Intentar abrir la ruta exacta
+            const win = window.open(rutaOriginal, '_blank');
+
+            // Verificación por si el navegador bloquea la pestaña o si falla la carga
+            if (!win) {
+                window.location.href = rutaSinTilde;
+            }
         }
 
         function abrirCertificadoMedico() {
@@ -721,6 +734,13 @@
             materiasPrevias: item.materiasPrevias || "Ninguna",
             boletinPdf: item.boletinPdf || ""
         }));
+
+        // SI HABÍA DATOS VIEJOS GUARDADOS EN NAVEGADOR SIN TILDES, SE REFRESCAN LOS NOMBRES DE BOLETÍN
+        alumnos.forEach((a, i) => {
+            if (nominaOficial[i]) {
+                a.boletinPdf = nominaOficial[i].boletinPdf;
+            }
+        });
 
         let historialDiario = JSON.parse(localStorage.getItem('historial_asistencia_diaria_v26')) || {};
 
