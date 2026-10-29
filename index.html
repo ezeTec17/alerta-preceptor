@@ -578,7 +578,7 @@
             return `${hh}:${mm}`;
         }
 
-        // APERTURA DE BOLETINES (SOPORTE AVANZADO DE CARACTERES ESPECIALES Y ESPACIOS)
+        // APERTURA DE BOLETINES ROBUSTA
         function abrirPDFBoletin(nombreArchivo) {
             if (!nombreArchivo) {
                 alert("El archivo de boletín no está especificado.");
@@ -588,7 +588,6 @@
             const rutaOriginal = "./" + encodeURIComponent(nombreArchivo);
             const rutaLimpia = "./" + nombreArchivo;
 
-            // Intenta abrir mediante URL codificada
             let win = window.open(rutaOriginal, '_blank');
 
             if (!win || win.closed || typeof win.closed == 'undefined') {
@@ -638,7 +637,6 @@
             return fechasSinActividad.includes(fechaStr);
         }
 
-        // NUEVO SONIDO DE SIRENA SUAVE Y EJECUTIVO
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -649,12 +647,11 @@
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
 
-                osc.type = 'sine'; // Tono suave
+                osc.type = 'sine';
                 
-                // Tono Dual Armónico
-                osc.frequency.setValueAtTime(523.25, now);       // Do (C5)
-                osc.frequency.setValueAtTime(659.25, now + 0.12); // Mi (E5)
-                osc.frequency.setValueAtTime(783.99, now + 0.24); // Sol (G5)
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.12);
+                osc.frequency.setValueAtTime(783.99, now + 0.24);
 
                 gain.gain.setValueAtTime(0.3, now);
                 gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
@@ -667,7 +664,6 @@
             } catch(e) {}
         }
 
-        // DATOS EXTRAÍDOS CON EXACTITUD DEL REGISTRO FÍSICO Y DEL EXCEL OFICIAL
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", domicilio: "Bacacay 2180 CABA", telefono: "11 6270-3210 / 11 3124-9...", codigoApp: "b4690449", email: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, faltasAnuales: 4.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "1° Geografía, 2° Geografía, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
             { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", domicilio: "Mercedes 274 Dpto 2B CABA", telefono: "11 5610-3488 / 11 4447-3851", codigoApp: "eacefb2d", email: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 7, faltasAnuales: 13.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "1° Matemática, 2° Matemática, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
@@ -711,7 +707,53 @@
             { id: 40, nombre: "VEIGA, THIAGO", dni: "51126947", domicilio: "Andalgala 1273, AC CABA", telefono: "11 3084-1976", codigoApp: "737216fd", email: "thiagoveiga@alum.tec17ba.edu.ar", materiasBajas: 5, faltasAnuales: 10.0, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1.0, faltasEF: 0, materiasPrevias: "Ninguna", boletinPdf: "Boletín - Tercer Bimestre - VEIGA, THIAGO - 51126947.pdf" }
         ];
 
-        // FUNCIÓN CLAVE: MANTIENE INTACTAS TUS ASISTENCIAS Y SOLO ACTUALIZA DATOS PERSONALES
+        // HISTORIAL OFICIAL DÍA A DÍA EXTRAÍDO DIRECTAMENTE DE LAS FOTOS DEL REGISTRO FÍSICO
+        function obtenerHistorialRegistrosFisicos() {
+            return {
+                "teoria_2026-03-09": { estados: { 20: "Ausente" } },
+                "teoria_2026-03-11": { estados: { 14: "Justificada" } },
+                "teoria_2026-03-12": { estados: { 12: "Justificada", 17: "Justificada", 37: "Justificada" } },
+                "teoria_2026-03-13": { estados: { 10: "Ausente", 17: "Justificada" } },
+                "teoria_2026-03-18": { estados: { 30: "Justificada" } },
+                "teoria_2026-03-23": { estados: { 23: "Justificada" } },
+
+                "teoria_2026-04-01": { estados: { 25: "Justificada" } },
+                "teoria_2026-04-07": { estados: { 8: "Ausente", 10: "Ausente" } },
+                "teoria_2026-04-16": { estados: { 16: "Justificada" } },
+                "teoria_2026-04-17": { estados: { 12: "Justificada" } },
+                "teoria_2026-04-21": { estados: { 27: "Justificada" } },
+                "teoria_2026-04-22": { estados: { 1: "Justificada", 12: "Justificada", 27: "Justificada" } },
+                "teoria_2026-04-23": { estados: { 1: "Justificada", 12: "Justificada", 27: "Justificada" } },
+                "teoria_2026-04-27": { estados: { 12: "Justificada", 27: "Justificada" } },
+
+                "teoria_2026-05-08": { estados: { 2: "Ausente" } },
+                "teoria_2026-05-09": { estados: { 25: "Justificada" } },
+                "teoria_2026-05-13": { estados: { 1: "Justificada" } },
+                "teoria_2026-05-22": { estados: { 17: "Justificada", 23: "Justificada" } },
+                "teoria_2026-05-28": { estados: { 12: "Justificada", 27: "Justificada" } },
+                "teoria_2026-05-29": { estados: { 12: "Justificada", 27: "Justificada" } },
+
+                "teoria_2026-06-18": { estados: { 23: "Justificada" } },
+
+                "teoria_2026-07-01": { estados: { 16: "Justificada" } },
+                "teoria_2026-07-14": { estados: { 16: "Justificada" } },
+
+                "teoria_2026-08-04": { estados: { 34: "Justificada" } },
+                "teoria_2026-08-05": { estados: { 34: "Justificada" } },
+                "teoria_2026-08-18": { estados: { 34: "Justificada" } },
+                "teoria_2026-08-19": { estados: { 34: "Justificada" } },
+                "teoria_2026-08-20": { estados: { 34: "Justificada" } },
+                "teoria_2026-08-21": { estados: { 34: "Justificada" } },
+
+                "teoria_2026-09-01": { estados: { 34: "Justificada" } },
+                "teoria_2026-09-02": { estados: { 34: "Justificada" } },
+                "teoria_2026-09-15": { estados: { 34: "Justificada" } },
+                "teoria_2026-09-16": { estados: { 34: "Justificada" } },
+                "teoria_2026-09-22": { estados: { 34: "Justificada" } },
+                "teoria_2026-09-23": { estados: { 34: "Justificada" } }
+            };
+        }
+
         function preservarYActualizarMemoria() {
             let guardados = JSON.parse(localStorage.getItem('alumnos_et17_v26_colores_personalizados')) || [];
             
@@ -729,7 +771,6 @@
                     email: item.email,
                     grupoTaller: (index < 20) ? "Grupo A (Lun/Mie)" : "Grupo B (Mar/Vie)",
                     
-                    // Mantiene tus cargas de asistencia si ya editaste algo
                     materiasBajas: item.materiasBajas,
                     faltasAnuales: (prev.faltasAnuales !== undefined) ? prev.faltasAnuales : item.faltasAnuales,
                     faltasJustificadas: (prev.faltasJustificadas !== undefined) ? prev.faltasJustificadas : item.faltasJustificadas,
@@ -744,7 +785,13 @@
         }
 
         let alumnos = preservarYActualizarMemoria();
-        let historialDiario = JSON.parse(localStorage.getItem('historial_asistencia_diaria_v26')) || {};
+        
+        // RECUPERA HISTORIAL O INICIALIZA CON EL HISTORIAL OFICIAL TRANSCRITO DE LAS FOTOS
+        let historialDiario = JSON.parse(localStorage.getItem('historial_asistencia_diaria_v26'));
+        if (!historialDiario || Object.keys(historialDiario).length === 0) {
+            historialDiario = obtenerHistorialRegistrosFisicos();
+            localStorage.setItem('historial_asistencia_diaria_v26', JSON.stringify(historialDiario));
+        }
 
         let modoAsistenciaModal = 'teoria';
         let estadosHoy = {};
@@ -1031,13 +1078,11 @@
             return totalBim;
         }
 
-        // CANTIDAD DE PREVIAS
         function contarPrevias(previasStr) {
             if (!previasStr || previasStr === 'Ninguna') return 0;
             return previasStr.split(',').filter(s => s.trim().length > 0).length;
         }
 
-        // EVALUACIÓN DE ALERTAS INTEGRADA
         function evaluarAlertas() {
             let criticosMaterias = 0;
             let criticosAnuales = 0;
