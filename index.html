@@ -77,10 +77,10 @@
                             <span class="hidden sm:inline">AprendeBA</span>
                         </a>
 
-                        <a href="./Control_Asistencias_Alumnos_2026.xlsx" download class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
+                        <button onclick="verPreviaExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
                             <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                             <span class="hidden sm:inline">Respaldo Excel</span>
-                        </a>
+                        </button>
 
                         <button onclick="abrirModalAsistencia('teoria')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs flex items-center space-x-1 shadow transition">
                             <i data-lucide="check-square" class="w-4 h-4"></i>
@@ -553,6 +553,31 @@
         </div>
     </div>
 
+    <!-- MODAL VISOR PREVIO DE EXCEL RESPALDO -->
+    <div id="modalVisorExcel" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-2xl w-full max-w-5xl h-[92vh] flex flex-col overflow-hidden shadow-2xl border border-slate-700">
+            <div class="bg-slate-900 text-white p-3.5 flex items-center justify-between border-b border-slate-800">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-400"></i>
+                    <h3 class="font-bold text-sm sm:text-base">Control_Asistencias_Alumnos_2026.xlsx</h3>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <a href="./Control_Asistencias_Alumnos_2026.xlsx" download class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg transition shadow flex items-center space-x-1">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Descargar Excel</span>
+                    </a>
+                    <button type="button" onclick="cerrarVisorExcel()" class="text-slate-400 hover:text-white transition p-1">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 bg-slate-100 relative">
+                <iframe id="iframeVisorExcel" class="w-full h-full border-none" src="about:blank"></iframe>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL TOMAR ASISTENCIA -->
     <div id="modalAsistencia" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-xl border border-slate-100 flex flex-col max-h-[90vh]">
@@ -600,6 +625,19 @@
             const hh = String(ahora.getHours()).padStart(2, '0');
             const mm = String(ahora.getMinutes()).padStart(2, '0');
             return `${hh}:${mm}`;
+        }
+
+        function verPreviaExcel() {
+            const urlAbsoluta = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/Control_Asistencias_Alumnos_2026.xlsx';
+            const urlVisorOffice = 'https://view.officeapps.live.com/op/view.aspx?src=' + encodeURIComponent(urlAbsoluta);
+            
+            document.getElementById('iframeVisorExcel').src = urlVisorOffice;
+            document.getElementById('modalVisorExcel').classList.remove('hidden');
+        }
+
+        function cerrarVisorExcel() {
+            document.getElementById('modalVisorExcel').classList.add('hidden');
+            document.getElementById('iframeVisorExcel').src = 'about:blank';
         }
 
         // APERTURA DE BOLETINES ROBUSTA
@@ -661,37 +699,35 @@
             return fechasSinActividad.includes(fechaStr);
         }
 
-        // SONIDO SIRENA CORTA Y CLARA (NUEVA VERSIÓN)
+        // SONIDO DE ALARMA TRADICIONAL DE CELULAR/DESPERTADOR (BEEP-BEEP RÍTMICO)
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
-                const now = ctx.currentTime;
+                const start = ctx.currentTime;
 
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
+                const beeps = [0, 0.12, 0.24, 0.36];
+                beeps.forEach(offset => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
 
-                osc.type = 'sawtooth';
-                
-                // Sirena corta con dos impulsos limpios de frecuencia
-                osc.frequency.setValueAtTime(880, now);
-                osc.frequency.exponentialRampToValueAtTime(1400, now + 0.12);
-                osc.frequency.setValueAtTime(880, now + 0.15);
-                osc.frequency.exponentialRampToValueAtTime(1400, now + 0.27);
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(800, start + offset);
 
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.32);
+                    gain.gain.setValueAtTime(0.15, start + offset);
+                    gain.gain.exponentialRampToValueAtTime(0.001, start + offset + 0.07);
 
-                osc.connect(gain);
-                gain.connect(ctx.destination);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
 
-                osc.start(now);
-                osc.stop(now + 0.32);
+                    osc.start(start + offset);
+                    osc.stop(start + offset + 0.08);
+                });
             } catch(e) {}
         }
 
-        // NÓMINA CON INASISTENCIAS PRECARGADAS DESGLOSADAS POR CADA BIMESTRE
+        // NÓMINA CON INASISTENCIAS PRECARGADAS DESGLOSADAS POR CADA BIMESTRE Y CATEGORÍA
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", domicilio: "Bacacay 2180 CABA", telefono: "11 6270-3210 / 11 3124-9...", codigoApp: "b4690449", email: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, f1Bim: 1.5, f2Bim: 2.5, f3Bim: 0.5, f4Bim: 0.0, faltasAnuales: 4.5, faltasJustificadas: 1.5, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "1° Geografía, 2° Geografía, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
             { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", domicilio: "Mercedes 274 Dpto 2B CABA", telefono: "11 5610-3488 / 11 4447-3851", codigoApp: "eacefb2d", email: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 7, f1Bim: 5.5, f2Bim: 4.0, f3Bim: 4.0, f4Bim: 0.0, faltasAnuales: 13.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "1° Matemática, 2° Matemática, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
@@ -1165,6 +1201,7 @@
             }
         }
 
+        // CARGA COMPLETA DE TODOS LOS CAMPOS DE FALTAS AL EDITAR LA FICHA
         function abrirModalFicha(id) {
             const al = alumnos.find(a => a.id === parseInt(id));
             if (!al) return;
@@ -1176,20 +1213,21 @@
             document.getElementById('editCodigoApp').value = al.codigoApp || '';
             document.getElementById('editMateriasBajas').value = al.materiasBajas || 0;
             
-            document.getElementById('editF1Bim').value = al.f1Bim || 0;
-            document.getElementById('editF2Bim').value = al.f2Bim || 0;
-            document.getElementById('editF3Bim').value = al.f3Bim || 0;
-            document.getElementById('editF4Bim').value = al.f4Bim || 0;
+            document.getElementById('editF1Bim').value = (al.f1Bim !== undefined) ? al.f1Bim : 0;
+            document.getElementById('editF2Bim').value = (al.f2Bim !== undefined) ? al.f2Bim : 0;
+            document.getElementById('editF3Bim').value = (al.f3Bim !== undefined) ? al.f3Bim : 0;
+            document.getElementById('editF4Bim').value = (al.f4Bim !== undefined) ? al.f4Bim : 0;
 
-            document.getElementById('editFaltasAnuales').value = al.faltasAnuales || 0;
+            document.getElementById('editFaltasAnuales').value = (al.faltasAnuales !== undefined) ? al.faltasAnuales : 0;
             document.getElementById('editTelefono').value = al.telefono || '';
             document.getElementById('editEmail').value = al.email || '';
             document.getElementById('editDomicilio').value = al.domicilio || '';
             document.getElementById('editMateriasPrevias').value = al.materiasPrevias || '';
-            document.getElementById('editFaltasJustificadas').value = al.faltasJustificadas || 0;
-            document.getElementById('editLlegadasTarde').value = al.llegadasTarde || 0;
-            document.getElementById('editFaltasTaller').value = al.faltasTaller || 0;
-            document.getElementById('editFaltasEF').value = al.faltasEF || 0;
+            
+            document.getElementById('editFaltasJustificadas').value = (al.faltasJustificadas !== undefined) ? al.faltasJustificadas : 0;
+            document.getElementById('editLlegadasTarde').value = (al.llegadasTarde !== undefined) ? al.llegadasTarde : 0;
+            document.getElementById('editFaltasTaller').value = (al.faltasTaller !== undefined) ? al.faltasTaller : 0;
+            document.getElementById('editFaltasEF').value = (al.faltasEF !== undefined) ? al.faltasEF : 0;
 
             document.getElementById('modalFicha').classList.remove('hidden');
         }
