@@ -699,35 +699,35 @@
             return fechasSinActividad.includes(fechaStr);
         }
 
-        // SONIDO DE ALARMA TRADICIONAL DE CELULAR/DESPERTADOR (BEEP-BEEP RÍTMICO)
+        // SONIDO DE NOTIFICACIÓN SUAVE Y AGRADABLE (NUEVO TONO CHIME DULCE)
         function reproducirSonidoAlerta() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
-                const start = ctx.currentTime;
+                const now = ctx.currentTime;
 
-                const beeps = [0, 0.12, 0.24, 0.36];
-                beeps.forEach(offset => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
 
-                    osc.type = 'square';
-                    osc.frequency.setValueAtTime(800, start + offset);
+                osc.type = 'sine'; // Onda limpia y suave
+                
+                // Melodía corta ascendente agradable (Do-Mi / C5-E5)
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.15);
 
-                    gain.gain.setValueAtTime(0.15, start + offset);
-                    gain.gain.exponentialRampToValueAtTime(0.001, start + offset + 0.07);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
 
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
 
-                    osc.start(start + offset);
-                    osc.stop(start + offset + 0.08);
-                });
+                osc.start(now);
+                osc.stop(now + 0.45);
             } catch(e) {}
         }
 
-        // NÓMINA CON INASISTENCIAS PRECARGADAS DESGLOSADAS POR CADA BIMESTRE Y CATEGORÍA
+        // NÓMINA OFICIAL CON FALTAS REALES PRECARGADAS DESGLOSADAS
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", domicilio: "Bacacay 2180 CABA", telefono: "11 6270-3210 / 11 3124-9...", codigoApp: "b4690449", email: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, f1Bim: 1.5, f2Bim: 2.5, f3Bim: 0.5, f4Bim: 0.0, faltasAnuales: 4.5, faltasJustificadas: 1.5, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "1° Geografía, 2° Geografía, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
             { id: 2, nombre: "ARNEDO, NICOLAS VALENTIN", dni: "50988025", domicilio: "Mercedes 274 Dpto 2B CABA", telefono: "11 5610-3488 / 11 4447-3851", codigoApp: "eacefb2d", email: "nicolasarnedo@alum.tec17ba.edu.ar", materiasBajas: 7, f1Bim: 5.5, f2Bim: 4.0, f3Bim: 4.0, f4Bim: 0.0, faltasAnuales: 13.5, faltasJustificadas: 0, llegadasTarde: 0, faltasTaller: 1, faltasEF: 0, materiasPrevias: "1° Matemática, 2° Matemática, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ARNEDO, NICOLAS VALENTIN - 50988025.pdf" },
@@ -1201,10 +1201,13 @@
             }
         }
 
-        // CARGA COMPLETA DE TODOS LOS CAMPOS DE FALTAS AL EDITAR LA FICHA
+        // EDICIÓN CON LECTURA FIJA DE LA NÓMINA OFICIAL
         function abrirModalFicha(id) {
-            const al = alumnos.find(a => a.id === parseInt(id));
-            if (!al) return;
+            const alOficial = nominaOficial.find(a => a.id === parseInt(id));
+            const alMemoria = alumnos.find(a => a.id === parseInt(id));
+            if (!alOficial && !alMemoria) return;
+
+            const al = Object.assign({}, alOficial, alMemoria);
 
             document.getElementById('editAlumnoId').value = al.id;
             document.getElementById('editNombre').value = al.nombre || '';
@@ -1224,10 +1227,10 @@
             document.getElementById('editDomicilio').value = al.domicilio || '';
             document.getElementById('editMateriasPrevias').value = al.materiasPrevias || '';
             
-            document.getElementById('editFaltasJustificadas').value = (al.faltasJustificadas !== undefined) ? al.faltasJustificadas : 0;
-            document.getElementById('editLlegadasTarde').value = (al.llegadasTarde !== undefined) ? al.llegadasTarde : 0;
-            document.getElementById('editFaltasTaller').value = (al.faltasTaller !== undefined) ? al.faltasTaller : 0;
-            document.getElementById('editFaltasEF').value = (al.faltasEF !== undefined) ? al.faltasEF : 0;
+            document.getElementById('editFaltasJustificadas').value = (al.faltasJustificadas !== undefined) ? al.faltasJustificadas : (alOficial ? alOficial.faltasJustificadas : 0);
+            document.getElementById('editLlegadasTarde').value = (al.llegadasTarde !== undefined) ? al.llegadasTarde : (alOficial ? alOficial.llegadasTarde : 0);
+            document.getElementById('editFaltasTaller').value = (al.faltasTaller !== undefined) ? al.faltasTaller : (alOficial ? alOficial.faltasTaller : 0);
+            document.getElementById('editFaltasEF').value = (al.faltasEF !== undefined) ? al.faltasEF : (alOficial ? alOficial.faltasEF : 0);
 
             document.getElementById('modalFicha').classList.remove('hidden');
         }
