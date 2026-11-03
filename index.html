@@ -699,33 +699,33 @@
             return fechasSinActividad.includes(fechaStr);
         }
 
-        // SONIDO DE NOTIFICACIÓN SUAVE Y AGRADABLE (NUEVO TONO CHIME DULCE)
-        function reproducirSonidoAlerta() {
-            try {
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                if (!AudioCtx) return;
-                const ctx = new AudioCtx();
-                const now = ctx.currentTime;
+// SONIDO DE ALERTA POTENTE Y CLARO (DOBLE BEEP POTENTE)
+function reproducirSonidoAlerta() {
+    try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        const ctx = new AudioCtx();
+        const start = ctx.currentTime;
 
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
+        const tiempos = [0, 0.18];
+        tiempos.forEach(offset => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
 
-                osc.type = 'sine'; // Onda limpia y suave
-                
-                // Melodía corta ascendente agradable (Do-Mi / C5-E5)
-                osc.frequency.setValueAtTime(523.25, now);
-                osc.frequency.setValueAtTime(659.25, now + 0.15);
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(987.77, start + offset);
 
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+            gain.gain.setValueAtTime(0.5, start + offset);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + offset + 0.12);
 
-                osc.connect(gain);
-                gain.connect(ctx.destination);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
 
-                osc.start(now);
-                osc.stop(now + 0.45);
-            } catch(e) {}
-        }
+            osc.start(start + offset);
+            osc.stop(start + offset + 0.13);
+        });
+    } catch(e) {}
+}
 
         // NÓMINA OFICIAL CON FALTAS REALES PRECARGADAS DESGLOSADAS
         const nominaOficial = [
