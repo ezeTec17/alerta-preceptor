@@ -699,34 +699,18 @@
             return fechasSinActividad.includes(fechaStr);
         }
 
-// SONIDO DE ALERTA POTENTE Y CLARO (DOBLE BEEP POTENTE)
 function reproducirSonidoAlerta() {
     try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-        const start = ctx.currentTime;
+        const audio = new Audio('./alarma.mp3');
+        audio.play().catch(e => console.log(e));
 
-        const tiempos = [0, 0.18];
-        tiempos.forEach(offset => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(987.77, start + offset);
-
-            gain.gain.setValueAtTime(0.5, start + offset);
-            gain.gain.exponentialRampToValueAtTime(0.001, start + offset + 0.12);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(start + offset);
-            osc.stop(start + offset + 0.13);
-        });
+        // Detiene el audio a los 3.5 segundos (2 o 3 repeticiones)
+        setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0;
+        }, 3500);
     } catch(e) {}
 }
-
         // NÓMINA OFICIAL CON FALTAS REALES PRECARGADAS DESGLOSADAS
         const nominaOficial = [
             { id: 1, nombre: "ALTAMIRANDA, MATEO", dni: "50257512", domicilio: "Bacacay 2180 CABA", telefono: "11 6270-3210 / 11 3124-9...", codigoApp: "b4690449", email: "mateoaltamiranda@alum.tec17ba.edu.ar", materiasBajas: 6, f1Bim: 1.5, f2Bim: 2.5, f3Bim: 0.5, f4Bim: 0.0, faltasAnuales: 4.5, faltasJustificadas: 1.5, llegadasTarde: 0, faltasTaller: 0, faltasEF: 0, materiasPrevias: "1° Geografía, 2° Geografía, 2° Tec. De la Rep", boletinPdf: "Boletín - Tercer Bimestre - ALTAMIRANDA, MATEO - 50257512.pdf" },
