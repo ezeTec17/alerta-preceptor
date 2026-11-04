@@ -704,7 +704,7 @@ function reproducirSonidoAlerta() {
         const audio = new Audio('./alarma.mp3');
         audio.play().catch(e => console.log(e));
 
-        // Detiene el audio a los 3.5 segundos (2 o 3 repeticiones)
+        // Detiene el audio a los 2.5 segundos (2 o 3 repeticiones)
         setTimeout(() => {
             audio.pause();
             audio.currentTime = 0;
